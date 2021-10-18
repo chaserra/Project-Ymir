@@ -28,7 +28,8 @@ public class AutoTargetSystem : MonoBehaviour
 
     // State
     private List<ITarget> currentActiveTargets = new List<ITarget>();
-    private int currentTargetIndex = 0;
+    [SerializeField] private GameObject primaryTarget = null;
+    [SerializeField] private int currentTargetIndex = 0;
 
     [Header("DEBUG")]
     [SerializeField] TextMeshProUGUI active;
@@ -90,7 +91,7 @@ public class AutoTargetSystem : MonoBehaviour
         CycleTargets();
     }
 
-    /* AUTO TARGET SYSTEM */
+    /* LIGHTWEIGHT DETECT */
     private bool TargetsInRange()
     {
         // Check if a target exists on a large area in front of ship
@@ -105,6 +106,7 @@ public class AutoTargetSystem : MonoBehaviour
         }
     }
 
+    /* UI-BASED DETECT */
     private void GetTargetsInsideAT(List<ITarget> targets)
     {
         for (int i = targets.Count - 1; i >= 0; i--)
@@ -127,6 +129,12 @@ public class AutoTargetSystem : MonoBehaviour
                 if (!currentActiveTargets.Contains(targets[i]))
                 {
                     currentActiveTargets.Add(targets[i]);
+
+                    // Set first target as primary target if no current primary is active
+                    if (primaryTarget == null)
+                    {
+                        SetPrimaryTarget(targets[i].ThisGameObject());
+                    }
                 }
             }
             // If outside AT box, remove from current targets and trigger UI disable
@@ -138,6 +146,7 @@ public class AutoTargetSystem : MonoBehaviour
         }
     }
 
+    /* RAYCAST AND SPHERECAST DETECT */
     private List<ITarget> IdentifyTargets()
     {
         // Do a more granular target acquisition via OverlapSphere
@@ -184,6 +193,7 @@ public class AutoTargetSystem : MonoBehaviour
         return activeTargets;
     }
 
+    /* DISPLAY UI */
     private void DisplayTargetBoxes()
     {
         if (currentActiveTargets.Count <= 0) { return; }
@@ -222,6 +232,7 @@ public class AutoTargetSystem : MonoBehaviour
         }
     }
 
+    /* TARGET SELECTION */
     private void CycleTargets()
     {
         // Cycle through targets
@@ -231,33 +242,41 @@ public class AutoTargetSystem : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 currentTargetIndex++;
-                // If last target, return first index
-                if (currentTargetIndex > currentActiveTargets.Count - 1 ||
-                    currentActiveTargets.Count <= 1)
-                {
-                    currentTargetIndex = 0;
-                }
-                // TODO: Find a better way to display primary target. Find alternative to changing image color
-                // Deactivate previous target as primary, return max index if previous index is below 0
-                int previousIndex = currentTargetIndex - 1;
-                if (previousIndex < 0) { previousIndex = currentActiveTargets.Count - 1; }
-                targettingBoxOverlay.DisplayPrimaryTarget(currentActiveTargets[previousIndex].ThisGameObject(), false);
-
-                // Display current target as primary
-                targettingBoxOverlay.DisplayPrimaryTarget(currentActiveTargets[currentTargetIndex].ThisGameObject(), true);
+                GetNextTarget();
             }
         }
         else
         {
-            //TODO: Fix bug that does not select a new primary if the current primary is no longer a target and there are more than 1 other possible targets
-            //Use a separate variable to track current target?
             // Reset index if no targets are found
             currentTargetIndex = 0;
-            if (currentActiveTargets.Count > 0)
-            {
-                targettingBoxOverlay.DisplayPrimaryTarget(currentActiveTargets[currentTargetIndex].ThisGameObject(), true);
-            }
         }
+    }
+
+    private void GetNextTarget()
+    {
+        // If last target or the only target, return first index
+        if (currentTargetIndex > currentActiveTargets.Count - 1 ||
+            currentActiveTargets.Count <= 1)
+        {
+            currentTargetIndex = 0;
+        }
+        // TODO: Find a better way to display primary target. Find alternative to changing image color
+
+        // Deactivate previous primary target
+        if (primaryTarget != null)
+        {
+            targettingBoxOverlay.DisplayPrimaryTarget(primaryTarget, false);
+        }
+
+        // Display new target as primary
+        SetPrimaryTarget(currentActiveTargets[currentTargetIndex].ThisGameObject());
+    }
+
+    /* DATA MANAGEMENT */
+    private void SetPrimaryTarget(GameObject target)
+    {
+        primaryTarget = target;
+        targettingBoxOverlay.DisplayPrimaryTarget(primaryTarget, true);
     }
 
     public void ClearAllTargets()
@@ -273,6 +292,7 @@ public class AutoTargetSystem : MonoBehaviour
             }
             RemoveTargetting(target);
         }
+        primaryTarget = null;
         currentActiveTargets.Clear();
         currentTargetIndex = 0;
     }
@@ -281,5 +301,18 @@ public class AutoTargetSystem : MonoBehaviour
     {
         target.NoLongerTargetted();
         targettingBoxOverlay.RemoveTargetting(target.ThisGameObject());
+
+        // If the removed target was the primary target
+        if (primaryTarget == target.ThisGameObject())
+        {
+            // Remove current primary target
+            primaryTarget = null;
+
+            // Check for other targets to transfer primary target status
+            if (currentActiveTargets.Count > 0)
+            {
+                GetNextTarget();
+            }
+        }
     }
 }
