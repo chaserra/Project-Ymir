@@ -1102,6 +1102,7 @@ GameObject:
   - component: {fileID: 6560373039893415673}
   - component: {fileID: 6560373039893415678}
   - component: {fileID: 6560373039893415672}
+  - component: {fileID: 7759461655139114195}
   - component: {fileID: 6560373039893415679}
   m_Layer: 6
   m_Name: Player Ship
@@ -1181,13 +1182,25 @@ MonoBehaviour:
   gun: {fileID: 6560373038071999203}
   bullet: {fileID: 2004772645882275448, guid: 7275fb62b1b103745b00d5ca914ffe54, type: 3}
   fireCooldown: 0.05
+  shotsFired: 0
+--- !u!114 &7759461655139114195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560373039893415676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d609195c59c674e8bd877dfefa651d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   autoTargetBox: {fileID: 4907579220138119105, guid: 6160c30c3ebc1214787cfe26a9781572, type: 3}
   autoTargetRange: 150
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
-  autoTargetUI: {fileID: 194048219950085746, guid: 0fae0be79d08b78419c5f4a2b03f368e, type: 3}
-  shotsFired: 0
+  autoTargetUI: {fileID: 8297292190554175744, guid: 0af1140349e6f124592e6855039f9d8c, type: 3}
   active: {fileID: 0}
 --- !u!114 &6560373039893415679
 MonoBehaviour:

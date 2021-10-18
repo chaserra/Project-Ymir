@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class WeaponsController : MonoBehaviour
+[RequireComponent(typeof(WeaponsController))]
+public class AutoTargetSystem : MonoBehaviour
 {
     // Cache
+    private WeaponsController weaponsController;
     private Camera cam;
     private Canvas hud;
     private Canvas overlayCanvas;
     private UI_DisplayTargetBox targettingBoxOverlay;
 
     // Properties
-    [Header("Primary Weapon")]
-    [SerializeField] GameObject gun;
-    [SerializeField] GameObject bullet;
-    [SerializeField] float fireCooldown = .1f;
-    private ObjectPooler bulletPool;    // TODO: Create separate pooler for rockets/AT Weapon
-
     [Header("AT Weapon")]
     [SerializeField] RectTransform autoTargetBox;
     [SerializeField] float autoTargetRange = 150f;
@@ -28,17 +24,13 @@ public class WeaponsController : MonoBehaviour
     private float forwardOffset = 3f;
     private float offsetMultiplier = 1.25f;
     private float checkSphereOffset;
-    public Camera Camera { get { return cam; } }
     public Canvas HUD { get { return hud; } }
 
     // State
-    private bool canShoot = true;
-    private float fireTimer = 0f;
     private List<ITarget> currentActiveTargets = new List<ITarget>();
     private int currentTargetIndex = 0;
 
     [Header("DEBUG")]
-    [SerializeField] private int shotsFired = 0;
     [SerializeField] TextMeshProUGUI active;
 
     /* ** DEBUG ** */
@@ -58,7 +50,7 @@ public class WeaponsController : MonoBehaviour
 
     private void Awake()
     {
-        cam = Camera.main;
+        weaponsController = GetComponent<WeaponsController>();
         // Get HUD and Overlay Canvases
         Canvas[] c = FindObjectsOfType<Canvas>();
         for (int i = c.Length - 1; i >= 0; i--)
@@ -77,12 +69,11 @@ public class WeaponsController : MonoBehaviour
         targettingBoxOverlay = overlayCanvas.GetComponent<UI_DisplayTargetBox>();
         checkSphereOffset = autoTargetRange * offsetMultiplier;
         Instantiate(autoTargetBox, hud.transform);
-        bulletPool = new ObjectPooler(bullet, 5, "Player Bullet");
     }
 
     private void Start()
     {
-        StartCoroutine(ShootPrimary());
+        cam = weaponsController.Camera;
     }
 
     private void Update()
@@ -97,26 +88,6 @@ public class WeaponsController : MonoBehaviour
 
         // Select target
         CycleTargets();
-    }
-
-    /* FIRING */
-    IEnumerator ShootPrimary()
-    {
-        while (true)
-        {
-            fireTimer += Time.deltaTime;
-
-            if (Input.GetButton("Fire1") && fireTimer >= fireCooldown && canShoot)
-            {
-                GameObject bullet = bulletPool.GetPooledObject();
-                bullet.transform.position = gun.transform.position;
-                bullet.transform.rotation = transform.rotation;
-                bullet.SetActive(true);
-                fireTimer = 0f;
-                shotsFired++;
-            }
-            yield return null;
-        }
     }
 
     /* AUTO TARGET SYSTEM */
@@ -311,5 +282,4 @@ public class WeaponsController : MonoBehaviour
         target.NoLongerTargetted();
         targettingBoxOverlay.RemoveTargetting(target.ThisGameObject());
     }
-
 }
