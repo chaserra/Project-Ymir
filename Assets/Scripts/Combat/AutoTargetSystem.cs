@@ -233,6 +233,7 @@ public class AutoTargetSystem : MonoBehaviour
     }
 
     /* TARGET SELECTION */
+    //TODO: Fix problem where two primary targets are active. Not sure yet if two ACTUAL targets are active or this is a simple UI issue.
     private void CycleTargets()
     {
         // Cycle through targets
@@ -315,4 +316,5 @@ public class AutoTargetSystem : MonoBehaviour
             }
         }
     }
+
 }

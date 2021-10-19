@@ -11,6 +11,7 @@ public class ObjectPooler
     // State
     private List<GameObject> objectList = new List<GameObject>();
     private GameObject parent;
+    public GameObject ObjectParent { get { return parent; } }
 
     // Pool to a specific parent
     public ObjectPooler(GameObject obj, GameObject p)

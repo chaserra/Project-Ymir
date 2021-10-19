@@ -340,6 +340,7 @@ Transform:
   m_Children:
   - {fileID: 6665778215557393664}
   - {fileID: 6560373038071999228}
+  - {fileID: 8835075561066172482}
   m_Father: {fileID: 6560373039893415677}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1181,8 +1182,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gun: {fileID: 6560373038071999203}
   bullet: {fileID: 2004772645882275448, guid: 7275fb62b1b103745b00d5ca914ffe54, type: 3}
-  fireCooldown: 0.05
+  bulletCooldown: 0.05
+  launcher: {fileID: 7440995303127983352}
+  missile: {fileID: 7160825113730150654, guid: c6bcfe811439f5c4384dfa78fd891d42, type: 3}
+  missileCooldown: 5
   shotsFired: 0
+  missilesFired: 0
 --- !u!114 &7759461655139114195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1201,6 +1206,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   autoTargetUI: {fileID: 8297292190554175744, guid: 0af1140349e6f124592e6855039f9d8c, type: 3}
+  primaryTarget: {fileID: 0}
+  currentTargetIndex: 0
   active: {fileID: 0}
 --- !u!114 &6560373039893415679
 MonoBehaviour:
@@ -1244,6 +1251,36 @@ MonoBehaviour:
     m_DissipationMode: 2
     m_DissipationDistance: 1000
     m_PropagationSpeed: 343
+--- !u!1 &7440995303127983352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8835075561066172482}
+  m_Layer: 6
+  m_Name: Missile Launcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8835075561066172482
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7440995303127983352}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6163571805374024839}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6560373038324943595
 PrefabInstance:
   m_ObjectHideFlags: 0
