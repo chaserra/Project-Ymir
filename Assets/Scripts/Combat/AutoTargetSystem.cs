@@ -18,6 +18,7 @@ public class AutoTargetSystem : MonoBehaviour
     [SerializeField] RectTransform autoTargetBox;
     [SerializeField] float autoTargetRange = 150f;
     [SerializeField] LayerMask targetLayer;
+    [SerializeField] LayerMask ignoreLayer;
     [SerializeField] RectTransform autoTargetUI;
 
     // Attributes
@@ -28,7 +29,7 @@ public class AutoTargetSystem : MonoBehaviour
 
     // State
     private List<ITarget> currentActiveTargets = new List<ITarget>();
-    [SerializeField] private GameObject primaryTarget = null;
+    [SerializeField] public GameObject primaryTarget = null;
     [SerializeField] private int currentTargetIndex = 0;
 
     [Header("DEBUG")]
@@ -161,7 +162,7 @@ public class AutoTargetSystem : MonoBehaviour
             // Check if in line of sight
             RaycastHit hit;
             Vector3 dirToTarget = targets[i].transform.position - transform.position;
-            if (Physics.Raycast(transform.position, dirToTarget, out hit))
+            if (Physics.Raycast(transform.position, dirToTarget, out hit, autoTargetRange * 2f, ~ignoreLayer))
             {
                 ITarget thisTarget;
                 // Check if nothing is blocking the ray
@@ -233,7 +234,6 @@ public class AutoTargetSystem : MonoBehaviour
     }
 
     /* TARGET SELECTION */
-    //TODO: Fix problem where two primary targets are active. Not sure yet if two ACTUAL targets are active or this is a simple UI issue.
     private void CycleTargets()
     {
         // Cycle through targets
@@ -248,8 +248,12 @@ public class AutoTargetSystem : MonoBehaviour
         }
         else
         {
-            // Reset index if no targets are found
+            // Reset index and remove last primary target if no targets are found
             currentTargetIndex = 0;
+            if (currentActiveTargets.Count <= 0 && primaryTarget != null)
+            {
+                primaryTarget = null;
+            }
         }
     }
 

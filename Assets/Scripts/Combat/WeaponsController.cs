@@ -84,6 +84,8 @@ public class WeaponsController : MonoBehaviour
                 missile.transform.position = launcher.transform.position;
                 missile.transform.rotation = transform.rotation;
                 missile.transform.parent = launcher.transform;
+                // TODO: Do a more optimized version of this
+                missile.GetComponent<Missile>().Target = GetComponent<AutoTargetSystem>().primaryTarget;
                 missile.SetActive(true);
                 secondaryTimer = 0f;
                 missilesFired++;
