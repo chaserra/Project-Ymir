@@ -18,7 +18,7 @@ public class WeaponsController : MonoBehaviour
     private ObjectPooler bulletPool;    // TODO: Create separate pooler for rockets/AT Weapon
 
     [Header("Secondary Weapon")]
-    [SerializeField] GameObject launcher;
+    [SerializeField] GameObject[] launcher;
     [SerializeField] GameObject missile;
     [SerializeField] float missileCooldown = 5f;
     private ObjectPooler missilePool;
@@ -28,6 +28,7 @@ public class WeaponsController : MonoBehaviour
     private float primaryTimer = 0f;
     private bool canShootSecondary = true;
     private float secondaryTimer = 0f;
+    private int launcherIndex = -1;
 
     [Header("DEBUG")]
     [SerializeField] private int shotsFired = 0;
@@ -80,10 +81,11 @@ public class WeaponsController : MonoBehaviour
 
             if (Input.GetButtonDown("Fire2") && secondaryTimer >= missileCooldown && canShootSecondary)
             {
+                IncrementLauncherIndex();
                 GameObject missile = missilePool.GetPooledObject();
-                missile.transform.position = launcher.transform.position;
+                missile.transform.position = launcher[launcherIndex].transform.position;
                 missile.transform.rotation = transform.rotation;
-                missile.transform.parent = launcher.transform;
+                missile.transform.parent = launcher[launcherIndex].transform;
                 // TODO: Do a more optimized version of this
                 missile.GetComponent<Missile>().Target = GetComponent<AutoTargetSystem>().primaryTarget;
                 missile.SetActive(true);
@@ -91,6 +93,15 @@ public class WeaponsController : MonoBehaviour
                 missilesFired++;
             }
             yield return null;
+        }
+    }
+
+    private void IncrementLauncherIndex()
+    {
+        launcherIndex++;
+        if (launcherIndex >= launcher.Length)
+        {
+            launcherIndex = 0;
         }
     }
 

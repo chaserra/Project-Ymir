@@ -4960,7 +4960,7 @@ MonoBehaviour:
   ignitionTime: 1
   missileSpeed: 100
   missileMaxRange: 500
-  turnSpeed: 0.35
+  turnSpeed: 0.6
 --- !u!1 &7773539416867902603
 GameObject:
   m_ObjectHideFlags: 0
