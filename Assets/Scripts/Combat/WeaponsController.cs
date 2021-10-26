@@ -96,6 +96,7 @@ public class WeaponsController : MonoBehaviour
         }
     }
 
+    // Track and select which launcher spot will fire the missile
     private void IncrementLauncherIndex()
     {
         launcherIndex++;

@@ -8,11 +8,15 @@ public class Bullet : MonoBehaviour
     private TrailRenderer bulletTrail;
 
     // Properties
+    [Header("Damage")]
     [SerializeField] int damage = 1;
+    [Header("Specs")]
     [SerializeField] float bulletSpeed = 500f;
     [SerializeField] float bulletRange = 750f;
     [SerializeField] float checkSphereSize = 6f;
     [SerializeField] float collisionSize = 3f;
+    [Header("Parts")]
+    [SerializeField] GameObject bulletBody;
 
     // Attributes
     private float raycastRange;
@@ -21,6 +25,7 @@ public class Bullet : MonoBehaviour
     // State
     private float distanceTravelled = 0f;
     private bool hasHit = false;
+    private bool hasStopped = false;
 
     /* ** DEBUG ** */
     private void OnDrawGizmos()
@@ -49,6 +54,9 @@ public class Bullet : MonoBehaviour
         raycastRange = forwardDetection * 1.5f;
         distanceTravelled = 0f;
         hasHit = false;
+        hasStopped = false;
+        bulletBody.SetActive(true);
+        bulletTrail.emitting = true;
         bulletTrail.Clear();
     }
 
@@ -61,6 +69,7 @@ public class Bullet : MonoBehaviour
     {
         DetectHit();
         MoveBullet();
+        DisableThisObjectOnTrailEnd();
     }
 
     private void DetectHit()
@@ -93,12 +102,37 @@ public class Bullet : MonoBehaviour
 
     private void MoveBullet()
     {
+        if (hasStopped) { return; }
+
         float distanceToTravel = bulletSpeed * Time.deltaTime;
 
         transform.Translate(Vector3.forward * distanceToTravel);
         distanceTravelled += distanceToTravel;
 
         if (distanceTravelled > bulletRange)
+        {
+            DeactivateBullet();
+        }
+    }
+
+    private void DeactivateBullet()
+    {
+        // Deactivates body of the bullet and removes ability to hit objects
+        // Also stops emitting bullet trail
+        // The whole object is then deactivated upon end of bullet trail via DisableThisObjectOnTrailEnd()
+        hasHit = true;
+        hasStopped = true;
+        bulletBody.SetActive(false);
+        bulletTrail.emitting = false;
+    }
+
+    private void DisableThisObjectOnTrailEnd()
+    {
+        if (!hasStopped) { return; }
+        // Disables the whole object once the trail has ended
+        // Prevents VFX trails from disappearing on hit or upon reaching max distance
+        // This also, in effect, returns this object to the object pool
+        if (bulletTrail.positionCount <= 2)
         {
             gameObject.SetActive(false);
         }

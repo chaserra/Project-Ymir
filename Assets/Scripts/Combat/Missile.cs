@@ -5,12 +5,17 @@ using UnityEngine;
 public class Missile : MonoBehaviour
 {
     // Parameters
+    [Header("Damage")]
     [SerializeField] int damage = 10;
     [SerializeField] float explosionRange = 3f;
+    [Header("Specs")]
     [SerializeField] float ignitionTime = 1f;
     [SerializeField] float missileSpeed = 100f;
     [SerializeField] float missileMaxRange = 500f;
-    [SerializeField] float turnSpeed = 10f;
+    [SerializeField] float turnSpeed = .6f;
+    [Header("Parts")]
+    [SerializeField] GameObject missileBody;
+    [SerializeField] ParticleSystem smokeTrail;
 
     // Attributes
     private GameObject poolParent;
@@ -18,21 +23,23 @@ public class Missile : MonoBehaviour
     // State
     private float ignitionCounter = 0f;
     private float distanceTravelled = 0f;
+    private bool hasHit = false;
     private GameObject target = null;
     // TODO: Do a more optimized version of this
     public GameObject Target { set { target = value; } }
-    private bool hasHit = false;
 
     private void Awake()
     {
-        poolParent = transform.parent.gameObject;
+        poolParent = transform.parent.gameObject;   // Set reference to the parent object pool
     }
 
     private void OnEnable()
     {
+        hasHit = false;
+        missileBody.SetActive(true);
+        smokeTrail.Play();
         ignitionCounter = 0f;
         distanceTravelled = 0f;
-        hasHit = false;
         StartCoroutine(FireMissile());
     }
 
@@ -44,21 +51,27 @@ public class Missile : MonoBehaviour
     private void Update()
     {
         MoveMissile();
+        DisableThisObjectOnParticleEnd();
     }
 
     private IEnumerator FireMissile()
     {
+        // Missile ignition. Missile fires/moves after the ignition.
         while (ignitionCounter < ignitionTime)
         {
             ignitionCounter += Time.deltaTime;
             yield return null;
         }
+        // When activated, missile is parented to the shooter.
+        // Code below reparents it to the object pool so the missile can move freely.
         transform.parent = poolParent.transform;
     }
 
     private void MoveMissile()
     {
-        if (ignitionCounter < ignitionTime) { return; }
+        // Only move after ignition
+        if (ignitionCounter < ignitionTime || hasHit) { return; }
+
         // Distance counter
         float distanceToTravel = missileSpeed * Time.deltaTime;
 
@@ -66,7 +79,7 @@ public class Missile : MonoBehaviour
         transform.Translate(Vector3.forward * distanceToTravel);
         distanceTravelled += distanceToTravel;
 
-        // Rotate projectile
+        // Rotate projectile towards the target
         if (target != null)
         {
             Vector3 targetDir = target.transform.position - transform.position;
@@ -77,7 +90,7 @@ public class Missile : MonoBehaviour
         // Deactivate upon reaching max range
         if (distanceTravelled > missileMaxRange)
         {
-            gameObject.SetActive(false);
+            DeactivateMissile();
         }
     }
 
@@ -86,9 +99,35 @@ public class Missile : MonoBehaviour
         if (hasHit) { return; }
         if (other.CompareTag("Target"))
         {
-            hasHit = true;
-            //TODO: Deal explosion proximity damage
             other.GetComponent<ITarget>().IsHit(damage);
+            Explode();
+        }
+    }
+
+    private void Explode()
+    {
+        //TODO: Deal explosion proximity damage
+        DeactivateMissile();
+    }
+
+    private void DeactivateMissile()
+    {
+        //TODO: Find out why some bullets don't disappear when passing through an object
+        // Deactivates body of the missile and removes ability to hit objects
+        // Also stops emitting more smoke trails
+        // The whole object is then deactivated upon end of all existing particles via DisableMissileOnParticleEnd()
+        hasHit = true;
+        missileBody.SetActive(false);
+        smokeTrail.Stop();
+    }
+
+    private void DisableThisObjectOnParticleEnd()
+    {
+        // Disables the whole object once particles have ended playing
+        // Prevents VFX trails from disappearing on hit or upon reaching max distance
+        // This also, in effect, returns this object to the object pool
+        if (!smokeTrail.IsAlive())
+        {
             gameObject.SetActive(false);
         }
     }
