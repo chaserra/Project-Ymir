@@ -25,8 +25,6 @@ public class Missile : MonoBehaviour
     private float distanceTravelled = 0f;
     private bool hasHit = false;
     private GameObject target = null;
-    // TODO: Do a more optimized version of this
-    public GameObject Target { set { target = value; } }
 
     private void Awake()
     {
@@ -112,7 +110,6 @@ public class Missile : MonoBehaviour
 
     private void DeactivateMissile()
     {
-        //TODO: Find out why some bullets don't disappear when passing through an object
         // Deactivates body of the missile and removes ability to hit objects
         // Also stops emitting more smoke trails
         // The whole object is then deactivated upon end of all existing particles via DisableMissileOnParticleEnd()
@@ -130,6 +127,11 @@ public class Missile : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+    }
+
+    public void SetTarget(GameObject t)
+    {
+        target = t;
     }
 
 }

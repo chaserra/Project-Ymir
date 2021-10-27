@@ -26,6 +26,7 @@ public class Bullet : MonoBehaviour
     private float distanceTravelled = 0f;
     private bool hasHit = false;
     private bool hasStopped = false;
+    private float disableTimer = 0f;
 
     /* ** DEBUG ** */
     private void OnDrawGizmos()
@@ -53,6 +54,7 @@ public class Bullet : MonoBehaviour
         forwardDetection = checkSphereSize + .25f;
         raycastRange = forwardDetection * 1.5f;
         distanceTravelled = 0f;
+        disableTimer = 0f;
         hasHit = false;
         hasStopped = false;
         bulletBody.SetActive(true);
@@ -132,7 +134,11 @@ public class Bullet : MonoBehaviour
         // Disables the whole object once the trail has ended
         // Prevents VFX trails from disappearing on hit or upon reaching max distance
         // This also, in effect, returns this object to the object pool
-        if (bulletTrail.positionCount <= 2)
+        if (disableTimer <= bulletTrail.time)
+        {
+            disableTimer += Time.deltaTime;
+        }
+        else
         {
             gameObject.SetActive(false);
         }

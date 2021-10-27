@@ -8,6 +8,7 @@ public class WeaponsController : MonoBehaviour
     // Cache
     private Camera cam;
     public Camera Camera { get { return cam; } }
+    private AutoTargetSystem atSystem;
 
     // Properties
     //TODO: Probably create a ScriptableObject for each type of weapons.
@@ -15,7 +16,7 @@ public class WeaponsController : MonoBehaviour
     [SerializeField] GameObject gun;
     [SerializeField] GameObject bullet;
     [SerializeField] float bulletCooldown = .05f;
-    private ObjectPooler bulletPool;    // TODO: Create separate pooler for rockets/AT Weapon
+    private ObjectPooler bulletPool;
 
     [Header("Secondary Weapon")]
     [SerializeField] GameObject[] launcher;
@@ -45,6 +46,7 @@ public class WeaponsController : MonoBehaviour
 
     private void Start()
     {
+        atSystem = GetComponent<AutoTargetSystem>();
         StartCoroutine(ShootPrimary());
         StartCoroutine(ShootSecondary());
     }
@@ -86,8 +88,7 @@ public class WeaponsController : MonoBehaviour
                 missile.transform.position = launcher[launcherIndex].transform.position;
                 missile.transform.rotation = transform.rotation;
                 missile.transform.parent = launcher[launcherIndex].transform;
-                // TODO: Do a more optimized version of this
-                missile.GetComponent<Missile>().Target = GetComponent<AutoTargetSystem>().primaryTarget;
+                missile.GetComponent<Missile>().SetTarget(atSystem.primaryTarget);
                 missile.SetActive(true);
                 secondaryTimer = 0f;
                 missilesFired++;
