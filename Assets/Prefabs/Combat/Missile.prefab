@@ -4961,6 +4961,7 @@ MonoBehaviour:
   missileSpeed: 100
   missileMaxRange: 500
   turnSpeed: 0.6
+  explosion: {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
   missileBody: {fileID: 4541482439739732544}
   smokeTrail: {fileID: 8671584937116837298}
 --- !u!1 &7773539416867902603

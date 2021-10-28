@@ -13,6 +13,7 @@ public class Missile : MonoBehaviour
     [SerializeField] float missileSpeed = 100f;
     [SerializeField] float missileMaxRange = 500f;
     [SerializeField] float turnSpeed = .6f;
+    [SerializeField] GameObject explosion;
     [Header("Parts")]
     [SerializeField] GameObject missileBody;
     [SerializeField] ParticleSystem smokeTrail;
@@ -105,6 +106,8 @@ public class Missile : MonoBehaviour
     private void Explode()
     {
         //TODO: Deal explosion proximity damage
+        //TODO: Object pool
+        Instantiate(explosion, transform.position, Quaternion.identity);
         DeactivateMissile();
     }
 

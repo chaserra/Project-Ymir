@@ -85,6 +85,7 @@ public class AutoTargetSystem : MonoBehaviour
         {
             GetTargetsInsideAT(IdentifyTargets());
         }
+        TargetSanityCheck();        // Sanity check to ensure target list is clean and updated
         DisplayTargetBoxes();
         active.SetText(currentActiveTargets.Count.ToString());
 
@@ -112,38 +113,46 @@ public class AutoTargetSystem : MonoBehaviour
     {
         for (int i = targets.Count - 1; i >= 0; i--)
         {
-            // Check where the target is in relation to the screen
-            Vector3 screenPos = cam.WorldToScreenPoint(targets[i].ThisGameObject().transform.position);
+            // Null check (if target is suddenly destroyed)
+            if (targets[i] == null || targets[i].Equals(null)) { return; }
 
-            if (screenPos.z < 0) { continue; }
+            ATCheck(targets[i]);
+        }
+    }
 
-            // Convert to percentage of screen
-            Vector3 delta = new Vector3(screenPos.x / Screen.width, screenPos.y / Screen.height, 0f);
+    private void ATCheck(ITarget target)
+    {
+        // Check where the target is in relation to the screen
+        Vector3 screenPos = cam.WorldToScreenPoint(target.ThisGameObject().transform.position);
 
-            // Check if target is within AT box and in front of ship
-            if (delta.x > autoTargetBox.anchorMin.x &&
-                delta.x < autoTargetBox.anchorMax.x &&
-                delta.y > autoTargetBox.anchorMin.y &&
-                delta.y < autoTargetBox.anchorMax.y)
+        if (screenPos.z < 0) { return; }
+
+        // Convert to percentage of screen
+        Vector3 delta = new Vector3(screenPos.x / Screen.width, screenPos.y / Screen.height, 0f);
+
+        // Check if target is within AT box and in front of ship
+        if (delta.x > autoTargetBox.anchorMin.x &&
+            delta.x < autoTargetBox.anchorMax.x &&
+            delta.y > autoTargetBox.anchorMin.y &&
+            delta.y < autoTargetBox.anchorMax.y)
+        {
+            // Add to current active targets if inside AT box
+            if (!currentActiveTargets.Contains(target))
             {
-                // Add to current active targets if inside AT box
-                if (!currentActiveTargets.Contains(targets[i]))
-                {
-                    currentActiveTargets.Add(targets[i]);
+                currentActiveTargets.Add(target);
 
-                    // Set first target as primary target if no current primary is active
-                    if (primaryTarget == null)
-                    {
-                        SetPrimaryTarget(targets[i].ThisGameObject());
-                    }
+                // Set first target as primary target if no current primary is active
+                if (primaryTarget == null)
+                {
+                    SetPrimaryTarget(target.ThisGameObject());
                 }
             }
-            // If outside AT box, remove from current targets and trigger UI disable
-            else
-            {
-                RemoveTargetting(targets[i]);
-                currentActiveTargets.Remove(targets[i]);
-            }
+        }
+        // If outside AT box, remove from current targets and trigger UI disable
+        else
+        {
+            RemoveTargetting(target);
+            currentActiveTargets.Remove(target);
         }
     }
 
@@ -201,10 +210,11 @@ public class AutoTargetSystem : MonoBehaviour
 
         foreach (ITarget target in currentActiveTargets)
         {
-            // If target is destroyed, reset targets list and break loop
+            // If target is destroyed, remove target from list then obtain the next target
             if (target == null || target.Equals(null))
             {
-                currentActiveTargets.Clear();
+                currentActiveTargets.Remove(target);
+                GetNextTarget();
                 break;
             }
 
@@ -238,13 +248,18 @@ public class AutoTargetSystem : MonoBehaviour
     {
         // Cycle through targets
         // For single target ATs only!
-        if (currentActiveTargets.Count > 1)
+        if (currentActiveTargets.Count > 1)         // If more than 1 targets, can switch targets
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 currentTargetIndex++;
                 GetNextTarget();
             }
+        }
+        else if (currentActiveTargets.Count == 1)   // If only one target, reset index and select only target
+        {
+            currentTargetIndex = 0;
+            GetNextTarget();
         }
         else
         {
@@ -259,13 +274,16 @@ public class AutoTargetSystem : MonoBehaviour
 
     private void GetNextTarget()
     {
+        // Check if there are targets in the list
+        if (currentActiveTargets.Count <= 0) { return; }
+
         // If last target or the only target, return first index
         if (currentTargetIndex > currentActiveTargets.Count - 1 ||
             currentActiveTargets.Count <= 1)
         {
             currentTargetIndex = 0;
         }
-        // TODO: Find a better way to display primary target. Find alternative to changing image color
+        // TODO: Find a better way to display primary target. Find alternative to changing image color. Also double check for bugs
 
         // Deactivate previous primary target
         if (primaryTarget != null)
@@ -318,6 +336,14 @@ public class AutoTargetSystem : MonoBehaviour
             {
                 GetNextTarget();
             }
+        }
+    }
+
+    private void TargetSanityCheck()
+    {
+        if(currentActiveTargets.Count > 0)
+        {
+            GetTargetsInsideAT(currentActiveTargets);
         }
     }
 
