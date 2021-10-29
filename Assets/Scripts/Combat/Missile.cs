@@ -7,7 +7,7 @@ public class Missile : MonoBehaviour
     // Parameters
     [Header("Damage")]
     [SerializeField] int damage = 10;
-    [SerializeField] float explosionRange = 3f;
+    [SerializeField] float explosionRange = 20f;
     [Header("Specs")]
     [SerializeField] float ignitionTime = 1f;
     [SerializeField] float missileSpeed = 100f;
@@ -45,6 +45,12 @@ public class Missile : MonoBehaviour
     private void OnDisable()
     {
         target = null;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, explosionRange);
     }
 
     private void Update()
@@ -99,16 +105,24 @@ public class Missile : MonoBehaviour
         if (other.CompareTag("Target"))
         {
             other.GetComponent<ITarget>().IsHit(damage);
-            Explode();
+            Explode(other);
         }
     }
 
-    private void Explode()
+    private void Explode(Collider firstHit)
     {
-        //TODO: Deal explosion proximity damage
-        //TODO: Object pool
+        //TODO: Object pool. Use a separate gameObject to manage all external VFX
         Instantiate(explosion, transform.position, Quaternion.identity);
         DeactivateMissile();
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRange);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].gameObject == firstHit.gameObject) { return; } // Ignore source
+            if (colliders[i].CompareTag("Target"))
+            {
+                colliders[i].GetComponent<ITarget>().IsHit(damage);
+            }
+        }
     }
 
     private void DeactivateMissile()

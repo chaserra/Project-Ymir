@@ -302,6 +302,14 @@ public class AutoTargetSystem : MonoBehaviour
         targettingBoxOverlay.DisplayPrimaryTarget(primaryTarget, true);
     }
 
+    private void TargetSanityCheck()
+    {
+        if (currentActiveTargets.Count > 0)
+        {
+            GetTargetsInsideAT(currentActiveTargets);
+        }
+    }
+
     public void ClearAllTargets()
     {
         if (currentActiveTargets.Count <= 0) { return; }
@@ -336,14 +344,6 @@ public class AutoTargetSystem : MonoBehaviour
             {
                 GetNextTarget();
             }
-        }
-    }
-
-    private void TargetSanityCheck()
-    {
-        if(currentActiveTargets.Count > 0)
-        {
-            GetTargetsInsideAT(currentActiveTargets);
         }
     }
 

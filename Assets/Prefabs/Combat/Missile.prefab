@@ -4956,7 +4956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  explosionRange: 3
+  explosionRange: 23
   ignitionTime: 1
   missileSpeed: 100
   missileMaxRange: 500
