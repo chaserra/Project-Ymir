@@ -8,19 +8,44 @@ public class ObjectPooler
     GameObject objectToPool;
     int poolSize;
 
+    // Attributes
+    private int instanceID;
+    public int InstanceID { get { return instanceID; } }
+
     // State
     private List<GameObject> objectList = new List<GameObject>();
     private GameObject parent;
     public GameObject ObjectParent { get { return parent; } }
 
-    // Pool to a specific parent
+    /// <summary>
+    /// Pool to a specific parent
+    /// </summary>
     public ObjectPooler(GameObject obj, GameObject p)
     {
         objectToPool = obj;
         parent = p;
+        instanceID = objectToPool.gameObject.GetInstanceID();
     }
 
-    // Pool n times to a new GameObject as the parent
+    /// <summary>
+    /// Pool n times to a specific parent
+    /// </summary>
+    public ObjectPooler(GameObject obj, int size, GameObject p)
+    {
+        objectToPool = obj;
+        poolSize = size;
+        parent = p;
+        instanceID = objectToPool.gameObject.GetInstanceID();
+
+        for (int i = 0; i < poolSize; i++)
+        {
+            CreateNewObject();
+        }
+    }
+
+    /// <summary>
+    /// Pool n times to a new GameObject as the parent
+    /// </summary>
     public ObjectPooler(GameObject obj, int size, string name)
     {
         objectToPool = obj;
@@ -28,6 +53,8 @@ public class ObjectPooler
 
         parent = new GameObject();
         parent.name = "POOL_" + name;
+
+        instanceID = objectToPool.gameObject.GetInstanceID();
 
         for (int i = 0; i < poolSize; i++)
         {

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
+    // Cache
+    private EffectsPool effectsPool;
+
     // Parameters
     [Header("Damage")]
     [SerializeField] int damage = 10;
@@ -30,6 +33,7 @@ public class Missile : MonoBehaviour
     private void Awake()
     {
         poolParent = transform.parent.gameObject;   // Set reference to the parent object pool
+        effectsPool = FindObjectOfType<EffectsPool>();
     }
 
     private void OnEnable()
@@ -111,9 +115,13 @@ public class Missile : MonoBehaviour
 
     private void Explode(Collider firstHit)
     {
-        //TODO: Object pool. Use a separate gameObject to manage all external VFX
-        Instantiate(explosion, transform.position, Quaternion.identity);
+        // Spawn pooled VFX
+        effectsPool.GetPooledEffect(explosion).GetComponent<VFX>().Play(transform.position);
+
+        // Deactivate missile (prevent multi hits)
         DeactivateMissile();
+
+        // Explosion damage
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRange);
         for (int i = 0; i < colliders.Length; i++)
         {
