@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     // Cache
     private TrailRenderer bulletTrail;
+    private EffectsPool effectsPool;
 
     // Properties
     [Header("Damage")]
@@ -15,6 +16,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] float bulletRange = 750f;
     [SerializeField] float checkSphereSize = 6f;
     [SerializeField] float collisionSize = 3f;
+    [SerializeField] GameObject sparks;
     [Header("Parts")]
     [SerializeField] GameObject bulletBody;
 
@@ -47,6 +49,7 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         bulletTrail = GetComponentInChildren<TrailRenderer>();
+        effectsPool = FindObjectOfType<EffectsPool>();
     }
 
     private void OnEnable()
@@ -92,9 +95,12 @@ public class Bullet : MonoBehaviour
                     // Set flag to prevent multiple hits
                     hasHit = true;
 
+                    // Spawn pooled VFX
+                    effectsPool.GetPooledEffect(sparks).GetComponent<VFX>().Play(hit.collider.transform.position);
+
                     // Set distance to disable when hitting the actual object
-                        // Get distance between bullet and hit object
-                        // Set distanceTravelled to remaining distance to hit object
+                    // Get distance between bullet and hit object
+                    // Set distanceTravelled to remaining distance to hit object
                     float dist = Vector3.Distance(gameObject.transform.position, hit.collider.transform.position);
                     distanceTravelled = bulletRange - dist;
                 }

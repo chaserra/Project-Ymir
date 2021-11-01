@@ -8,12 +8,7 @@ public class VFX : MonoBehaviour
 
     private void Awake()
     {
-        particles = new ParticleSystem[transform.childCount];
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            particles[i] = transform.GetChild(i).GetComponent<ParticleSystem>();
-        }
+        InitializeVFX();
     }
 
     private void Update()
@@ -24,6 +19,16 @@ public class VFX : MonoBehaviour
         if (!ParticleIsPlaying())
         {
             gameObject.SetActive(false);
+        }
+    }
+
+    private void InitializeVFX()
+    {
+        particles = new ParticleSystem[transform.childCount];
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            particles[i] = transform.GetChild(i).GetComponent<ParticleSystem>();
         }
     }
 

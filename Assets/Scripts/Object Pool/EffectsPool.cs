@@ -35,9 +35,9 @@ public class EffectsPool : MonoBehaviour
                 return e;
             }
         }
-        ObjectPooler p = new ObjectPooler(effect, amountToPool, gameObject);
-        objectPools.Add(p);
-        e = p.GetPooledObject();
+        ObjectPooler pool = new ObjectPooler(effect, amountToPool, gameObject);
+        objectPools.Add(pool);
+        e = pool.GetPooledObject();
         return e;
     }
 
