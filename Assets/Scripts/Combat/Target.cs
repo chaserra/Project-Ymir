@@ -7,14 +7,18 @@ public class Target : MonoBehaviour, ITarget
     // Cache
     private TargetBounds targetBounds;
     private Camera cam;
+    private EffectsPool effectsPool;
 
     // Parameters
     [SerializeField] int health = 100;
+    [SerializeField] GameObject explosionVFX;
 
     private void Awake()
     {
         targetBounds = new TargetBounds(GetComponentInChildren<Renderer>().bounds);
         cam = Camera.main;
+        effectsPool = FindObjectOfType<EffectsPool>();
+        if (explosionVFX == null) { Debug.LogError("No VFX added!"); }
     }
 
     public GameObject ThisGameObject()
@@ -34,6 +38,7 @@ public class Target : MonoBehaviour, ITarget
         {
             Debug.Log(name + " destroyed!");
             NoLongerTargetted();
+            effectsPool.GetPooledEffect(explosionVFX).GetComponent<VFX>().Play(transform.position);
             Destroy(gameObject);
         }
     }

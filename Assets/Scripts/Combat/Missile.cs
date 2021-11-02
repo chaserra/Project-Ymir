@@ -16,7 +16,7 @@ public class Missile : MonoBehaviour
     [SerializeField] float missileSpeed = 100f;
     [SerializeField] float missileMaxRange = 500f;
     [SerializeField] float turnSpeed = .6f;
-    [SerializeField] GameObject explosion;
+    [SerializeField] GameObject explosionVFX;
     [Header("Parts")]
     [SerializeField] GameObject missileBody;
     [SerializeField] ParticleSystem smokeTrail;
@@ -116,7 +116,7 @@ public class Missile : MonoBehaviour
     private void Explode(Collider firstHit)
     {
         // Spawn pooled VFX
-        effectsPool.GetPooledEffect(explosion).GetComponent<VFX>().Play(transform.position);
+        effectsPool.GetPooledEffect(explosionVFX).GetComponent<VFX>().Play(transform.position);
 
         // Deactivate missile (prevent multi hits)
         DeactivateMissile();

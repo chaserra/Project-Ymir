@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] float bulletRange = 750f;
     [SerializeField] float checkSphereSize = 6f;
     [SerializeField] float collisionSize = 3f;
-    [SerializeField] GameObject sparks;
+    [SerializeField] GameObject sparksVFX;
     [Header("Parts")]
     [SerializeField] GameObject bulletBody;
 
@@ -96,7 +96,7 @@ public class Bullet : MonoBehaviour
                     hasHit = true;
 
                     // Spawn pooled VFX
-                    effectsPool.GetPooledEffect(sparks).GetComponent<VFX>().Play(hit.collider.transform.position);
+                    effectsPool.GetPooledEffect(sparksVFX).GetComponent<VFX>().Play(hit.collider.transform.position);
 
                     // Set distance to disable when hitting the actual object
                     // Get distance between bullet and hit object

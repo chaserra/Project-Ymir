@@ -50,7 +50,7 @@ MonoBehaviour:
   bulletRange: 750
   checkSphereSize: 7
   collisionSize: 2.5
-  sparks: {fileID: 5813288297666463485, guid: 79289ed7e01acaf4898f224fa0852e2d, type: 3}
+  sparksVFX: {fileID: 5813288297666463485, guid: 79289ed7e01acaf4898f224fa0852e2d, type: 3}
   bulletBody: {fileID: 4347375917267447043}
 --- !u!1 &4347375917267447043
 GameObject:

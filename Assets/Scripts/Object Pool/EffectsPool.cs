@@ -21,6 +21,10 @@ public class EffectsPool : MonoBehaviour
         for (int i = 0; i < effects.Length; i++)
         {
             objectPools.Add(new ObjectPooler(effects[i], amountToPool, gameObject));
+            if (!effects[i].TryGetComponent<VFX>(out VFX v))
+            {
+                Debug.LogError(effects[i].name + " does not have a VFX component.");
+            }
         }
     }
 
