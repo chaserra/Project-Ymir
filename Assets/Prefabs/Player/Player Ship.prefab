@@ -1212,7 +1212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 6560373038071999203}
-  bullet: {fileID: 2004772645882275448, guid: 7275fb62b1b103745b00d5ca914ffe54, type: 3}
+  bullet: {fileID: 2004772645882275448, guid: cbf7402f8addfdc4f8939936ec6d243b, type: 3}
   bulletCooldown: 0.05
   launcher:
   - {fileID: 7440995303127983352}
