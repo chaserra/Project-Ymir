@@ -6,12 +6,12 @@ public abstract class Weapon : MonoBehaviour
     protected EffectsPool effectsPool;
 
     // Parameters
-    [Header("Damage")]
+    [Header("General Damage")]
     [SerializeField] protected int damage;
-    [Header("Specs")]
+    [Header("General Specs")]
     [SerializeField] protected float projectileSpeed;
     [SerializeField] protected float projectileRange;
-    [Header("Parts")]
+    [Header("General Parts")]
     [SerializeField] protected GameObject projectileBody;
     [SerializeField] protected GameObject hitVFX;
 
@@ -27,4 +27,11 @@ public abstract class Weapon : MonoBehaviour
     {
         effectsPool = FindObjectOfType<EffectsPool>();
     }
+
+    protected virtual void Update()
+    {
+        MoveProjectile();
+        DeactivateObjectOnEffectEnd();
+    }
+
 }

@@ -1217,8 +1217,8 @@ MonoBehaviour:
   launcher:
   - {fileID: 7440995303127983352}
   - {fileID: 5911199214102171399}
-  missile: {fileID: 7160825113730150654, guid: c6bcfe811439f5c4384dfa78fd891d42, type: 3}
-  missileCooldown: 5
+  missile: {fileID: 7160825113730150654, guid: 68d0f455e7475d64c97ad7fa39bf8f1b, type: 3}
+  missileCooldown: 2
   shotsFired: 0
   missilesFired: 0
 --- !u!114 &7759461655139114195

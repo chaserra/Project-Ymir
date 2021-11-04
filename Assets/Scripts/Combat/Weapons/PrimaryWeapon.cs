@@ -30,12 +30,6 @@ public abstract class PrimaryWeapon : Weapon
         particleTrail.Clear();
     }
 
-    protected virtual void Update()
-    {
-        MoveProjectile();
-        DeactivateObjectOnEffectEnd();
-    }
-
     protected override void MoveProjectile()
     {
         if (hasStopped) { return; }
