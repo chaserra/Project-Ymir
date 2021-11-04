@@ -114,7 +114,7 @@ public class AutoTargetSystem : MonoBehaviour
         for (int i = targets.Count - 1; i >= 0; i--)
         {
             // Null check (if target is suddenly destroyed)
-            if (targets[i] == null || targets[i].Equals(null)) { return; }
+            if (targets[i].Equals(null)) { return; }
 
             ATCheck(targets[i]);
         }
@@ -211,7 +211,7 @@ public class AutoTargetSystem : MonoBehaviour
         foreach (ITarget target in currentActiveTargets)
         {
             // If target is destroyed, remove target from list then obtain the next target
-            if (target == null || target.Equals(null))
+            if (target.Equals(null))
             {
                 currentActiveTargets.Remove(target);
                 GetNextTarget();
@@ -274,6 +274,7 @@ public class AutoTargetSystem : MonoBehaviour
 
     private void GetNextTarget()
     {
+        // TODO: Find a better way to display primary target. Find alternative to changing image color. Also double check for bugs
         // Check if there are targets in the list
         if (currentActiveTargets.Count <= 0) { return; }
 
@@ -283,12 +284,17 @@ public class AutoTargetSystem : MonoBehaviour
         {
             currentTargetIndex = 0;
         }
-        // TODO: Find a better way to display primary target. Find alternative to changing image color. Also double check for bugs
 
         // Deactivate previous primary target
         if (primaryTarget != null)
         {
             targettingBoxOverlay.DisplayPrimaryTarget(primaryTarget, false);
+        }
+
+        // Check if next target is also destroyed (due to probably splash damage)
+        if (currentActiveTargets[currentTargetIndex].Equals(null)) 
+        { 
+            return; 
         }
 
         // Display new target as primary
@@ -316,7 +322,7 @@ public class AutoTargetSystem : MonoBehaviour
         foreach (ITarget target in currentActiveTargets)
         {
             // If target is destroyed, reset targets list and break loop
-            if (target == null || target.Equals(null))
+            if (target.Equals(null))
             {
                 currentActiveTargets.Clear();
                 break;

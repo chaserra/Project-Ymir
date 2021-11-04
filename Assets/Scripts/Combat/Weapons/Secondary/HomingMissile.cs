@@ -2,48 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Missile : MonoBehaviour
+public class HomingMissile : SecondaryWeapon
 {
-    // Cache
-    private EffectsPool effectsPool;
-
     // Parameters
-    [Header("Damage")]
-    [SerializeField] int damage = 10;
-    [SerializeField] float explosionRange = 20f;
     [Header("Specs")]
-    [SerializeField] float ignitionTime = 1f;
-    [SerializeField] float missileSpeed = 100f;
-    [SerializeField] float missileMaxRange = 500f;
+    [SerializeField] float explosionRange = 23f;
     [SerializeField] float turnSpeed = .6f;
-    [SerializeField] GameObject explosion;
     [Header("Parts")]
-    [SerializeField] GameObject missileBody;
     [SerializeField] ParticleSystem smokeTrail;
 
     // Attributes
     private GameObject poolParent;
 
-    // State
-    private float ignitionCounter = 0f;
-    private float distanceTravelled = 0f;
-    private bool hasHit = false;
-    private GameObject target = null;
-
-    private void Awake()
+    protected override void Awake()
     {
         poolParent = transform.parent.gameObject;   // Set reference to the parent object pool
-        effectsPool = FindObjectOfType<EffectsPool>();
+        base.Awake();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        hasHit = false;
-        missileBody.SetActive(true);
+        base.OnEnable();
         smokeTrail.Play();
-        ignitionCounter = 0f;
-        distanceTravelled = 0f;
-        StartCoroutine(FireMissile());
+        StartCoroutine(IgnitionPhase());
     }
 
     private void OnDisable()
@@ -51,38 +32,30 @@ public class Missile : MonoBehaviour
         target = null;
     }
 
+    /* ** DEBUG ** */
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, explosionRange);
     }
 
-    private void Update()
-    {
-        MoveMissile();
-        DisableThisObjectOnParticleEnd();
-    }
-
-    private IEnumerator FireMissile()
+    protected override IEnumerator IgnitionPhase()
     {
         // Missile ignition. Missile fires/moves after the ignition.
-        while (ignitionCounter < ignitionTime)
-        {
-            ignitionCounter += Time.deltaTime;
-            yield return null;
-        }
+        yield return base.IgnitionPhase();
+
         // When activated, missile is parented to the shooter.
         // Code below reparents it to the object pool so the missile can move freely.
         transform.parent = poolParent.transform;
     }
 
-    private void MoveMissile()
+    protected override void MoveProjectile()
     {
         // Only move after ignition
         if (ignitionCounter < ignitionTime || hasHit) { return; }
 
         // Distance counter
-        float distanceToTravel = missileSpeed * Time.deltaTime;
+        float distanceToTravel = projectileSpeed * Time.deltaTime;
 
         // Move projectile
         transform.Translate(Vector3.forward * distanceToTravel);
@@ -97,9 +70,9 @@ public class Missile : MonoBehaviour
         }
 
         // Deactivate upon reaching max range
-        if (distanceTravelled > missileMaxRange)
+        if (distanceTravelled > projectileRange)
         {
-            DeactivateMissile();
+            DeactivateProjectile();
         }
     }
 
@@ -116,10 +89,10 @@ public class Missile : MonoBehaviour
     private void Explode(Collider firstHit)
     {
         // Spawn pooled VFX
-        effectsPool.GetPooledEffect(explosion).GetComponent<VFX>().Play(transform.position);
+        effectsPool.GetPooledEffect(hitVFX).GetComponent<VFX>().Play(transform.position);
 
         // Deactivate missile (prevent multi hits)
-        DeactivateMissile();
+        DeactivateProjectile();
 
         // Explosion damage
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRange);
@@ -133,17 +106,13 @@ public class Missile : MonoBehaviour
         }
     }
 
-    private void DeactivateMissile()
+    protected override void DeactivateProjectile()
     {
-        // Deactivates body of the missile and removes ability to hit objects
-        // Also stops emitting more smoke trails
-        // The whole object is then deactivated upon end of all existing particles via DisableMissileOnParticleEnd()
-        hasHit = true;
-        missileBody.SetActive(false);
+        base.DeactivateProjectile();
         smokeTrail.Stop();
     }
 
-    private void DisableThisObjectOnParticleEnd()
+    protected override void DeactivateObjectOnEffectEnd()
     {
         // Disables the whole object once particles have ended playing
         // Prevents VFX trails from disappearing on hit or upon reaching max distance
@@ -152,11 +121,6 @@ public class Missile : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-    }
-
-    public void SetTarget(GameObject t)
-    {
-        target = t;
     }
 
 }

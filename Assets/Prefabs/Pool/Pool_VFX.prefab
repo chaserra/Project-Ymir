@@ -46,4 +46,4 @@ MonoBehaviour:
   effects:
   - {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
   - {fileID: 5813288297666463485, guid: 79289ed7e01acaf4898f224fa0852e2d, type: 3}
-  amountToPool: 3
+  amountToPool: 5

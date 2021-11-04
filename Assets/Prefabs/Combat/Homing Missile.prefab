@@ -4905,9 +4905,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4989632641498767600}
   - component: {fileID: 198597519172350613}
-  - component: {fileID: 2185907068164738589}
+  - component: {fileID: 1611488695719089473}
   m_Layer: 7
-  m_Name: Missile
+  m_Name: Homing Missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4943,7 +4943,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.2}
---- !u!114 &2185907068164738589
+--- !u!114 &1611488695719089473
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4952,17 +4952,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7160825113730150654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcbf616e8dcba2d4bbf4d327e4b77e2e, type: 3}
+  m_Script: {fileID: 11500000, guid: b4ae0bf17a57520459b73e651762bf20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  explosionRange: 23
+  damage: 50
+  projectileSpeed: 100
+  projectileRange: 500
+  projectileBody: {fileID: 4541482439739732544}
+  hitVFX: {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
   ignitionTime: 1
-  missileSpeed: 100
-  missileMaxRange: 500
+  explosionRange: 23
   turnSpeed: 0.6
-  explosion: {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
-  missileBody: {fileID: 4541482439739732544}
   smokeTrail: {fileID: 8671584937116837298}
 --- !u!1 &7773539416867902603
 GameObject:

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8859216350548496324}
-  - component: {fileID: -6958992965119214435}
+  - component: {fileID: -5162676787443652029}
   m_Layer: 7
-  m_Name: Bullet
+  m_Name: Machine Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-6958992965119214435
+--- !u!114 &-5162676787443652029
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,16 +42,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2004772645882275448}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd30f0d673828e244859232437d988d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 241b920641c6b6e488ee64ace2344faa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  bulletSpeed: 500
-  bulletRange: 750
+  projectileSpeed: 500
+  projectileRange: 750
+  projectileBody: {fileID: 4347375917267447043}
+  hitVFX: {fileID: 5813288297666463485, guid: 79289ed7e01acaf4898f224fa0852e2d, type: 3}
   checkSphereSize: 7
   collisionSize: 2.5
-  sparks: {fileID: 5813288297666463485, guid: 79289ed7e01acaf4898f224fa0852e2d, type: 3}
-  bulletBody: {fileID: 4347375917267447043}
 --- !u!1 &4347375917267447043
 GameObject:
   m_ObjectHideFlags: 0

@@ -13075,10 +13075,6 @@ PrefabInstance:
       propertyPath: active
       value: 
       objectReference: {fileID: 1734501375}
-    - target: {fileID: 6560373039893415672, guid: 922269469dc049a4aa91793a5d4d0414, type: 3}
-      propertyPath: missileCooldown
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6560373039893415676, guid: 922269469dc049a4aa91793a5d4d0414, type: 3}
       propertyPath: m_Name
       value: Player Ship

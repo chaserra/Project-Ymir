@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
+  explosionVFX: {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
 --- !u!1001 &2963142924096761552
 PrefabInstance:
   m_ObjectHideFlags: 0
