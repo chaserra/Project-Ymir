@@ -41,6 +41,7 @@ public class HomingMissile : SecondaryWeapon
 
     protected override IEnumerator IgnitionPhase()
     {
+        // Missile ignition. Missile fires/moves after the ignition.
         yield return base.IgnitionPhase();
 
         // When activated, missile is parented to the shooter.

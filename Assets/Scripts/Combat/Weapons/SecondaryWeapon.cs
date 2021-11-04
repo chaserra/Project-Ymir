@@ -22,7 +22,7 @@ public abstract class SecondaryWeapon : Weapon
 
     protected virtual IEnumerator IgnitionPhase()
     {
-        // Missile ignition. Missile fires/moves after the ignition.
+        // Initial phase for secondary weapons. This acts as a charge up to when the shot fires.
         while (ignitionCounter < ignitionTime)
         {
             ignitionCounter += Time.deltaTime;
