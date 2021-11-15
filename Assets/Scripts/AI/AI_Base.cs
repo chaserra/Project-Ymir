@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class AI_Base : MonoBehaviour
 {
@@ -14,8 +15,15 @@ public class AI_Base : MonoBehaviour
 
     // State
     private float turnSmoothVelocity;
-    private float currentSpeed = 2f;
+    [SerializeField] private float currentSpeed = 5f;
     [SerializeField] private GameObject currentTarget;
+
+    // DEBUG
+    [SerializeField] TextMeshProUGUI rollDotText;
+    [SerializeField] TextMeshProUGUI pitchDotText;
+    [SerializeField] bool roll = true;
+    [SerializeField] bool pitch = true;
+    [SerializeField] bool yaw = true;
 
     private void Awake()
     {
@@ -29,18 +37,75 @@ public class AI_Base : MonoBehaviour
 
     private void Move()
     {
+        /* THRUST */
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+        // TODO - make AI adjust thrust when banking. Do this after finishing roll and pitch code
 
         if (currentTarget == null) { return; }
         Vector3 distToTarget = currentTarget.transform.position - transform.position;
         Vector3 dirToTarget = distToTarget.normalized;
 
         // TODO - roll and pitch adjust
-        float targetAngleY = Mathf.Atan2(dirToTarget.x, dirToTarget.z) * Mathf.Rad2Deg;
 
-        float angleY = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngleY, ref turnSmoothVelocity, turnSmoothTime / yawSpeed);
-        
-        transform.rotation = Quaternion.Euler(0f, angleY, 0f);
+        // Get 'center' angle between agent and target
+        Vector3 cross = Vector3.Cross(transform.position, currentTarget.transform.position);
+        // Determine if agent's up is perpendicular to target's position
+        float rollDot = Vector3.Dot(transform.right, cross.normalized);
+        float pitchDot = Vector3.Dot(transform.forward, cross.normalized);
+        rollDotText.SetText(rollDot.ToString());
+        pitchDotText.SetText(pitchDot.ToString());
+
+        /* ***ROLL*** */
+        /***********************************************************************
+        Rotate Z Axis to:
+        FOLLOW = Roll until agent Y axis is parallel to target's position
+        AVOID = Roll until agent Y axis is perpendicular to target's position
+        ========================================================================
+        RollDot at 1 means agent's up is parallel to target's position
+        RollDot at 0 means agent's up is perpendicular to target's position
+        RollDot at -1 means agent's up is opposite to target's position
+        Maintain at 1 to bank up towards target, 0 to bunk up away from target
+        ************************************************************************/
+
+        // Get amount of angle to rotate
+        // TODO: FIX THIS SHIT
+        float rollAngle = Vector3.SignedAngle(transform.right, cross, Vector3.forward);
+        // Roll ship towards target
+        if (roll)
+        {
+            transform.Rotate(Vector3.back * rollAngle * rollSpeed * Time.deltaTime);
+        }
+
+        /* ***PITCH*** */
+        // Pitch up or down to align agent z axis to target
+        float pitchAmount = Vector3.SignedAngle(transform.forward, dirToTarget, Vector3.forward);
+        if (pitch)
+        {
+            transform.Rotate(Vector3.left * pitchAmount * pitchSpeed * Time.deltaTime);
+        }
+
+        /* ***YAW*** */
+        float yawAmount = Vector3.SignedAngle(transform.forward, dirToTarget, Vector3.up);
+        if (yaw)
+        {
+            transform.Rotate(Vector3.up * yawAmount * yawSpeed * Time.deltaTime);
+        }
+        //float targetAngleY = Mathf.Atan2(dirToTarget.x, dirToTarget.z) * Mathf.Rad2Deg;
+        //float angleY = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngleY, ref turnSmoothVelocity, turnSmoothTime / yawSpeed);
+
+        //transform.rotation = Quaternion.Euler(transform.rotation.x, angleY, transform.rotation.z);
+
+        /** !DEBUG LINES! **/
+        // Local Up
+        Debug.DrawLine(transform.position, transform.position + transform.up * 15f, Color.green);
+        // Local Right
+        Debug.DrawLine(transform.position, transform.position + transform.right * 15f, Color.red);
+        // Local Forward
+        Debug.DrawLine(transform.position, transform.position + transform.forward * 15f, Color.blue);
+        // Dir to target
+        Debug.DrawLine(transform.position, transform.position + (dirToTarget * 15f), Color.yellow);
+        // Cross (of this object to target)
+        Debug.DrawLine(transform.position, transform.position + (cross.normalized * 15f), Color.cyan);
     }
 
     //TODO: Create the following Base AI Methods
