@@ -19,11 +19,16 @@ public class AI_Base : MonoBehaviour
     [SerializeField] private GameObject currentTarget;
 
     // DEBUG
-    [SerializeField] TextMeshProUGUI rollDotText;
-    [SerializeField] TextMeshProUGUI pitchDotText;
+    [SerializeField] TextMeshProUGUI rightDotText;
+    [SerializeField] TextMeshProUGUI upDotText;
+    [SerializeField] TextMeshProUGUI upToDirDotText;
+    [SerializeField] TextMeshProUGUI rightToDirDotText;
     [SerializeField] bool roll = true;
     [SerializeField] bool pitch = true;
     [SerializeField] bool yaw = true;
+    [SerializeField] float rollAngleDebug;
+    [SerializeField] float pitchAngleDebug;
+    [SerializeField] float yawAngleDebug;
 
     private void Awake()
     {
@@ -50,10 +55,14 @@ public class AI_Base : MonoBehaviour
         // Get 'center' angle between agent and target
         Vector3 cross = Vector3.Cross(transform.position, currentTarget.transform.position);
         // Determine if agent's up is perpendicular to target's position
-        float rollDot = Vector3.Dot(transform.right, cross.normalized);
-        float pitchDot = Vector3.Dot(transform.forward, cross.normalized);
-        rollDotText.SetText(rollDot.ToString());
-        pitchDotText.SetText(pitchDot.ToString());
+        float rightDot = Vector3.Dot(transform.right, cross.normalized);
+        float upDot = Vector3.Dot(transform.up, cross.normalized);
+        float upToDirDot = Vector3.Dot(transform.up, dirToTarget);
+        float rightToDirDot = Vector3.Dot(transform.right, dirToTarget);
+        rightDotText.SetText(rightDot.ToString());
+        upDotText.SetText(upDot.ToString());
+        upToDirDotText.SetText(upToDirDot.ToString());
+        rightToDirDotText.SetText(rightToDirDot.ToString());
 
         /* ***ROLL*** */
         /***********************************************************************
@@ -68,27 +77,39 @@ public class AI_Base : MonoBehaviour
         ************************************************************************/
 
         // Get amount of angle to rotate
-        // TODO: FIX THIS SHIT
         float rollAngle = Vector3.SignedAngle(transform.right, cross, Vector3.forward);
+        rollAngleDebug = rollAngle;
         // Roll ship towards target
         if (roll)
         {
-            transform.Rotate(Vector3.back * rollAngle * rollSpeed * Time.deltaTime);
+            if (Mathf.Abs(upDot) > 0.05f)
+            {
+                transform.Rotate(Vector3.back * rollAngle * rollSpeed * Time.deltaTime);
+            }
         }
 
         /* ***PITCH*** */
         // Pitch up or down to align agent z axis to target
-        float pitchAmount = Vector3.SignedAngle(transform.forward, dirToTarget, Vector3.forward);
+        float pitchAmount = Vector3.SignedAngle(transform.forward, cross, Vector3.forward);
+        pitchAngleDebug = pitchAmount;
         if (pitch)
         {
-            transform.Rotate(Vector3.left * pitchAmount * pitchSpeed * Time.deltaTime);
+            if (Mathf.Abs(upToDirDot) > 0.05f)
+            {
+                // TODO: FIX THIS. Make sure forward always looks AT target
+                transform.Rotate(Vector3.left * pitchAmount * pitchSpeed * Time.deltaTime);
+            }
         }
 
         /* ***YAW*** */
-        float yawAmount = Vector3.SignedAngle(transform.forward, dirToTarget, Vector3.up);
+        float yawAmount = Vector3.SignedAngle(transform.forward, dirToTarget, Vector3.forward);
+        yawAngleDebug = yawAmount;
         if (yaw)
         {
-            transform.Rotate(Vector3.up * yawAmount * yawSpeed * Time.deltaTime);
+            if (Mathf.Abs(rightToDirDot) > 0.05f)
+            {
+                transform.Rotate(Vector3.down * yawAmount * yawSpeed * Time.deltaTime);
+            }
         }
         //float targetAngleY = Mathf.Atan2(dirToTarget.x, dirToTarget.z) * Mathf.Rad2Deg;
         //float angleY = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngleY, ref turnSmoothVelocity, turnSmoothTime / yawSpeed);
