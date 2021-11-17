@@ -17,12 +17,15 @@ public class AI_Base : MonoBehaviour
     private float turnSmoothVelocity;
     [SerializeField] private float currentSpeed = 5f;
     [SerializeField] private GameObject currentTarget;
+    private bool targetIsBehind;
 
     // DEBUG
     [SerializeField] TextMeshProUGUI rightDotText;
     [SerializeField] TextMeshProUGUI upDotText;
     [SerializeField] TextMeshProUGUI upToDirDotText;
     [SerializeField] TextMeshProUGUI rightToDirDotText;
+    [SerializeField] TextMeshProUGUI targetAngle;
+    [SerializeField] TextMeshProUGUI targetBehind;
     [SerializeField] bool roll = true;
     [SerializeField] bool pitch = true;
     [SerializeField] bool yaw = true;
@@ -46,42 +49,33 @@ public class AI_Base : MonoBehaviour
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
         // TODO - make AI adjust thrust when banking. Do this after finishing roll and pitch code
 
+        // Target check
         if (currentTarget == null) { return; }
+
+        // Compute for Distance and Direction to target
         Vector3 distToTarget = currentTarget.transform.position - transform.position;
         Vector3 dirToTarget = distToTarget.normalized;
 
-        // TODO - roll and pitch adjust
-
         // Get 'center' angle between agent and target
         Vector3 cross = Vector3.Cross(transform.position, currentTarget.transform.position);
-        // Determine if agent's up is perpendicular to target's position
+        // Dot product computations (can safely remove rightDot)
         float rightDot = Vector3.Dot(transform.right, cross.normalized);
         float upDot = Vector3.Dot(transform.up, cross.normalized);
         float upToDirDot = Vector3.Dot(transform.up, dirToTarget);
         float rightToDirDot = Vector3.Dot(transform.right, dirToTarget);
-        rightDotText.SetText(rightDot.ToString());
-        upDotText.SetText(upDot.ToString());
-        upToDirDotText.SetText(upToDirDot.ToString());
-        rightToDirDotText.SetText(rightToDirDot.ToString());
+        float forwardDot = Vector3.Dot(transform.forward, dirToTarget);
+
+        // Check if target is behind the agent.
+        targetIsBehind = forwardDot < 0f ? true : false;
 
         /* ***ROLL*** */
-        /***********************************************************************
-        Rotate Z Axis to:
-        FOLLOW = Roll until agent Y axis is parallel to target's position
-        AVOID = Roll until agent Y axis is perpendicular to target's position
-        ========================================================================
-        RollDot at 1 means agent's up is parallel to target's position
-        RollDot at 0 means agent's up is perpendicular to target's position
-        RollDot at -1 means agent's up is opposite to target's position
-        Maintain at 1 to bank up towards target, 0 to bunk up away from target
-        ************************************************************************/
-
         // Get amount of angle to rotate
         float rollAngle = Vector3.SignedAngle(transform.right, cross, Vector3.forward);
-        rollAngleDebug = rollAngle;
+        rollAngleDebug = rollAngle; // Debug only
         // Roll ship towards target
         if (roll)
         {
+            // Stop rotating when near target angle to prevent stutter
             if (Mathf.Abs(upDot) > 0.05f)
             {
                 transform.Rotate(Vector3.back * rollAngle * rollSpeed * Time.deltaTime);
@@ -91,30 +85,38 @@ public class AI_Base : MonoBehaviour
         /* ***PITCH*** */
         // Pitch up or down to align agent z axis to target
         float pitchAmount = Vector3.SignedAngle(transform.forward, cross, Vector3.forward);
-        pitchAngleDebug = pitchAmount;
+        pitchAngleDebug = pitchAmount; // Debug only
         if (pitch)
         {
-            if (Mathf.Abs(upToDirDot) > 0.05f)
+            // Stop rotating when near target angle to prevent stutter
+            // Only stop rotating if target is in front of the object (ensures target is moving TO target)
+            if (Mathf.Abs(upToDirDot) > 0.05f || targetIsBehind)
             {
-                // TODO: FIX THIS. Make sure forward always looks AT target
-                transform.Rotate(Vector3.left * pitchAmount * pitchSpeed * Time.deltaTime);
+                transform.Rotate(Vector3.left * Mathf.Abs(pitchAmount) * pitchSpeed * Time.deltaTime);
             }
         }
 
         /* ***YAW*** */
+        // Rotate agent towards target
         float yawAmount = Vector3.SignedAngle(transform.forward, dirToTarget, Vector3.forward);
-        yawAngleDebug = yawAmount;
+        yawAngleDebug = yawAmount; // Debug only
         if (yaw)
         {
-            if (Mathf.Abs(rightToDirDot) > 0.05f)
+            // Stop rotating when near target angle to prevent stutter
+            // Only stop rotating if target is in front of the object (ensures target is moving TO target)
+            if (Mathf.Abs(rightToDirDot) > 0.05f || targetIsBehind)
             {
-                transform.Rotate(Vector3.down * yawAmount * yawSpeed * Time.deltaTime);
+                transform.Rotate(Vector3.down * Mathf.Abs(yawAmount) * yawSpeed * Time.deltaTime);
             }
         }
-        //float targetAngleY = Mathf.Atan2(dirToTarget.x, dirToTarget.z) * Mathf.Rad2Deg;
-        //float angleY = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngleY, ref turnSmoothVelocity, turnSmoothTime / yawSpeed);
 
-        //transform.rotation = Quaternion.Euler(transform.rotation.x, angleY, transform.rotation.z);
+        /** !DEBUG UI TEXT! **/
+        rightDotText.SetText("RDot: " + rightDot.ToString());
+        upDotText.SetText("UDot: " + upDot.ToString());
+        upToDirDotText.SetText("UDirDot: " + upToDirDot.ToString());
+        rightToDirDotText.SetText("RDirDot: " + rightToDirDot.ToString());
+        targetBehind.SetText("Target Behind?: " + targetIsBehind.ToString());
+        targetAngle.SetText("Angle: " + forwardDot.ToString());
 
         /** !DEBUG LINES! **/
         // Local Up
