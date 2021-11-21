@@ -51,7 +51,7 @@ public class AI_Base : MonoBehaviour
 
     private void Awake()
     {
-        maxDistanceBeforeTurning = maxSpeed * 3f;
+        maxDistanceBeforeTurning = maxSpeed * 2.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }
 
@@ -67,7 +67,7 @@ public class AI_Base : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Time.timeScale = 5f;
+                Time.timeScale = .25f;
             }
             if (Input.GetMouseButtonDown(1))
             {
@@ -110,7 +110,7 @@ public class AI_Base : MonoBehaviour
         if (roll)
         {
             // Stop rotating when near target angle to prevent stutter
-            if (Mathf.Abs(upDot) > 0.05f) // Number closer to 0 makes adjustment more accurate
+            if (Mathf.Abs(upDot) > 0.015f) // Number closer to 0 makes adjustment more accurate
             {
                 transform.Rotate(Vector3.back * rollAngle * rollSpeed * Time.deltaTime);
                 rolling = true;
@@ -123,7 +123,8 @@ public class AI_Base : MonoBehaviour
 
         /* ***PITCH*** */
         // Pitch up or down to align agent z axis to target
-        float pitchAmount = Vector3.SignedAngle(transform.forward, cross, Vector3.forward);
+        //float pitchAmount = Vector3.SignedAngle(transform.forward, cross, Vector3.forward);
+        float pitchAmount = Vector3.Angle(transform.forward, cross);
         pitchAngleDebug = pitchAmount; // Debug only
         if (pitch)
         {
@@ -135,10 +136,8 @@ public class AI_Base : MonoBehaviour
                 // Also rotate while target is in front and target pitch angle is not yet reached
                 if (distanceFromTarget > distanceToEnableTurning || !targetIsBehind)
                 {
-                    if (forwardDot < .99f)
-                    {
-                        transform.Rotate(Vector3.left * Mathf.Abs(pitchAmount) * pitchSpeed * Time.deltaTime);
-                    }
+                    transform.Rotate(Vector3.left * Mathf.Abs(pitchAmount) * pitchSpeed * Time.deltaTime);
+                    pitching = true;
                 }
             }
             else
@@ -149,18 +148,20 @@ public class AI_Base : MonoBehaviour
 
         /* ***YAW*** */
         // Rotate agent towards target
-        float yawAmount = Vector3.SignedAngle(transform.forward, dirToTarget, Vector3.forward);
+        //float yawAmount = Vector3.SignedAngle(transform.forward, dirToTarget, Vector3.forward);
+        float yawAmount = Vector3.Angle(transform.forward, dirToTarget);
         yawAngleDebug = yawAmount; // Debug only
         if (yaw)
         {
             // Rotate if target yaw angle is not yet near target angle
-            if (Mathf.Abs(rightToDirDot) > 0.035f) // Number closer to 0 makes adjustment more accurate
+            if (Mathf.Abs(rightToDirDot) > 0.035f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
             {
                 // Rotate if max distance reached. Makes flight look more convincing
                 // Also rotate while target is in front and target yaw angle is not yet reached
                 if (distanceFromTarget > distanceToEnableTurning || !targetIsBehind)
                 {
                     transform.Rotate(Vector3.down * Mathf.Abs(yawAmount) * yawSpeed * Time.deltaTime);
+                    yawing = true;
                 }
             }
             else
