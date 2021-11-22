@@ -52,7 +52,7 @@ public class AI_Base : MonoBehaviour
 
     private void Awake()
     {
-        maxDistanceBeforeTurning = maxSpeed * 2.5f;
+        maxDistanceBeforeTurning = maxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }
 
@@ -105,7 +105,7 @@ public class AI_Base : MonoBehaviour
 
         /* ***ROLL*** */
         // Get amount of angle to rotate
-        float rollAngle = Vector3.SignedAngle(transform.right, cross, Vector3.forward);
+        float rollAngle = Vector3.Angle(transform.right, cross);
         rollAngleDebug = rollAngle; // Debug only
         // Roll ship towards target
         if (roll)
@@ -114,7 +114,7 @@ public class AI_Base : MonoBehaviour
             if (Mathf.Abs(upDot) > 0.015f) // Number closer to 0 makes adjustment more accurate
             {
                 // Roll Left
-                if (upDot > 0)
+                if (upDot > 0f)
                 {
                     transform.Rotate(Vector3.back * rollAngle * rollSpeed * Time.deltaTime);
                 }
@@ -139,7 +139,7 @@ public class AI_Base : MonoBehaviour
         if (pitch)
         {
             // Rotate if target is behind or if target pitch angle is not yet near target angle
-            if (Mathf.Abs(upToDirDot) > 0.015f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
+            if (Mathf.Abs(upToDirDot) > 0.025f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
             {
                 // Rotate if max distance reached. Makes flight look more convincing
                 // Also rotate while target is in front and target pitch angle is not yet reached

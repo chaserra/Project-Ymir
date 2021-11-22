@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSpeed: 20
   maxSpeed: 50
-  yawSpeed: 0.55
+  yawSpeed: 0.85
   pitchSpeed: 1.15
   rollSpeed: 2
   maxDistanceBeforeTurning: 150

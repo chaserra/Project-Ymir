@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &32093810 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4735380209264774080, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+  m_PrefabInstance: {fileID: 206348249}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &38195823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -990,10 +995,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 826191190}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: pitchingText
       value: 
       objectReference: {fileID: 1260953392}
@@ -1642,10 +1643,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 826191190}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: pitchingText
       value: 
       objectReference: {fileID: 1260953392}
@@ -1660,7 +1657,7 @@ PrefabInstance:
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: currentTarget
       value: 
-      objectReference: {fileID: 579767780}
+      objectReference: {fileID: 1702830454}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: forwardDotText
       value: 
@@ -4373,10 +4370,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 826191190}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: pitchingText
       value: 
       objectReference: {fileID: 1260953392}
@@ -4531,6 +4524,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7473565979074098299, guid: 8758516d039d60144ac60fb9e542fd61, type: 3}
   m_PrefabInstance: {fileID: 751604271}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &751646371 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4735380209264774080, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+  m_PrefabInstance: {fileID: 744776317}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &761261193
 PrefabInstance:
@@ -4746,10 +4744,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 826191190}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: pitchingText
       value: 
       objectReference: {fileID: 1260953392}
@@ -4764,7 +4758,7 @@ PrefabInstance:
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: currentTarget
       value: 
-      objectReference: {fileID: 9085731054308166754}
+      objectReference: {fileID: 843266134}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: forwardDotText
       value: 
@@ -5163,6 +5157,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826191188}
   m_CullTransparentMesh: 1
+--- !u!1 &843266134 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4735380209264774080, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+  m_PrefabInstance: {fileID: 2031564846}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &848376174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5696,10 +5695,6 @@ PrefabInstance:
       propertyPath: targetAngle
       value: 
       objectReference: {fileID: 826191190}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentSpeed
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: pitchingText
       value: 
@@ -6276,7 +6271,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.24587467, y: 0.72596544, z: -0.32078874, w: 0.5564301}
+  m_LocalRotation: {x: 0.24587466, y: 0.7259655, z: -0.32078877, w: 0.5564301}
   m_LocalPosition: {x: -88.48927, y: 72.69, z: 371.5708}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -6471,7 +6466,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975618814}
-  m_LocalRotation: {x: 0.24587467, y: 0.72596544, z: -0.32078874, w: 0.5564301}
+  m_LocalRotation: {x: 0.24587466, y: 0.7259655, z: -0.32078877, w: 0.5564301}
   m_LocalPosition: {x: -88.48927, y: 72.69, z: 371.5708}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -8111,10 +8106,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 826191190}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: pitchingText
       value: 
       objectReference: {fileID: 1260953392}
@@ -8129,7 +8120,7 @@ PrefabInstance:
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: currentTarget
       value: 
-      objectReference: {fileID: 9085731054308166754}
+      objectReference: {fileID: 32093810}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: forwardDotText
       value: 
@@ -11190,7 +11181,7 @@ PrefabInstance:
       objectReference: {fileID: 1782387339}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: debugMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: upDotText
@@ -11209,10 +11200,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 826191190}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: pitchingText
       value: 
       objectReference: {fileID: 1260953392}
@@ -11227,7 +11214,7 @@ PrefabInstance:
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: currentTarget
       value: 
-      objectReference: {fileID: 1455119154}
+      objectReference: {fileID: 2096743924}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: forwardDotText
       value: 
@@ -12052,10 +12039,6 @@ PrefabInstance:
       propertyPath: targetAngle
       value: 
       objectReference: {fileID: 826191190}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentSpeed
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: pitchingText
       value: 
@@ -14820,10 +14803,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 826191190}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: pitchingText
       value: 
       objectReference: {fileID: 1260953392}
@@ -14838,7 +14817,7 @@ PrefabInstance:
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: currentTarget
       value: 
-      objectReference: {fileID: 1702830454}
+      objectReference: {fileID: 751646371}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: forwardDotText
       value: 
@@ -15357,6 +15336,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4615710030414743228, guid: 8fcefd4a8922fbe41b4dcb4bcadcd10d, type: 3}
   m_PrefabInstance: {fileID: 2095349372}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2096743924 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4735380209264774080, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+  m_PrefabInstance: {fileID: 783554878}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2101846420
 PrefabInstance:
