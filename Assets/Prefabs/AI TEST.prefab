@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSpeed: 20
   maxSpeed: 50
-  yawSpeed: 0.8
+  yawSpeed: 0.55
   pitchSpeed: 1.15
   rollSpeed: 2
   maxDistanceBeforeTurning: 150
@@ -109,6 +109,7 @@ MonoBehaviour:
   rightToDirDotText: {fileID: 0}
   targetAngle: {fileID: 0}
   targetBehind: {fileID: 0}
+  crossText: {fileID: 0}
   roll: 1
   pitch: 1
   yaw: 1

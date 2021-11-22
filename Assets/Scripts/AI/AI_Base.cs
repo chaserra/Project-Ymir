@@ -34,6 +34,7 @@ public class AI_Base : MonoBehaviour
     [SerializeField] TextMeshProUGUI rightToDirDotText;
     [SerializeField] TextMeshProUGUI targetAngle;
     [SerializeField] TextMeshProUGUI targetBehind;
+    [SerializeField] TextMeshProUGUI crossText;
     [SerializeField] bool roll = true;
     [SerializeField] bool pitch = true;
     [SerializeField] bool yaw = true;
@@ -112,7 +113,16 @@ public class AI_Base : MonoBehaviour
             // Stop rotating when near target angle to prevent stutter
             if (Mathf.Abs(upDot) > 0.015f) // Number closer to 0 makes adjustment more accurate
             {
-                transform.Rotate(Vector3.back * rollAngle * rollSpeed * Time.deltaTime);
+                // Roll Left
+                if (upDot > 0)
+                {
+                    transform.Rotate(Vector3.back * rollAngle * rollSpeed * Time.deltaTime);
+                }
+                // Roll Right
+                else
+                {
+                    transform.Rotate(Vector3.forward * rollAngle * rollSpeed * Time.deltaTime);
+                }
                 rolling = true;
             }
             else
@@ -128,15 +138,23 @@ public class AI_Base : MonoBehaviour
         pitchAngleDebug = pitchAmount; // Debug only
         if (pitch)
         {
-            // TODO: Check how to make this rotate downwards. It seems like ai only pitches up
             // Rotate if target is behind or if target pitch angle is not yet near target angle
-            if (Mathf.Abs(upToDirDot) > 0.035f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
+            if (Mathf.Abs(upToDirDot) > 0.015f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
             {
                 // Rotate if max distance reached. Makes flight look more convincing
                 // Also rotate while target is in front and target pitch angle is not yet reached
                 if (distanceFromTarget > distanceToEnableTurning || !targetIsBehind)
                 {
-                    transform.Rotate(Vector3.left * Mathf.Abs(pitchAmount) * pitchSpeed * Time.deltaTime);
+                    // Pitch Up
+                    if (upToDirDot > 0f)
+                    {
+                        transform.Rotate(Vector3.left * pitchAmount * pitchSpeed * Time.deltaTime);
+                    }
+                    // Pitch Down
+                    else
+                    {
+                        transform.Rotate(Vector3.right * pitchAmount * pitchSpeed * Time.deltaTime);
+                    }
                     pitching = true;
                 }
             }
@@ -154,13 +172,22 @@ public class AI_Base : MonoBehaviour
         if (yaw)
         {
             // Rotate if target yaw angle is not yet near target angle
-            if (Mathf.Abs(rightToDirDot) > 0.035f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
+            if (Mathf.Abs(rightToDirDot) > 0.015f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
             {
                 // Rotate if max distance reached. Makes flight look more convincing
                 // Also rotate while target is in front and target yaw angle is not yet reached
                 if (distanceFromTarget > distanceToEnableTurning || !targetIsBehind)
                 {
-                    transform.Rotate(Vector3.down * Mathf.Abs(yawAmount) * yawSpeed * Time.deltaTime);
+                    // Yaw Left
+                    if (rightToDirDot > 0f)
+                    {
+                        transform.Rotate(Vector3.up * yawAmount * yawSpeed * Time.deltaTime);
+                    }
+                    // Yaw Right
+                    else
+                    {
+                        transform.Rotate(Vector3.down * yawAmount * yawSpeed * Time.deltaTime);
+                    }
                     yawing = true;
                 }
             }
@@ -191,6 +218,7 @@ public class AI_Base : MonoBehaviour
             pitchingText.SetText("Pitching: " + pitching.ToString());
             yawingText.SetText("Turning: " + yawing.ToString());
             forwardDotText.SetText("FDot: " + forwardDot.ToString());
+            //crossText.SetText(cross.x + "\n" + cross.y + "\n" + cross.z);
         }
 
         /** !DEBUG LINES! **/
