@@ -63,7 +63,7 @@ public class AI_Base : MonoBehaviour
 
     private void Update()
     {
-        Move();
+        Move(GetTargetToSteerTowards());
         if (debugMode)
         {
             if (Input.GetMouseButtonDown(0))
@@ -77,22 +77,32 @@ public class AI_Base : MonoBehaviour
         }
     }
 
-    private void Move()
+    private Vector3 GetTargetToSteerTowards()
+    {
+        // TODO: Do Seek, Flee, Wander, Pursue, Avoid Obstacle, etc.
+        // Return a vector3 that the AI will steer towards. Do all calculations here
+
+        if (currentTarget == null)
+        {
+            // Return a different location
+            // TODO: If null, Wander
+        }
+        // If Seek
+        return currentTarget.transform.position;
+    }
+
+    private void Move(Vector3 vectorToSteerTowards)
     {
         /* THRUST */
-        // TODO - make AI adjust thrust when banking. Do this after finishing roll and pitch code
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
 
-        // Target check
-        if (currentTarget == null) { return; }
-
         // Compute for Distance and Direction to target
-        Vector3 distToTarget = currentTarget.transform.position - transform.position;
+        Vector3 distToTarget = vectorToSteerTowards - transform.position;
         Vector3 dirToTarget = distToTarget.normalized;
         distanceFromTarget = distToTarget.magnitude;
 
         // Get 'center' angle between agent and target
-        Vector3 cross = Vector3.Cross(transform.position, currentTarget.transform.position);
+        Vector3 cross = Vector3.Cross(transform.position, vectorToSteerTowards);
         // Dot product computations (can safely remove rightDot)
         float rightDot = Vector3.Dot(transform.right, cross.normalized);
         float upDot = Vector3.Dot(transform.up, cross.normalized);
@@ -139,7 +149,7 @@ public class AI_Base : MonoBehaviour
         if (pitch)
         {
             // Rotate if target is behind or if target pitch angle is not yet near target angle
-            if (Mathf.Abs(upToDirDot) > 0.025f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
+            if (Mathf.Abs(upToDirDot) > 0.015f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
             {
                 // Rotate if max distance reached. Makes flight look more convincing
                 // Also rotate while target is in front and target pitch angle is not yet reached
@@ -172,7 +182,7 @@ public class AI_Base : MonoBehaviour
         if (yaw)
         {
             // Rotate if target yaw angle is not yet near target angle
-            if (Mathf.Abs(rightToDirDot) > 0.015f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
+            if (Mathf.Abs(rightToDirDot) > 0.01f || targetIsBehind) // Number closer to 0 makes adjustment more accurate
             {
                 // Rotate if max distance reached. Makes flight look more convincing
                 // Also rotate while target is in front and target yaw angle is not yet reached
@@ -230,7 +240,6 @@ public class AI_Base : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + transform.forward * 15f, Color.blue);
         // Dir to target
         Debug.DrawLine(transform.position, transform.position + (dirToTarget * 15f), Color.yellow);
-        //Debug.DrawLine(transform.position, currentTarget.transform.position, Color.yellow);
         // Cross (of this object to target)
         Debug.DrawLine(transform.position, transform.position + (cross.normalized * 15f), Color.cyan);
     }
