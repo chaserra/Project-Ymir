@@ -21,6 +21,7 @@ public class AI_Base : MonoBehaviour
     [Header("Ship Status")]
     [SerializeField] private float currentSpeed = 5f;
     [SerializeField] private GameObject currentTarget;
+    private Vector3 distToTarget;
     private bool targetIsBehind;
     private float distanceToEnableTurning;
     private bool hasRandomized = false;
@@ -63,7 +64,7 @@ public class AI_Base : MonoBehaviour
 
     private void Update()
     {
-        Move(GetTargetToSteerTowards());
+        Move(GetFlightVector());
         if (debugMode)
         {
             if (Input.GetMouseButtonDown(0))
@@ -77,7 +78,7 @@ public class AI_Base : MonoBehaviour
         }
     }
 
-    private Vector3 GetTargetToSteerTowards()
+    private Vector3 GetFlightVector()
     {
         // TODO: Do Seek, Flee, Wander, Pursue, Avoid Obstacle, etc.
         // Return a vector3 that the AI will steer towards. Do all calculations here
@@ -87,7 +88,14 @@ public class AI_Base : MonoBehaviour
             // Return a different location
             // TODO: If null, Wander
         }
-        // If Seek
+
+        // Get distance to target vector
+        distToTarget = currentTarget.transform.position - transform.position;
+
+        /* FLEE */
+        //distToTarget *= -1;
+
+        /* SEEK */
         return currentTarget.transform.position;
     }
 
@@ -97,7 +105,7 @@ public class AI_Base : MonoBehaviour
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
 
         // Compute for Distance and Direction to target
-        Vector3 distToTarget = vectorToSteerTowards - transform.position;
+        //Vector3 distToTarget = vectorToSteerTowards - transform.position;
         Vector3 dirToTarget = distToTarget.normalized;
         distanceFromTarget = distToTarget.magnitude;
 
