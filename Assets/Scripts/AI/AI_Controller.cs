@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class AI_Base : MonoBehaviour
+public class AI_Controller : MonoBehaviour
 {
+    // Cache
+    private AI_Brain ai;
+
     // Parameters
     [Header("Ship Properties")]
-    [SerializeField] float minSpeed = 2f;
-    [SerializeField] float maxSpeed = 5f;
+    [SerializeField] float minSpeed = 20f;
+    [SerializeField] float maxSpeed = 50f;
     [Header("Ship Controls")]
     [SerializeField] float yawSpeed = .8f;
     [SerializeField] float pitchSpeed = 1.15f;
@@ -19,9 +22,9 @@ public class AI_Base : MonoBehaviour
 
     // State
     [Header("Ship Status")]
-    [SerializeField] private float currentSpeed = 5f;
+    [SerializeField] private float currentSpeed = 50f;
     [SerializeField] private GameObject currentTarget;
-    private Vector3 distToTarget;
+    public GameObject CurrentTarget { get { return currentTarget; } }
     private bool targetIsBehind;
     private float distanceToEnableTurning;
     private bool hasRandomized = false;
@@ -53,6 +56,7 @@ public class AI_Base : MonoBehaviour
 
     private void Awake()
     {
+        ai = new AI_Brain(this);
         maxDistanceBeforeTurning = maxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }
@@ -64,7 +68,7 @@ public class AI_Base : MonoBehaviour
 
     private void Update()
     {
-        Move(GetFlightVector());
+        Move(ai.FlightTargetVector());
         if (debugMode)
         {
             if (Input.GetMouseButtonDown(0))
@@ -78,34 +82,13 @@ public class AI_Base : MonoBehaviour
         }
     }
 
-    private Vector3 GetFlightVector()
-    {
-        // TODO: Do Seek, Flee, Wander, Pursue, Avoid Obstacle, etc.
-        // Return a vector3 that the AI will steer towards. Do all calculations here
-
-        if (currentTarget == null)
-        {
-            // Return a different location
-            // TODO: If null, Wander
-        }
-
-        // Get distance to target vector
-        distToTarget = currentTarget.transform.position - transform.position;
-
-        /* FLEE */
-        //distToTarget *= -1;
-
-        /* SEEK */
-        return currentTarget.transform.position;
-    }
-
     private void Move(Vector3 vectorToSteerTowards)
     {
         /* THRUST */
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
 
         // Compute for Distance and Direction to target
-        //Vector3 distToTarget = vectorToSteerTowards - transform.position;
+        Vector3 distToTarget = ai.DistToTarget;
         Vector3 dirToTarget = distToTarget.normalized;
         distanceFromTarget = distToTarget.magnitude;
 
