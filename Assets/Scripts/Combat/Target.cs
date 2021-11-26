@@ -59,4 +59,9 @@ public class Target : MonoBehaviour, ITarget
     {
         // Trigger a bool of some sort. Maybe use this for anti-homing stuff
     }
+
+    public int GetHealth()
+    {
+        return health;
+    }
 }

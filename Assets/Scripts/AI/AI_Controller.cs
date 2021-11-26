@@ -6,6 +6,7 @@ using TMPro;
 public class AI_Controller : MonoBehaviour
 {
     // Cache
+    private Target ship;
     private AI_Brain ai;
 
     // Parameters
@@ -20,14 +21,18 @@ public class AI_Controller : MonoBehaviour
     [SerializeField] float maxDistanceBeforeTurning = 150f;
     [SerializeField] float randomizeFactor = 0.35f;
 
+    // Attributes
+    public GameObject CurrentTarget { get { return currentTarget; } }
+    public float DistanceToEnableTurning { get { return distanceToEnableTurning; } }
+
     // State
     [Header("Ship Status")]
     [SerializeField] private float currentSpeed = 50f;
     [SerializeField] private GameObject currentTarget;
-    public GameObject CurrentTarget { get { return currentTarget; } }
     private bool targetIsBehind;
     private float distanceToEnableTurning;
     private bool hasRandomized = false;
+    private float randomizeTimer = 0f;
 
     // DEBUG
     [Header("DEBUG")]
@@ -56,7 +61,8 @@ public class AI_Controller : MonoBehaviour
 
     private void Awake()
     {
-        ai = new AI_Brain(this);
+        ship = GetComponent<Target>();
+        ai = new AI_Brain(this, ship);
         maxDistanceBeforeTurning = maxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }
@@ -68,7 +74,8 @@ public class AI_Controller : MonoBehaviour
 
     private void Update()
     {
-        Move(ai.FlightTargetVector());
+        Move(ai.CalculateFlightTargetVector());
+        ai.Think();
         if (debugMode)
         {
             if (Input.GetMouseButtonDown(0))
@@ -88,7 +95,7 @@ public class AI_Controller : MonoBehaviour
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
 
         // Compute for Distance and Direction to target
-        Vector3 distToTarget = ai.DistToTarget;
+        Vector3 distToTarget = ai.GetDistanceToTargetVector();
         Vector3 dirToTarget = distToTarget.normalized;
         distanceFromTarget = distToTarget.magnitude;
 
@@ -233,6 +240,8 @@ public class AI_Controller : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + (dirToTarget * 15f), Color.yellow);
         // Cross (of this object to target)
         Debug.DrawLine(transform.position, transform.position + (cross.normalized * 15f), Color.cyan);
+        // Line to target flight vector
+        Debug.DrawLine(transform.position, ai.GetFlightTargetVector(), Color.magenta);
     }
 
     private IEnumerator RandomizeDistance()
@@ -243,21 +252,25 @@ public class AI_Controller : MonoBehaviour
             {
                 float randomFactor = maxDistanceBeforeTurning - (maxDistanceBeforeTurning * randomizeFactor);
                 distanceToEnableTurning = Random.Range(randomFactor, maxDistanceBeforeTurning);
+                randomizeTimer = 0f;
                 hasRandomized = true;
             }
             if (targetIsBehind)
             {
                 hasRandomized = false;
+                if (distanceFromTarget < distanceToEnableTurning)
+                {
+                    randomizeTimer += Time.deltaTime;
+                }
+            }
+            if (randomizeTimer > 5f) // Timeout. Force AI to turn towards target vector.
+            {
+                distanceToEnableTurning = 0f;
+                hasRandomized = true;
+                randomizeTimer = 0f;
             }
             yield return null;
         }
     }
 
-    //TODO: Create the following Base AI Methods
-    //1. Seek()
-    //2. Flee() -> Reverse of Seek. Switch around target pos and agent pos when Distance checking
-    //3. Wander()
-    //4. Pursue() -> Seek with lookahead
-    //5. Avoid() -> Reverse of Pursue
-    //Don't think of other stuff for now
 }
