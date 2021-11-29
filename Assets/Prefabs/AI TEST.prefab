@@ -32,8 +32,6 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 3855683720079290234}
-  - {fileID: 997926837097889887}
-  - {fileID: 6804072037800159770}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180.712, z: 0}
@@ -50,7 +48,7 @@ CapsuleCollider:
   m_Radius: 0.693813
   m_Height: 2.677589
   m_Direction: 2
-  m_Center: {x: 0, y: 0.47165388, z: -0.06972599}
+  m_Center: {x: 0, y: 0.05, z: -0.06972599}
 --- !u!54 &4735380209264774075
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -97,12 +95,14 @@ MonoBehaviour:
   maxSpeed: 50
   yawSpeed: 0.85
   pitchSpeed: 1.15
-  rollSpeed: 2
+  rollSpeed: 1.2
   maxDistanceBeforeTurning: 150
   randomizeFactor: 0.35
+  frontDistanceTargetSelection: 80
+  frontDistanceDisplacementRadius: 50
   currentSpeed: 50
-  currentTarget: {fileID: 0}
-  debugMode: 0
+  currentTarget: {fileID: 4735380209264774080}
+  debugMode: 1
   rightDotText: {fileID: 0}
   upDotText: {fileID: 0}
   upToDirDotText: {fileID: 0}
@@ -145,12 +145,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4754054299062031044}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.35, y: 0.245, z: -1.05}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.34999985, y: 0.25, z: -1.0500019}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4735380209264774076}
-  m_RootOrder: 1
+  m_Father: {fileID: 3855683720079290234}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!96 &3733396427231270230
 TrailRenderer:
@@ -292,12 +292,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5242063552548274870}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.35, y: 0.245, z: -1.05}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.35000044, y: 0.25, z: -1.0500038}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4735380209264774076}
-  m_RootOrder: 2
+  m_Father: {fileID: 3855683720079290234}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!96 &4769482006242351363
 TrailRenderer:
@@ -432,7 +432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9d74f3b51d03f9d42a1b0ba567a1082c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9d74f3b51d03f9d42a1b0ba567a1082c, type: 3}
       propertyPath: m_LocalPosition.z

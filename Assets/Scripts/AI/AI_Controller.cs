@@ -20,6 +20,8 @@ public class AI_Controller : MonoBehaviour
     [Header("AI Behavior")]
     [SerializeField] float maxDistanceBeforeTurning = 150f;
     [SerializeField] float randomizeFactor = 0.35f;
+    [SerializeField] float frontDistanceTargetSelection = 30f;
+    [SerializeField] float frontDistanceDisplacementRadius = 10f;
 
     // Attributes
     public GameObject CurrentTarget { get { return currentTarget; } }
@@ -59,10 +61,19 @@ public class AI_Controller : MonoBehaviour
     [SerializeField] TextMeshProUGUI yawingText;
     [SerializeField] TextMeshProUGUI forwardDotText;
 
+    /* DEBUG */
+    private void OnDrawGizmosSelected()
+    {
+        // Wander
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * frontDistanceTargetSelection);
+        Gizmos.DrawWireSphere(transform.position + transform.forward * frontDistanceTargetSelection, frontDistanceDisplacementRadius);
+    }
+
     private void Awake()
     {
         ship = GetComponent<Target>();
-        ai = new AI_Brain(this, ship);
+        ai = new AI_Brain(this, ship, frontDistanceTargetSelection, frontDistanceDisplacementRadius);
         maxDistanceBeforeTurning = maxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }

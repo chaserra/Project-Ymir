@@ -4,17 +4,34 @@ using UnityEngine;
 
 public class AI_Brain
 {
-    public enum AI_State { SEEKING, FLEEING, }
+    public enum AI_State { SEEKING, FLEEING, WANDERING, }
 
     // Cache
-    private AI_Controller controller;
-    private Target ship;
+    private AI_Controller _controller;
+    private Target _ship;
+
+    // AI Behaviours
     private AI_Seek Seek = new AI_Seek();
     private AI_Flee Flee = new AI_Flee();
+    private AI_Wander Wander = new AI_Wander();
     //....More AI stuff here
+
+    // Parameters
+    private float _frontDistanceTargetSelection = 30f;
+    private float _frontDistanceDisplacementRadius = 10f;
 
     // Attributes
     public GameObject Target { get { return currentTarget; } }
+    public Vector3 RandomFrontPosition
+    {
+        get
+        {
+            Vector3 forward = _controller.transform.position + _controller.transform.forward * _frontDistanceTargetSelection;
+            Vector3 randomPointInSphere = Random.insideUnitSphere * _frontDistanceDisplacementRadius + forward;
+
+            return randomPointInSphere;
+        }
+    }
 
     // State
     private AI_BaseState currentState;
@@ -22,23 +39,28 @@ public class AI_Brain
     private Vector3 flightVector;
     private GameObject currentTarget;
 
-    public AI_Brain (AI_Controller c, Target t)
+    public AI_Brain (AI_Controller controller, Target ship, float forwardDist, float forwardRadius)
     {
-        controller = c;
-        ship = t;
-        TransitionState(Seek);  // TODO: This should change to Wander once implemented
+        _controller = controller;
+        _ship = ship;
+        _frontDistanceTargetSelection = forwardDist;
+        _frontDistanceDisplacementRadius = forwardRadius;
+
+        TransitionState(Wander);  // TODO: This should change to Wander once implemented
     }
 
     public void Think()
     {
         // TODO: This is where the AI should decide which state it should be in
-        // TODO: Make this abstract? So we can implement different personalities per AI.
+        // TODO: Make this class abstract? So we can implement different personalities per AI.
+
+        // Avoid
 
         // Wander
         if (currentTarget == null || 
             (state == AI_State.FLEEING && GetDistanceToTargetObject() > GetDistanceBeforeTurning() * 1.5f))
         {
-            Debug.Log("Should wander");
+            TransitionState(Wander);
         }
 
         // Seek
@@ -46,18 +68,23 @@ public class AI_Brain
         // Pursue / Attack
 
         // Flee
-        if (ship.GetHealth() < 50)
+        else if (_ship.GetHealth() < 50)
         {
             TransitionState(Flee);
+        }
+
+        else
+        {
+            TransitionState(Seek);
         }
     }
 
     // Get flight target vector via current behavior state
     public Vector3 CalculateFlightTargetVector()
     {
-        if (currentTarget != controller.CurrentTarget)
+        if (currentTarget != _controller.CurrentTarget)
         {
-            currentTarget = controller.CurrentTarget;
+            currentTarget = _controller.CurrentTarget;
         }
 
         flightVector = currentState.Process(this);
@@ -83,29 +110,29 @@ public class AI_Brain
         if (state != newState)
         {
             state = newState;
-            Debug.Log(controller.gameObject.name + " state: " + state);
+            Debug.Log(_controller.gameObject.name + " state: " + state);
         }
     }
 
     public Vector3 GetControllerPosition()
     {
-        return controller.transform.position;
+        return _controller.transform.position;
     }
 
     public float GetDistanceToTargetObject()
     {
         if (currentTarget == null) { return 0f; }
-        return (currentTarget.transform.position - controller.transform.position).magnitude;
+        return (currentTarget.transform.position - _controller.transform.position).magnitude;
     }
 
     public Vector3 GetDistanceToTargetVector()
     {
-        return flightVector - controller.transform.position;
+        return flightVector - _controller.transform.position;
     }
 
     public float GetDistanceBeforeTurning()
     {
-        return controller.DistanceToEnableTurning;
+        return _controller.DistanceToEnableTurning;
     }
 
     public Vector3 GetFlightTargetVector()
