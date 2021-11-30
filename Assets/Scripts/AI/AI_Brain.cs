@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AI_Brain
 {
-    public enum AI_State { SEEKING, FLEEING, WANDERING, }
+    public enum AI_State { SEEKING, PURSUING, FLEEING, WANDERING, }
 
     // Cache
     private AI_Controller _controller;
@@ -12,6 +12,7 @@ public class AI_Brain
 
     // AI Behaviours
     private AI_Seek Seek = new AI_Seek();
+    private AI_Pursue Pursue = new AI_Pursue();
     private AI_Flee Flee = new AI_Flee();
     private AI_Wander Wander = new AI_Wander();
     //....More AI stuff here
@@ -54,28 +55,30 @@ public class AI_Brain
         // TODO: This is where the AI should decide which state it should be in
         // TODO: Make this class abstract? So we can implement different personalities per AI.
 
+        // Flee
+        if (_ship.GetHealth() < 50)
+        {
+            TransitionState(Flee);
+        }
+
         // Avoid
+        // Like flee but with wander randomness
 
         // Wander
-        if (currentTarget == null || 
+        else if (currentTarget == null || 
             (state == AI_State.FLEEING && GetDistanceToTargetObject() > GetDistanceBeforeTurning() * 1.5f))
         {
             TransitionState(Wander);
         }
 
-        // Seek
-
         // Pursue / Attack
+        // Like seek but with lookAhead
 
-        // Flee
-        else if (_ship.GetHealth() < 50)
-        {
-            TransitionState(Flee);
-        }
-
+        // Seek
         else
         {
-            TransitionState(Seek);
+            //TransitionState(Seek);
+            TransitionState(Pursue);
         }
     }
 
@@ -117,6 +120,11 @@ public class AI_Brain
     public Vector3 GetControllerPosition()
     {
         return _controller.transform.position;
+    }
+
+    public float GetCurrentForwardSpeed()
+    {
+        return _controller.CurrentForwardSpeed;
     }
 
     public float GetDistanceToTargetObject()

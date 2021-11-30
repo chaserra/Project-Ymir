@@ -10,11 +10,12 @@ public class Target : MonoBehaviour, ITarget
     private EffectsPool effectsPool;
 
     // Parameters
-    [SerializeField] int health = 100;
+    [SerializeField] private int health;    // TODO: Remove SerializeField
     [SerializeField] GameObject explosionVFX;
 
     private void Awake()
     {
+        //health = GetComponent<Ship>().shipStats.Health;
         targetBounds = new TargetBounds(GetComponentInChildren<Renderer>().bounds);
         cam = Camera.main;
         effectsPool = FindObjectOfType<EffectsPool>();

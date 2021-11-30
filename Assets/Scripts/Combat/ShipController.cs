@@ -4,12 +4,14 @@ using UnityEngine;
 using Cinemachine;
 using Ymir.ScreenHelper;
 
+[RequireComponent(typeof(Ship))]
 public class ShipController : MonoBehaviour
 {
     // Cache
-    Camera cam;
-    CinemachineImpulseSource impulseSource;
-    ScreenSizeHelper screen;
+    private ShipStats shipStats;
+    private Camera cam;
+    private CinemachineImpulseSource impulseSource;
+    private ScreenSizeHelper screen;
 
     // Properties
     [Header("Controls")]
@@ -18,26 +20,28 @@ public class ShipController : MonoBehaviour
     [Tooltip("% of screen from the middle where movement will not be detected.")]
     [SerializeField] float screenDeadZone = 0.01f;
 
-    [Header("Ship Properties")]
-    [SerializeField] float minSpeed = 20f;
-    [SerializeField] float maxSpeed = 50f;
+    //[Header("Ship Properties")]
+    //[SerializeField] float minSpeed = 20f;
+    //[SerializeField] float maxSpeed = 50f;
 
-    [Header("Acceleration")]
-    [SerializeField] float thrusterSpeed = 10f;
-    [SerializeField] float yawSpeed = 2.5f;
-    [SerializeField] float pitchSpeed = 4f;
-    [SerializeField] float rollSpeed = 8f;
+    //[Header("Acceleration")]
+    //[SerializeField] float thrusterSpeed = 10f;
+    //[SerializeField] float yawSpeed = 2.5f;
+    //[SerializeField] float pitchSpeed = 4f;
+    //[SerializeField] float rollSpeed = 8f;
 
     // Attributes
     private float multFactor = 10f;     // Multiplier factor so variable inputs can be smaller numbers        
 
     // State
+    [SerializeField] private float activeForwardSpeed = 12f;    // TODO: Remove SerializeField
+    public float CurrentForwardSpeed { get { return activeForwardSpeed * Time.deltaTime; } }
     [Header("DEBUG")]
-    [SerializeField] private float activeForwardSpeed = 12f;
     private float roll, pitch, thrust, yaw;
 
     private void Awake()
     {
+        shipStats = GetComponent<Ship>().shipStats;
         cam = Camera.main;
         impulseSource = GetComponent<CinemachineImpulseSource>();
         screen = new ScreenSizeHelper();
@@ -88,7 +92,7 @@ public class ShipController : MonoBehaviour
         }
 
         // Thrust camera noise effect
-        if (thrust > 0f && activeForwardSpeed != maxSpeed)
+        if (thrust > 0f && activeForwardSpeed != shipStats.MaxSpeed)
         {
             impulseSource.GenerateImpulse(cam.transform.forward);
         }
@@ -96,12 +100,12 @@ public class ShipController : MonoBehaviour
 
     private void Move()
     {
-        transform.Rotate(Vector3.back * roll * rollSpeed * multFactor * Time.deltaTime);     // Roll
-        transform.Rotate(Vector3.right * pitch * pitchSpeed * multFactor * Time.deltaTime);  // Pitch
-        transform.Rotate(Vector3.up * yaw * yawSpeed * multFactor * Time.deltaTime);         // Yaw
+        transform.Rotate(Vector3.back * roll * shipStats.RollSpeed * multFactor * Time.deltaTime);     // Roll
+        transform.Rotate(Vector3.right * pitch * shipStats.PitchSpeed * multFactor * Time.deltaTime);  // Pitch
+        transform.Rotate(Vector3.up * yaw * shipStats.YawSpeed * multFactor * Time.deltaTime);         // Yaw
 
-        activeForwardSpeed += thrust * thrusterSpeed * Time.deltaTime;   // Add thrust
-        activeForwardSpeed = Mathf.Clamp(activeForwardSpeed, minSpeed, maxSpeed);   // Clamp current speed
+        activeForwardSpeed += thrust * shipStats.ThrusterSpeed * Time.deltaTime;   // Add thrust
+        activeForwardSpeed = Mathf.Clamp(activeForwardSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);   // Clamp current speed
         transform.Translate(Vector3.forward * activeForwardSpeed * Time.deltaTime); // Thrust
     }
 

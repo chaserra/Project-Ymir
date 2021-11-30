@@ -10,6 +10,7 @@ public class AI_Flee : AI_BaseState
     {
         // Initialize stuff
         if (currentState == AI_Brain.AI_State.FLEEING) { return; }
+        // TODO: If no target, get target to flee from
         currentState = AI_Brain.AI_State.FLEEING;
         brain.SetAIState(AI_Brain.AI_State.FLEEING);
     }

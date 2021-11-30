@@ -1132,6 +1132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6560373039893415677}
   - component: {fileID: 6560373039893415673}
+  - component: {fileID: 7404878450710239108}
   - component: {fileID: 6560373039893415678}
   - component: {fileID: 6560373039893415672}
   - component: {fileID: 7759461655139114195}
@@ -1177,6 +1178,19 @@ CapsuleCollider:
   m_Height: 4.738966
   m_Direction: 2
   m_Center: {x: 0, y: 0.4, z: 0.5}
+--- !u!114 &7404878450710239108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560373039893415676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a72df9cf8ab574582ad29b28dc6ff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipStats: {fileID: 11400000, guid: 1c3123b599aac9c45abbe5dcaeb1b608, type: 2}
 --- !u!114 &6560373039893415678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1192,12 +1206,6 @@ MonoBehaviour:
   mouseControls: 1
   invertY: 0
   screenDeadZone: 0.01
-  minSpeed: 20
-  maxSpeed: 50
-  thrusterSpeed: 10
-  yawSpeed: 2.5
-  pitchSpeed: 4
-  rollSpeed: 8
   activeForwardSpeed: 20
 --- !u!114 &6560373039893415672
 MonoBehaviour:

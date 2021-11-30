@@ -14,6 +14,10 @@ public class AI_Seek : AI_BaseState
 
     public override Vector3 Process(AI_Brain brain)
     {
+        if (brain.Target == null)
+        {
+            return brain.RandomFrontPosition;
+        }
         Vector3 flyToPos;
 
         flyToPos = brain.Target.transform.position;

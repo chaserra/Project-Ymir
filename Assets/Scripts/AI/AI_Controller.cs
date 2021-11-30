@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+[RequireComponent(typeof (Ship))]
 public class AI_Controller : MonoBehaviour
 {
     // Cache
+    private ShipStats shipStats;
     private Target ship;
     private AI_Brain ai;
 
     // Parameters
-    [Header("Ship Properties")]
-    [SerializeField] float minSpeed = 20f;
-    [SerializeField] float maxSpeed = 50f;
-    [Header("Ship Controls")]
-    [SerializeField] float yawSpeed = .8f;
-    [SerializeField] float pitchSpeed = 1.15f;
-    [SerializeField] float rollSpeed = 2f;
+    //[Header("Ship Properties")]
+    //[SerializeField] float minSpeed = 20f;
+    //[SerializeField] float maxSpeed = 50f;
+    //[Header("Ship Controls")]
+    //[SerializeField] float yawSpeed = .8f;
+    //[SerializeField] float pitchSpeed = 1.15f;
+    //[SerializeField] float rollSpeed = 2f;
     [Header("AI Behavior")]
     [SerializeField] float maxDistanceBeforeTurning = 150f;
     [SerializeField] float randomizeFactor = 0.35f;
@@ -30,7 +32,9 @@ public class AI_Controller : MonoBehaviour
     // State
     [Header("Ship Status")]
     [SerializeField] private float currentSpeed = 50f;
+    public float CurrentForwardSpeed { get { return currentSpeed * Time.deltaTime; } }
     [SerializeField] private GameObject currentTarget;
+    private Vector3 targetFlightVector;
     private bool targetIsBehind;
     private float distanceToEnableTurning;
     private bool hasRandomized = false;
@@ -68,13 +72,15 @@ public class AI_Controller : MonoBehaviour
         Gizmos.color = Color.white;
         Gizmos.DrawLine(transform.position, transform.position + transform.forward * frontDistanceTargetSelection);
         Gizmos.DrawWireSphere(transform.position + transform.forward * frontDistanceTargetSelection, frontDistanceDisplacementRadius);
+        Gizmos.DrawSphere(targetFlightVector, 1f);
     }
 
     private void Awake()
     {
+        shipStats = GetComponent<Ship>().shipStats;
         ship = GetComponent<Target>();
         ai = new AI_Brain(this, ship, frontDistanceTargetSelection, frontDistanceDisplacementRadius);
-        maxDistanceBeforeTurning = maxSpeed * 3.5f;
+        maxDistanceBeforeTurning = shipStats.MaxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }
 
@@ -85,7 +91,8 @@ public class AI_Controller : MonoBehaviour
 
     private void Update()
     {
-        Move(ai.CalculateFlightTargetVector());
+        targetFlightVector = ai.CalculateFlightTargetVector();
+        Move(targetFlightVector);
         ai.Think();
         if (debugMode)
         {
@@ -135,12 +142,12 @@ public class AI_Controller : MonoBehaviour
                 // Roll Left
                 if (upDot > 0f)
                 {
-                    transform.Rotate(Vector3.back * rollAngle * rollSpeed * Time.deltaTime);
+                    transform.Rotate(Vector3.back * rollAngle * shipStats.RollSpeed * Time.deltaTime);
                 }
                 // Roll Right
                 else
                 {
-                    transform.Rotate(Vector3.forward * rollAngle * rollSpeed * Time.deltaTime);
+                    transform.Rotate(Vector3.forward * rollAngle * shipStats.RollSpeed * Time.deltaTime);
                 }
                 rolling = true;
             }
@@ -167,12 +174,12 @@ public class AI_Controller : MonoBehaviour
                     // Pitch Up
                     if (upToDirDot > 0f)
                     {
-                        transform.Rotate(Vector3.left * pitchAmount * pitchSpeed * Time.deltaTime);
+                        transform.Rotate(Vector3.left * pitchAmount * shipStats.PitchSpeed * Time.deltaTime);
                     }
                     // Pitch Down
                     else
                     {
-                        transform.Rotate(Vector3.right * pitchAmount * pitchSpeed * Time.deltaTime);
+                        transform.Rotate(Vector3.right * pitchAmount * shipStats.PitchSpeed * Time.deltaTime);
                     }
                     pitching = true;
                 }
@@ -200,12 +207,12 @@ public class AI_Controller : MonoBehaviour
                     // Yaw Left
                     if (rightToDirDot > 0f)
                     {
-                        transform.Rotate(Vector3.up * yawAmount * yawSpeed * Time.deltaTime);
+                        transform.Rotate(Vector3.up * yawAmount * shipStats.YawSpeed * Time.deltaTime);
                     }
                     // Yaw Right
                     else
                     {
-                        transform.Rotate(Vector3.down * yawAmount * yawSpeed * Time.deltaTime);
+                        transform.Rotate(Vector3.down * yawAmount * shipStats.YawSpeed * Time.deltaTime);
                     }
                     yawing = true;
                 }
@@ -218,7 +225,7 @@ public class AI_Controller : MonoBehaviour
 
         /* ***UNSTUCK*** */
         // Instant look to target to prevent death spiral bug
-        if (distanceFromTarget > 500f && targetIsBehind)
+        if (distanceFromTarget > 500f && targetIsBehind && currentTarget != null)
         {
             Debug.Log(gameObject.name + " prevented death spiral!");
             transform.LookAt(currentTarget.transform, transform.up);
