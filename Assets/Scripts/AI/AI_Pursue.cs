@@ -8,10 +8,7 @@ public class AI_Pursue : AI_BaseState
     public override void EnterState(AI_Brain brain)
     {
         // Initialize stuff
-        if (currentState == AI_Brain.AI_State.PURSUING) { return; }
-        currentState = AI_Brain.AI_State.PURSUING;
-        brain.SetAIState(AI_Brain.AI_State.PURSUING);
-        targetAI = brain.Target.GetComponent<AI_Controller>();
+        targetAI = brain.Target.GetComponent<AI_Controller>();  // TODO: Change this to a more general class
     }
 
     public override Vector3 Process(AI_Brain brain)

@@ -9,9 +9,6 @@ public class AI_Wander : AI_BaseState
     public override void EnterState(AI_Brain brain)
     {
         // Initialize stuff
-        if (currentState == AI_Brain.AI_State.WANDERING) { return; }
-        currentState = AI_Brain.AI_State.WANDERING;
-        brain.SetAIState(AI_Brain.AI_State.WANDERING);
         randomFlightVector = brain.RandomFrontPosition;
     }
 

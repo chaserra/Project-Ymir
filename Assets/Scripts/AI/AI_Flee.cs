@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class AI_Flee : AI_BaseState
 {
-    Vector3 distanceToTarget;
-
     public override void EnterState(AI_Brain brain)
     {
         // Initialize stuff
-        if (currentState == AI_Brain.AI_State.FLEEING) { return; }
-        // TODO: If no target, get target to flee from
-        currentState = AI_Brain.AI_State.FLEEING;
-        brain.SetAIState(AI_Brain.AI_State.FLEEING);
     }
 
     public override Vector3 Process(AI_Brain brain)

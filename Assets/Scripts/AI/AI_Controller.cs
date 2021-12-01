@@ -22,11 +22,12 @@ public class AI_Controller : MonoBehaviour
     [Header("AI Behavior")]
     [SerializeField] float maxDistanceBeforeTurning = 150f;
     [SerializeField] float randomizeFactor = 0.35f;
-    [SerializeField] float frontDistanceTargetSelection = 30f;
-    [SerializeField] float frontDistanceDisplacementRadius = 10f;
+    [SerializeField] float targetScannerRadius = 50f;
+    [SerializeField] float forwardTargetSelection = 30f;
+    [SerializeField] float forwardDisplacementRadius = 10f;
 
     // Attributes
-    public GameObject CurrentTarget { get { return currentTarget; } }
+    public GameObject CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
     public float DistanceToEnableTurning { get { return distanceToEnableTurning; } }
 
     // State
@@ -70,8 +71,8 @@ public class AI_Controller : MonoBehaviour
     {
         // Wander
         Gizmos.color = Color.white;
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward * frontDistanceTargetSelection);
-        Gizmos.DrawWireSphere(transform.position + transform.forward * frontDistanceTargetSelection, frontDistanceDisplacementRadius);
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * forwardTargetSelection);
+        Gizmos.DrawWireSphere(transform.position + transform.forward * forwardTargetSelection, forwardDisplacementRadius);
         Gizmos.DrawSphere(targetFlightVector, 1f);
     }
 
@@ -79,7 +80,7 @@ public class AI_Controller : MonoBehaviour
     {
         shipStats = GetComponent<Ship>().shipStats;
         ship = GetComponent<Target>();
-        ai = new AI_Brain(this, ship, frontDistanceTargetSelection, frontDistanceDisplacementRadius);
+        ai = new AI_Brain(this, ship, targetScannerRadius, forwardTargetSelection, forwardDisplacementRadius);
         maxDistanceBeforeTurning = shipStats.MaxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }

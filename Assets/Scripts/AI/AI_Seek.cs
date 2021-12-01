@@ -7,9 +7,6 @@ public class AI_Seek : AI_BaseState
     public override void EnterState(AI_Brain brain)
     {
         // Initialize stuff
-        if (currentState == AI_Brain.AI_State.SEEKING) { return; }
-        currentState = AI_Brain.AI_State.SEEKING;
-        brain.SetAIState(AI_Brain.AI_State.SEEKING);
     }
 
     public override Vector3 Process(AI_Brain brain)

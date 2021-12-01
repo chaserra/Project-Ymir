@@ -18,8 +18,9 @@ public class AI_Brain
     //....More AI stuff here
 
     // Parameters
-    private float _frontDistanceTargetSelection = 30f;
-    private float _frontDistanceDisplacementRadius = 10f;
+    private float _targetScannerRadius = 50f;
+    private float _forwardTargetSelection = 85f;
+    private float _forwardDisplacementRadius = 50f;
 
     // Attributes
     public GameObject Target { get { return currentTarget; } }
@@ -27,8 +28,8 @@ public class AI_Brain
     {
         get
         {
-            Vector3 forward = _controller.transform.position + _controller.transform.forward * _frontDistanceTargetSelection;
-            Vector3 randomPointInSphere = Random.insideUnitSphere * _frontDistanceDisplacementRadius + forward;
+            Vector3 forward = _controller.transform.position + _controller.transform.forward * _forwardTargetSelection;
+            Vector3 randomPointInSphere = Random.insideUnitSphere * _forwardDisplacementRadius + forward;
 
             return randomPointInSphere;
         }
@@ -36,16 +37,18 @@ public class AI_Brain
 
     // State
     private AI_BaseState currentState;
-    private AI_State state;
+    private AI_State behaviorState;
     private Vector3 flightVector;
     private GameObject currentTarget;
 
-    public AI_Brain (AI_Controller controller, Target ship, float forwardDist, float forwardRadius)
+    // Constructor
+    public AI_Brain (AI_Controller controller, Target ship, float scanRadius, float forwardDist, float forwardRadius)
     {
         _controller = controller;
         _ship = ship;
-        _frontDistanceTargetSelection = forwardDist;
-        _frontDistanceDisplacementRadius = forwardRadius;
+        _targetScannerRadius = scanRadius;
+        _forwardTargetSelection = forwardDist;
+        _forwardDisplacementRadius = forwardRadius;
 
         TransitionState(Wander);  // TODO: This should change to Wander once implemented
     }
@@ -58,7 +61,18 @@ public class AI_Brain
         // Flee
         if (_ship.GetHealth() < 50)
         {
+            if (currentTarget == null)  // If nothing to get away from
+            {
+                _controller.CurrentTarget = GetClosestTarget();     // Attempt to get closest
+                currentTarget = _controller.CurrentTarget;
+                if (currentTarget == null)      // If still no targets around, just wander
+                {
+                    TransitionState(Wander);
+                    return;
+                }
+            }
             TransitionState(Flee);
+            return;
         }
 
         // Avoid
@@ -66,9 +80,10 @@ public class AI_Brain
 
         // Wander
         else if (currentTarget == null || 
-            (state == AI_State.FLEEING && GetDistanceToTargetObject() > GetDistanceBeforeTurning() * 1.5f))
+            (behaviorState == AI_State.FLEEING && GetDistanceToTargetObject() > GetDistanceBeforeTurning() * 1.5f))
         {
             TransitionState(Wander);
+            return;
         }
 
         // Pursue / Attack
@@ -77,6 +92,7 @@ public class AI_Brain
         // Seek
         else
         {
+            // TODO: Differentiate between moving and non-moving object. Pursue does not work if target has no speed
             //TransitionState(Seek);
             TransitionState(Pursue);
         }
@@ -105,15 +121,37 @@ public class AI_Brain
             }
             currentState = state;
             currentState.EnterState(this);
+            Debug.Log(_controller.gameObject.name + " state: " + currentState);
         }
     }
 
+    private GameObject GetClosestTarget()
+    {
+        GameObject newTarget = null;
+        float closestDist = Mathf.Infinity;
+        Collider[] targets = Physics.OverlapSphere(_controller.transform.position, _targetScannerRadius);
+        for (int i = targets.Length - 1; i >= 0; i--)
+        {
+            if (targets[i].gameObject == _controller.gameObject) { continue; }
+            if (targets[i].GetComponent<Target>() == null) { continue; }
+
+            float dist = (targets[i].transform.position - _controller.transform.position).magnitude;
+
+            if (dist < closestDist)
+            {
+                closestDist = dist;
+                newTarget = targets[i].gameObject;
+            }
+        }
+        return newTarget;
+    }
+
+    /* Getters and Setters */
     public void SetAIState(AI_State newState)
     {
-        if (state != newState)
+        if (behaviorState != newState)
         {
-            state = newState;
-            Debug.Log(_controller.gameObject.name + " state: " + state);
+            behaviorState = newState;
         }
     }
 

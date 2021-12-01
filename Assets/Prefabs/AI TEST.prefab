@@ -107,8 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistanceBeforeTurning: 150
   randomizeFactor: 0.35
-  frontDistanceTargetSelection: 80
-  frontDistanceDisplacementRadius: 50
+  targetScannerRadius: 50
+  forwardTargetSelection: 85
+  forwardDisplacementRadius: 50
   currentSpeed: 50
   currentTarget: {fileID: 4735380209264774080}
   debugMode: 1
