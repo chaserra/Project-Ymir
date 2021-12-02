@@ -980,7 +980,7 @@ PrefabInstance:
       objectReference: {fileID: 1782387339}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: debugMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rollSpeed
@@ -1017,7 +1017,7 @@ PrefabInstance:
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: currentTarget
       value: 
-      objectReference: {fileID: 4584791377235298211}
+      objectReference: {fileID: 0}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: forwardDotText
       value: 
@@ -1026,6 +1026,10 @@ PrefabInstance:
       propertyPath: upToDirDotText
       value: 
       objectReference: {fileID: 1176682629}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
@@ -1678,6 +1682,10 @@ PrefabInstance:
       propertyPath: upToDirDotText
       value: 
       objectReference: {fileID: 1176682629}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
@@ -4405,6 +4413,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1176682629}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
       objectReference: {fileID: 134288875}
@@ -4782,6 +4794,10 @@ PrefabInstance:
       propertyPath: upToDirDotText
       value: 
       objectReference: {fileID: 1176682629}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
@@ -5738,6 +5754,10 @@ PrefabInstance:
       propertyPath: upToDirDotText
       value: 
       objectReference: {fileID: 1176682629}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
@@ -8152,6 +8172,10 @@ PrefabInstance:
       propertyPath: upToDirDotText
       value: 
       objectReference: {fileID: 1176682629}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
@@ -11237,6 +11261,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1176682629}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
       objectReference: {fileID: 134288875}
@@ -12080,6 +12108,10 @@ PrefabInstance:
       propertyPath: upToDirDotText
       value: 
       objectReference: {fileID: 1176682629}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
@@ -14848,6 +14880,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1176682629}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
       objectReference: {fileID: 134288875}
@@ -15898,6 +15934,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1782387339}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: debugMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: upDotText
       value: 
       objectReference: {fileID: 1633900601}
@@ -15928,7 +15968,7 @@ PrefabInstance:
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: currentTarget
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 32093810}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: forwardDotText
       value: 
@@ -15937,6 +15977,10 @@ PrefabInstance:
       propertyPath: upToDirDotText
       value: 
       objectReference: {fileID: 1176682629}
+    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
+      propertyPath: targetBehindText
+      value: 
+      objectReference: {fileID: 1728867345}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: rightToDirDotText
       value: 
@@ -15999,11 +16043,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
---- !u!1 &4584791377235298211 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4735380209264774080, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-  m_PrefabInstance: {fileID: 4584791377235298210}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4615710030980154966
 PrefabInstance:
   m_ObjectHideFlags: 0

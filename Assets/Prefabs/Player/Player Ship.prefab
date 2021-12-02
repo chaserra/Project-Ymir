@@ -1132,7 +1132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6560373039893415677}
   - component: {fileID: 6560373039893415673}
-  - component: {fileID: 7404878450710239108}
+  - component: {fileID: 2030050415669841043}
   - component: {fileID: 6560373039893415678}
   - component: {fileID: 6560373039893415672}
   - component: {fileID: 7759461655139114195}
@@ -1178,7 +1178,7 @@ CapsuleCollider:
   m_Height: 4.738966
   m_Direction: 2
   m_Center: {x: 0, y: 0.4, z: 0.5}
---- !u!114 &7404878450710239108
+--- !u!114 &2030050415669841043
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1187,10 +1187,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6560373039893415676}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48a72df9cf8ab574582ad29b28dc6ff4, type: 3}
+  m_Script: {fileID: 11500000, guid: c654e4584108db54fbb1436a3129ddd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipStats: {fileID: 11400000, guid: 1c3123b599aac9c45abbe5dcaeb1b608, type: 2}
+  targetStats: {fileID: 11400000, guid: 1c3123b599aac9c45abbe5dcaeb1b608, type: 2}
+  health: 0
+  explosionVFX: {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
 --- !u!114 &6560373039893415678
 MonoBehaviour:
   m_ObjectHideFlags: 0

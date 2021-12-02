@@ -3,22 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[RequireComponent(typeof (Ship))]
+[RequireComponent(typeof(Target))]
 public class AI_Controller : MonoBehaviour
 {
     // Cache
-    private ShipStats shipStats;
     private Target ship;
+    private ShipStats shipStats;
     private AI_Brain ai;
 
     // Parameters
-    //[Header("Ship Properties")]
-    //[SerializeField] float minSpeed = 20f;
-    //[SerializeField] float maxSpeed = 50f;
-    //[Header("Ship Controls")]
-    //[SerializeField] float yawSpeed = .8f;
-    //[SerializeField] float pitchSpeed = 1.15f;
-    //[SerializeField] float rollSpeed = 2f;
     [Header("AI Behavior")]
     [SerializeField] float maxDistanceBeforeTurning = 150f;
     [SerializeField] float randomizeFactor = 0.35f;
@@ -29,6 +22,7 @@ public class AI_Controller : MonoBehaviour
     // Attributes
     public GameObject CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
     public float DistanceToEnableTurning { get { return distanceToEnableTurning; } }
+    public bool TargetIsBehind { get { return targetIsBehind; } }
 
     // State
     [Header("Ship Status")]
@@ -49,7 +43,7 @@ public class AI_Controller : MonoBehaviour
     [SerializeField] TextMeshProUGUI upToDirDotText;
     [SerializeField] TextMeshProUGUI rightToDirDotText;
     [SerializeField] TextMeshProUGUI targetAngle;
-    [SerializeField] TextMeshProUGUI targetBehind;
+    [SerializeField] TextMeshProUGUI targetBehindText;
     [SerializeField] TextMeshProUGUI crossText;
     [SerializeField] bool roll = true;
     [SerializeField] bool pitch = true;
@@ -78,8 +72,8 @@ public class AI_Controller : MonoBehaviour
 
     private void Awake()
     {
-        shipStats = GetComponent<Ship>().shipStats;
         ship = GetComponent<Target>();
+        shipStats = (ShipStats)ship.TargetStats;
         ai = new AI_Brain(this, ship, targetScannerRadius, forwardTargetSelection, forwardDisplacementRadius);
         maxDistanceBeforeTurning = shipStats.MaxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
@@ -95,17 +89,17 @@ public class AI_Controller : MonoBehaviour
         targetFlightVector = ai.CalculateFlightTargetVector();
         Move(targetFlightVector);
         ai.Think();
-        if (debugMode)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Time.timeScale = .25f;
-            }
-            if (Input.GetMouseButtonDown(1))
-            {
-                Time.timeScale = 1f;
-            }
-        }
+        //if (debugMode)
+        //{
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+        //        Time.timeScale = .25f;
+        //    }
+        //    if (Input.GetMouseButtonDown(1))
+        //    {
+        //        Time.timeScale = 1f;
+        //    }
+        //}
     }
 
     private void Move(Vector3 vectorToSteerTowards)
@@ -226,7 +220,7 @@ public class AI_Controller : MonoBehaviour
 
         /* ***UNSTUCK*** */
         // Instant look to target to prevent death spiral bug
-        if (distanceFromTarget > 500f && targetIsBehind && currentTarget != null)
+        if (distanceFromTarget > 1000f && targetIsBehind && currentTarget != null)
         {
             Debug.Log(gameObject.name + " prevented death spiral!");
             transform.LookAt(currentTarget.transform, transform.up);
@@ -239,7 +233,7 @@ public class AI_Controller : MonoBehaviour
             upDotText.SetText("UDot: " + upDot.ToString());
             upToDirDotText.SetText("UDirDot: " + upToDirDot.ToString());
             rightToDirDotText.SetText("RDirDot: " + rightToDirDot.ToString());
-            targetBehind.SetText("Target Behind?: " + targetIsBehind.ToString());
+            targetBehindText.SetText("Target Behind?: " + targetIsBehind.ToString());
             targetAngle.SetText("Angle: " + forwardDot.ToString());
             rollingText.SetText("Rolling: " + rolling.ToString());
             pitchingText.SetText("Pitching: " + pitching.ToString());

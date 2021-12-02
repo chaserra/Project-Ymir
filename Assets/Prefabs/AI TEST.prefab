@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4735380209264774079}
   - component: {fileID: 4735380209264774075}
   - component: {fileID: 4735380209264774074}
-  - component: {fileID: 1200974875625602726}
   - component: {fileID: 4584791377519009622}
   m_Layer: 6
   m_Name: AI TEST
@@ -78,21 +77,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c654e4584108db54fbb1436a3129ddd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetStats: {fileID: 11400000, guid: 34a80b69959bd4f46913ef22af721aeb, type: 2}
   health: 50
   explosionVFX: {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
---- !u!114 &1200974875625602726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4735380209264774080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48a72df9cf8ab574582ad29b28dc6ff4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shipStats: {fileID: 11400000, guid: 34a80b69959bd4f46913ef22af721aeb, type: 2}
 --- !u!114 &4584791377519009622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +105,7 @@ MonoBehaviour:
   upToDirDotText: {fileID: 0}
   rightToDirDotText: {fileID: 0}
   targetAngle: {fileID: 0}
-  targetBehind: {fileID: 0}
+  targetBehindText: {fileID: 0}
   crossText: {fileID: 0}
   roll: 1
   pitch: 1

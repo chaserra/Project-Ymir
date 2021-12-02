@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Ship Stats", menuName = "Ship Stat")]
-public class ShipStats : ScriptableObject
+[CreateAssetMenu(fileName = "Ship Stats", menuName = "Stat Sheets/Ship Stat")]
+public class ShipStats : StatSheet
 {
     [Header("Speed")]
     [SerializeField] private float minSpeed;

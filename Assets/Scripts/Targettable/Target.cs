@@ -10,8 +10,12 @@ public class Target : MonoBehaviour, ITarget
     private EffectsPool effectsPool;
 
     // Parameters
+    [SerializeField] StatSheet targetStats;
     [SerializeField] private int health;    // TODO: Remove SerializeField
     [SerializeField] GameObject explosionVFX;
+
+    // Attributes
+    public StatSheet TargetStats { get { return targetStats; } }
 
     private void Awake()
     {
@@ -19,6 +23,7 @@ public class Target : MonoBehaviour, ITarget
         targetBounds = new TargetBounds(GetComponentInChildren<Renderer>().bounds);
         cam = Camera.main;
         effectsPool = FindObjectOfType<EffectsPool>();
+        health = targetStats.Health;
         if (explosionVFX == null) { Debug.LogError("No VFX added!"); }
     }
 

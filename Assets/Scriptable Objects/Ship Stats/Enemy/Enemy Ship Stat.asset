@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51f02ae50270aac4ba394a131ee7914e, type: 3}
   m_Name: Enemy Ship Stat
   m_EditorClassIdentifier: 
+  health: 100
   minSpeed: 20
   maxSpeed: 50
   yawSpeed: 0.85

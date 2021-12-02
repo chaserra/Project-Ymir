@@ -50,12 +50,12 @@ public class AI_Brain
         _forwardTargetSelection = forwardDist;
         _forwardDisplacementRadius = forwardRadius;
 
-        TransitionState(Wander);  // TODO: This should change to Wander once implemented
+        TransitionState(Wander);
     }
 
     public void Think()
     {
-        // TODO: This is where the AI should decide which state it should be in
+        // This is where the AI decides which state it should be in
         // TODO: Make this class abstract? So we can implement different personalities per AI.
 
         // Flee
@@ -88,13 +88,16 @@ public class AI_Brain
 
         // Pursue / Attack
         // Like seek but with lookAhead
+        else if (!_controller.TargetIsBehind)
+        {
+            TransitionState(Pursue);
+        }
 
         // Seek
         else
         {
             // TODO: Differentiate between moving and non-moving object. Pursue does not work if target has no speed
-            //TransitionState(Seek);
-            TransitionState(Pursue);
+            TransitionState(Seek);
         }
     }
 

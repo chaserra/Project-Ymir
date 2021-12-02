@@ -7,6 +7,7 @@ public class AI_Flee : AI_BaseState
     public override void EnterState(AI_Brain brain)
     {
         // Initialize stuff
+        brain.SetAIState(AI_Brain.AI_State.FLEEING);
     }
 
     public override Vector3 Process(AI_Brain brain)

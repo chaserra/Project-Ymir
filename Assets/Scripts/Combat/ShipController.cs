@@ -4,10 +4,11 @@ using UnityEngine;
 using Cinemachine;
 using Ymir.ScreenHelper;
 
-[RequireComponent(typeof(Ship))]
+[RequireComponent(typeof(Target))]
 public class ShipController : MonoBehaviour
 {
     // Cache
+    private Target ship;
     private ShipStats shipStats;
     private Camera cam;
     private CinemachineImpulseSource impulseSource;
@@ -20,16 +21,6 @@ public class ShipController : MonoBehaviour
     [Tooltip("% of screen from the middle where movement will not be detected.")]
     [SerializeField] float screenDeadZone = 0.01f;
 
-    //[Header("Ship Properties")]
-    //[SerializeField] float minSpeed = 20f;
-    //[SerializeField] float maxSpeed = 50f;
-
-    //[Header("Acceleration")]
-    //[SerializeField] float thrusterSpeed = 10f;
-    //[SerializeField] float yawSpeed = 2.5f;
-    //[SerializeField] float pitchSpeed = 4f;
-    //[SerializeField] float rollSpeed = 8f;
-
     // Attributes
     private float multFactor = 10f;     // Multiplier factor so variable inputs can be smaller numbers        
 
@@ -41,7 +32,8 @@ public class ShipController : MonoBehaviour
 
     private void Awake()
     {
-        shipStats = GetComponent<Ship>().shipStats;
+        ship = GetComponent<Target>();
+        shipStats = (ShipStats)ship.TargetStats;
         cam = Camera.main;
         impulseSource = GetComponent<CinemachineImpulseSource>();
         screen = new ScreenSizeHelper();

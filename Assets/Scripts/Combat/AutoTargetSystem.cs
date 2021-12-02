@@ -122,6 +122,7 @@ public class AutoTargetSystem : MonoBehaviour
 
     private void ATCheck(ITarget target)
     {
+        if (target.ThisGameObject() == gameObject) { return; }  // Ignore self
         // Check where the target is in relation to the screen
         Vector3 screenPos = cam.WorldToScreenPoint(target.ThisGameObject().transform.position);
 
