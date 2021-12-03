@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[RequireComponent(typeof(Target))]
+[RequireComponent(typeof(MovingTarget))]
 public class AI_Controller : MonoBehaviour
 {
     // Cache
-    private Target ship;
+    private MovingTarget ship;
     private ShipStats shipStats;
     private AI_Brain ai;
 
@@ -20,15 +20,14 @@ public class AI_Controller : MonoBehaviour
     [SerializeField] float forwardDisplacementRadius = 10f;
 
     // Attributes
-    public GameObject CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
+    public Target CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
     public float DistanceToEnableTurning { get { return distanceToEnableTurning; } }
     public bool TargetIsBehind { get { return targetIsBehind; } }
 
     // State
     [Header("Ship Status")]
-    [SerializeField] private float currentSpeed = 50f;
-    public float CurrentForwardSpeed { get { return currentSpeed * Time.deltaTime; } }
-    [SerializeField] private GameObject currentTarget;
+    [SerializeField] private float currentForwardSpeed = 50f;
+    [SerializeField] private Target currentTarget;
     private Vector3 targetFlightVector;
     private bool targetIsBehind;
     private float distanceToEnableTurning;
@@ -72,7 +71,7 @@ public class AI_Controller : MonoBehaviour
 
     private void Awake()
     {
-        ship = GetComponent<Target>();
+        ship = GetComponent<MovingTarget>();
         shipStats = (ShipStats)ship.TargetStats;
         ai = new AI_Brain(this, ship, targetScannerRadius, forwardTargetSelection, forwardDisplacementRadius);
         maxDistanceBeforeTurning = shipStats.MaxSpeed * 3.5f;
@@ -105,7 +104,7 @@ public class AI_Controller : MonoBehaviour
     private void Move(Vector3 vectorToSteerTowards)
     {
         /* THRUST */
-        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * currentForwardSpeed * Time.deltaTime);
 
         // Compute for Distance and Direction to target
         Vector3 distToTarget = ai.GetDistanceToTargetVector();
@@ -217,6 +216,9 @@ public class AI_Controller : MonoBehaviour
                 yawing = false;
             }
         }
+
+        /* ***THRUST*** */
+        ship.SetForwardSpeed = currentForwardSpeed;
 
         /* ***UNSTUCK*** */
         // Instant look to target to prevent death spiral bug

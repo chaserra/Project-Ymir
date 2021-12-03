@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Target : MonoBehaviour, ITarget
+public abstract class Target : MonoBehaviour, ITarget
 {
     // Cache
-    private TargetBounds targetBounds;
-    private Camera cam;
-    private EffectsPool effectsPool;
+    protected TargetBounds targetBounds;
+    protected Camera cam;
+    protected EffectsPool effectsPool;
 
     // Parameters
-    [SerializeField] StatSheet targetStats;
-    [SerializeField] private int health;    // TODO: Remove SerializeField
-    [SerializeField] GameObject explosionVFX;
+    [SerializeField] protected StatSheet targetStats;
+    [SerializeField] protected int health;    // TODO: Remove SerializeField
+    [SerializeField] protected GameObject explosionVFX;
 
     // Attributes
     public StatSheet TargetStats { get { return targetStats; } }

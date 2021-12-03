@@ -4,11 +4,11 @@ using UnityEngine;
 using Cinemachine;
 using Ymir.ScreenHelper;
 
-[RequireComponent(typeof(Target))]
+[RequireComponent(typeof(MovingTarget))]
 public class ShipController : MonoBehaviour
 {
     // Cache
-    private Target ship;
+    private MovingTarget ship;
     private ShipStats shipStats;
     private Camera cam;
     private CinemachineImpulseSource impulseSource;
@@ -25,14 +25,13 @@ public class ShipController : MonoBehaviour
     private float multFactor = 10f;     // Multiplier factor so variable inputs can be smaller numbers        
 
     // State
-    [SerializeField] private float activeForwardSpeed = 12f;    // TODO: Remove SerializeField
-    public float CurrentForwardSpeed { get { return activeForwardSpeed * Time.deltaTime; } }
+    [SerializeField] private float currentForwardSpeed = 12f;    // TODO: Remove SerializeField
     [Header("DEBUG")]
     private float roll, pitch, thrust, yaw;
 
     private void Awake()
     {
-        ship = GetComponent<Target>();
+        ship = GetComponent<MovingTarget>();
         shipStats = (ShipStats)ship.TargetStats;
         cam = Camera.main;
         impulseSource = GetComponent<CinemachineImpulseSource>();
@@ -84,7 +83,7 @@ public class ShipController : MonoBehaviour
         }
 
         // Thrust camera noise effect
-        if (thrust > 0f && activeForwardSpeed != shipStats.MaxSpeed)
+        if (thrust > 0f && currentForwardSpeed != shipStats.MaxSpeed)
         {
             impulseSource.GenerateImpulse(cam.transform.forward);
         }
@@ -96,9 +95,10 @@ public class ShipController : MonoBehaviour
         transform.Rotate(Vector3.right * pitch * shipStats.PitchSpeed * multFactor * Time.deltaTime);  // Pitch
         transform.Rotate(Vector3.up * yaw * shipStats.YawSpeed * multFactor * Time.deltaTime);         // Yaw
 
-        activeForwardSpeed += thrust * shipStats.ThrusterSpeed * Time.deltaTime;   // Add thrust
-        activeForwardSpeed = Mathf.Clamp(activeForwardSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);   // Clamp current speed
-        transform.Translate(Vector3.forward * activeForwardSpeed * Time.deltaTime); // Thrust
+        currentForwardSpeed += thrust * shipStats.ThrusterSpeed * Time.deltaTime;   // Add thrust
+        currentForwardSpeed = Mathf.Clamp(currentForwardSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);   // Clamp current speed
+        transform.Translate(Vector3.forward * currentForwardSpeed * Time.deltaTime); // Thrust
+        ship.SetForwardSpeed = currentForwardSpeed;     // Update interface
     }
 
 }

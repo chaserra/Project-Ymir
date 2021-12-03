@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class AI_Pursue : AI_BaseState
 {
-    private AI_Controller targetAI;
+    private Vector3 flyToPos;
+    private MovingTarget targetAI;
+
     public override void EnterState(AI_Brain brain)
     {
         // Initialize stuff
         brain.SetAIState(AI_Brain.AI_State.PURSUING);
-        targetAI = brain.Target.GetComponent<AI_Controller>();  // TODO: Change this to a more general class
+        targetAI = brain.Target.GetComponent<MovingTarget>();
     }
 
     public override Vector3 Process(AI_Brain brain)
@@ -18,16 +20,15 @@ public class AI_Pursue : AI_BaseState
         {
             return brain.RandomFrontPosition;
         }
-        Vector3 flyToPos;
         Vector3 dirToTarget = brain.Target.transform.position - brain.GetControllerPosition();
 
         float thisSpeed = brain.GetCurrentForwardSpeed();
         float targetSpeed = targetAI.CurrentForwardSpeed;
-
         float lookAhead = dirToTarget.magnitude / (thisSpeed + targetSpeed);
+
         flyToPos = brain.Target.transform.position + brain.Target.transform.forward * lookAhead;
 
-        // TODO: This works BUT FIX HOW TO GET SPEEDS!!
+        // TODO: Do something about the flickering. And also about stopped target prediction
 
         return flyToPos;
     }

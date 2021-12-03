@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingTarget : MonoBehaviour
+public class MovingTarget : Target
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private float currentForwardSpeed = 0f;
+    // Setter
+    public float SetForwardSpeed { set { currentForwardSpeed = value; } }
+    // Getter
+    public float CurrentForwardSpeed { get { return currentForwardSpeed * Time.deltaTime; } }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4735380209264774076}
   - component: {fileID: 4735380209264774079}
   - component: {fileID: 4735380209264774075}
-  - component: {fileID: 4735380209264774074}
+  - component: {fileID: 7428945321274809131}
   - component: {fileID: 4584791377519009622}
   m_Layer: 6
   m_Name: AI TEST
@@ -65,7 +65,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4735380209264774074
+--- !u!114 &7428945321274809131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,11 +74,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4735380209264774080}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c654e4584108db54fbb1436a3129ddd3, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f3eca7d2e8ec2f4489c0d221e33ed5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetStats: {fileID: 11400000, guid: 34a80b69959bd4f46913ef22af721aeb, type: 2}
-  health: 50
+  health: 0
   explosionVFX: {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
 --- !u!114 &4584791377519009622
 MonoBehaviour:

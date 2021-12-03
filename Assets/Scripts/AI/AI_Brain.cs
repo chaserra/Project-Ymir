@@ -8,7 +8,7 @@ public class AI_Brain
 
     // Cache
     private AI_Controller _controller;
-    private Target _ship;
+    private Target _thisTargettableObject;
 
     // AI Behaviours
     private AI_Seek Seek = new AI_Seek();
@@ -23,7 +23,7 @@ public class AI_Brain
     private float _forwardDisplacementRadius = 50f;
 
     // Attributes
-    public GameObject Target { get { return currentTarget; } }
+    public Target Target { get { return currentTarget; } }
     public Vector3 RandomFrontPosition
     {
         get
@@ -39,18 +39,33 @@ public class AI_Brain
     private AI_BaseState currentState;
     private AI_State behaviorState;
     private Vector3 flightVector;
-    private GameObject currentTarget;
+    private Target currentTarget;
 
     // Constructor
-    public AI_Brain (AI_Controller controller, Target ship, float scanRadius, float forwardDist, float forwardRadius)
+    public AI_Brain (AI_Controller controller, Target targettable, float scanRadius, float forwardDist, float forwardRadius)
     {
         _controller = controller;
-        _ship = ship;
+        _thisTargettableObject = targettable;
         _targetScannerRadius = scanRadius;
         _forwardTargetSelection = forwardDist;
         _forwardDisplacementRadius = forwardRadius;
 
         TransitionState(Wander);
+    }
+
+    // Get flight target vector via current behavior state
+    // *** This is what is called in Controller Update() method ***
+    public Vector3 CalculateFlightTargetVector()
+    {
+        // Sanity check for current target
+        if (currentTarget != _controller.CurrentTarget)
+        {
+            currentTarget = _controller.CurrentTarget;
+        }
+
+        flightVector = currentState.Process(this);
+
+        return flightVector;
     }
 
     public void Think()
@@ -59,7 +74,7 @@ public class AI_Brain
         // TODO: Make this class abstract? So we can implement different personalities per AI.
 
         // Flee
-        if (_ship.GetHealth() < 50)
+        if (_thisTargettableObject.GetHealth() < 50)
         {
             if (currentTarget == null)  // If nothing to get away from
             {
@@ -88,30 +103,17 @@ public class AI_Brain
 
         // Pursue / Attack
         // Like seek but with lookAhead
-        else if (!_controller.TargetIsBehind)
+        else if (!_controller.TargetIsBehind && currentTarget is MovingTarget)
         {
+            // TODO: Pursue does not work if target has no speed
             TransitionState(Pursue);
         }
 
         // Seek
         else
         {
-            // TODO: Differentiate between moving and non-moving object. Pursue does not work if target has no speed
             TransitionState(Seek);
         }
-    }
-
-    // Get flight target vector via current behavior state
-    public Vector3 CalculateFlightTargetVector()
-    {
-        if (currentTarget != _controller.CurrentTarget)
-        {
-            currentTarget = _controller.CurrentTarget;
-        }
-
-        flightVector = currentState.Process(this);
-
-        return flightVector;
     }
 
     public void TransitionState(AI_BaseState state)
@@ -128,22 +130,25 @@ public class AI_Brain
         }
     }
 
-    private GameObject GetClosestTarget()
+    private Target GetClosestTarget()
     {
-        GameObject newTarget = null;
+        Target newTarget = null;
         float closestDist = Mathf.Infinity;
+
         Collider[] targets = Physics.OverlapSphere(_controller.transform.position, _targetScannerRadius);
         for (int i = targets.Length - 1; i >= 0; i--)
         {
-            if (targets[i].gameObject == _controller.gameObject) { continue; }
-            if (targets[i].GetComponent<Target>() == null) { continue; }
+            if (targets[i].gameObject == _controller.gameObject) { continue; }   // Ignore self
+
+            Target t;
+            if (!targets[i].TryGetComponent(out t)) { continue; }   // Ignore non-Targets
 
             float dist = (targets[i].transform.position - _controller.transform.position).magnitude;
 
             if (dist < closestDist)
             {
                 closestDist = dist;
-                newTarget = targets[i].gameObject;
+                newTarget = t;
             }
         }
         return newTarget;
@@ -165,7 +170,15 @@ public class AI_Brain
 
     public float GetCurrentForwardSpeed()
     {
-        return _controller.CurrentForwardSpeed;
+        if (_thisTargettableObject is MovingTarget)
+        {
+            MovingTarget mt = (MovingTarget)_thisTargettableObject;
+            return mt.CurrentForwardSpeed;
+        }
+        else
+        {
+            return 0f;
+        }
     }
 
     public float GetDistanceToTargetObject()
