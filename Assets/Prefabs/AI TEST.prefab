@@ -94,11 +94,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistanceBeforeTurning: 150
   randomizeFactor: 0.35
-  targetScannerRadius: 50
+  targetScannerRadius: 200
   forwardTargetSelection: 85
   forwardDisplacementRadius: 50
-  currentSpeed: 50
-  currentTarget: {fileID: 4735380209264774080}
+  currentForwardSpeed: 50
+  currentTarget: {fileID: 0}
   debugMode: 1
   rightDotText: {fileID: 0}
   upDotText: {fileID: 0}

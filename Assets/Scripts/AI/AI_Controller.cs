@@ -29,7 +29,11 @@ public class AI_Controller : MonoBehaviour
     [SerializeField] private float currentForwardSpeed = 50f;
     [SerializeField] private Target currentTarget;
     private Vector3 targetFlightVector;
+    private float distanceFromTarget;
     private bool targetIsBehind;
+
+    /* Momentum turning (get to distance before maneuvering towards target) */
+    private bool enableDistanceBeforeTurning = true;
     private float distanceToEnableTurning;
     private bool hasRandomized = false;
     private float randomizeTimer = 0f;
@@ -50,7 +54,6 @@ public class AI_Controller : MonoBehaviour
     [SerializeField] float rollAngleDebug;
     [SerializeField] float pitchAngleDebug;
     [SerializeField] float yawAngleDebug;
-    [SerializeField] float distanceFromTarget;
     bool rolling = false;
     bool pitching = false;
     bool yawing = false;
@@ -66,7 +69,9 @@ public class AI_Controller : MonoBehaviour
         Gizmos.color = Color.white;
         Gizmos.DrawLine(transform.position, transform.position + transform.forward * forwardTargetSelection);
         Gizmos.DrawWireSphere(transform.position + transform.forward * forwardTargetSelection, forwardDisplacementRadius);
-        Gizmos.DrawSphere(targetFlightVector, 1f);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(targetFlightVector, 2f);
     }
 
     private void Awake()
@@ -222,11 +227,11 @@ public class AI_Controller : MonoBehaviour
 
         /* ***UNSTUCK*** */
         // Instant look to target to prevent death spiral bug
-        if (distanceFromTarget > 1000f && targetIsBehind && currentTarget != null)
-        {
-            Debug.Log(gameObject.name + " prevented death spiral!");
-            transform.LookAt(currentTarget.transform, transform.up);
-        }
+        //if (distanceFromTarget > 1000f && targetIsBehind && currentTarget != null)
+        //{
+        //    Debug.Log(gameObject.name + " prevented death spiral!");
+        //    transform.LookAt(currentTarget.transform, transform.up);
+        //}
 
         /** !DEBUG UI TEXT! **/
         if (debugMode)
@@ -263,6 +268,12 @@ public class AI_Controller : MonoBehaviour
     {
         while (true)
         {
+            if (!enableDistanceBeforeTurning)
+            {
+                distanceToEnableTurning = 0f;
+                yield return null;
+                continue;
+            }
             if (!hasRandomized && !targetIsBehind)
             {
                 float randomFactor = maxDistanceBeforeTurning - (maxDistanceBeforeTurning * randomizeFactor);
@@ -286,6 +297,11 @@ public class AI_Controller : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    public void ToggleDistanceBeforeTurning(bool arg)
+    {
+        enableDistanceBeforeTurning = arg;
     }
 
 }

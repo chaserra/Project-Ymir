@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class AI_Brain
 {
-    public enum AI_State { SEEKING, PURSUING, FLEEING, WANDERING, }
+    public enum AI_State { SEEKING, PURSUING, FLEEING, EVADING, WANDERING, }
 
     // Cache
     private AI_Controller _controller;
     private Target _thisTargettableObject;
 
     // AI Behaviours
-    private AI_Seek Seek = new AI_Seek();
-    private AI_Pursue Pursue = new AI_Pursue();
-    private AI_Flee Flee = new AI_Flee();
-    private AI_Wander Wander = new AI_Wander();
+    public readonly AI_Seek Seek = new AI_Seek();
+    public readonly AI_Pursue Pursue = new AI_Pursue();
+    public readonly AI_Flee Flee = new AI_Flee();
+    public readonly AI_Evade Evade = new AI_Evade();
+    public readonly AI_Wander Wander = new AI_Wander();
     //....More AI stuff here
 
     // Parameters
@@ -86,7 +87,7 @@ public class AI_Brain
                     return;
                 }
             }
-            TransitionState(Flee);
+            TransitionState(Evade);
             return;
         }
 
@@ -195,6 +196,11 @@ public class AI_Brain
     public float GetDistanceBeforeTurning()
     {
         return _controller.DistanceToEnableTurning;
+    }
+
+    public void ToggleDistanceBeforeTurning(bool arg)
+    {
+        _controller.ToggleDistanceBeforeTurning(arg);
     }
 
     public Vector3 GetFlightTargetVector()
