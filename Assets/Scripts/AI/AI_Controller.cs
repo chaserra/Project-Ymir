@@ -92,7 +92,7 @@ public class AI_Controller : MonoBehaviour
     {
         targetFlightVector = ai.CalculateFlightTargetVector();
         Move(targetFlightVector);
-        ai.Think();
+
         //if (debugMode)
         //{
         //    if (Input.GetMouseButtonDown(0))
@@ -112,7 +112,7 @@ public class AI_Controller : MonoBehaviour
         transform.Translate(Vector3.forward * currentForwardSpeed * Time.deltaTime);
 
         // Compute for Distance and Direction to target
-        Vector3 distToTarget = ai.GetDistanceToTargetVector();
+        Vector3 distToTarget = ai.GetVelocityVector();
         Vector3 dirToTarget = distToTarget.normalized;
         distanceFromTarget = distToTarget.magnitude;
 
@@ -126,7 +126,7 @@ public class AI_Controller : MonoBehaviour
         float forwardDot = Vector3.Dot(transform.forward, dirToTarget);
 
         // Check if target is behind the agent.
-        targetIsBehind = forwardDot < 0.5f ? true : false;
+        targetIsBehind = forwardDot < 0.25f ? true : false;
 
         /* ***ROLL*** */
         // Get amount of angle to rotate

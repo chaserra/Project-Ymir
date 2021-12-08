@@ -16,22 +16,25 @@ public class AI_Pursue : AI_BaseState
 
     public override Vector3 Process(AI_Brain brain)
     {
+        // Catch null target
         if (brain.Target == null)
         {
-            return brain.RandomFrontPosition;
+            brain.TransitionState(brain.Wander);
+            return brain.Wander.Process(brain);
         }
-        Vector3 dirToTarget = brain.Target.transform.position - brain.GetControllerPosition();
 
+        Vector3 dirToTarget = brain.Target.transform.position - brain.GetControllerPosition();
         float thisSpeed = brain.GetCurrentForwardSpeed();
         float targetSpeed = targetAI.CurrentForwardSpeed;
 
+        // If target is moving, calculate lookahead
         if (targetSpeed > 0f)
         {
-            // TODO: Do something about the flickering?
             float lookAhead = dirToTarget.magnitude / (thisSpeed + targetSpeed);
-
+            // Get predicted vector position
             flyToPos = brain.Target.transform.position + brain.Target.transform.forward * lookAhead;
         }
+        // If target is not moving, simply return the position (Seek)
         else
         {
             flyToPos = brain.Target.transform.position;

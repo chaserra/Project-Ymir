@@ -95,9 +95,9 @@ MonoBehaviour:
   maxDistanceBeforeTurning: 150
   randomizeFactor: 0.35
   targetScannerRadius: 200
-  forwardTargetSelection: 85
+  forwardTargetSelection: 70
   forwardDisplacementRadius: 50
-  currentForwardSpeed: 50
+  currentForwardSpeed: 35
   currentTarget: {fileID: 0}
   debugMode: 1
   rightDotText: {fileID: 0}
@@ -113,7 +113,6 @@ MonoBehaviour:
   rollAngleDebug: 0
   pitchAngleDebug: 0
   yawAngleDebug: 0
-  distanceFromTarget: 0
   rollingText: {fileID: 0}
   pitchingText: {fileID: 0}
   yawingText: {fileID: 0}

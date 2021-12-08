@@ -10,7 +10,7 @@ public class AI_Wander : AI_BaseState
     {
         // Initialize stuff
         brain.SetAIState(AI_Brain.AI_State.WANDERING);
-        randomFlightVector = brain.RandomFrontPosition;
+        randomFlightVector = brain.RandomFrontPosition;     // Initialize flight vector
     }
 
     public override Vector3 Process(AI_Brain brain)
@@ -18,6 +18,7 @@ public class AI_Wander : AI_BaseState
         float distFromRandomPoint = (randomFlightVector - brain.GetControllerPosition()).magnitude;
         if (distFromRandomPoint < 20f)
         {
+            // Get new position if agent reaches previous flight vector
             randomFlightVector = brain.RandomFrontPosition;
         }
         return randomFlightVector;

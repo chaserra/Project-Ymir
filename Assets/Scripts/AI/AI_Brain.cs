@@ -64,6 +64,7 @@ public class AI_Brain
             currentTarget = _controller.CurrentTarget;
         }
 
+        Think();    // Sets desired behavior of AI
         flightVector = currentState.Process(this);
 
         return flightVector;
@@ -96,7 +97,8 @@ public class AI_Brain
 
         // Wander
         else if (currentTarget == null || 
-            (behaviorState == AI_State.FLEEING && GetDistanceToTargetObject() > GetDistanceBeforeTurning() * 1.5f))
+                ((behaviorState == AI_State.FLEEING || behaviorState == AI_State.EVADING) && 
+                GetVelocityVector().magnitude > GetDistanceBeforeTurning() * 1.5f))
         {
             TransitionState(Wander);
             return;
@@ -106,8 +108,8 @@ public class AI_Brain
         // Like seek but with lookAhead
         else if (!_controller.TargetIsBehind && currentTarget is MovingTarget)
         {
-            // TODO: Pursue does not work if target has no speed
             TransitionState(Pursue);
+            return;
         }
 
         // Seek
@@ -182,15 +184,24 @@ public class AI_Brain
         }
     }
 
-    public float GetDistanceToTargetObject()
-    {
-        if (currentTarget == null) { return 0f; }
-        return (currentTarget.transform.position - _controller.transform.position).magnitude;
-    }
+    //public float GetDistanceToTargetObject()
+    //{
+    //    if (currentTarget == null) { return 0f; }
+    //    return (currentTarget.transform.position - _controller.transform.position).magnitude;
+    //}
 
-    public Vector3 GetDistanceToTargetVector()
+    public Vector3 GetVelocityVector()
     {
-        return flightVector - _controller.transform.position;
+        if (currentTarget == null || 
+            behaviorState == AI_State.FLEEING || 
+            behaviorState == AI_State.EVADING)
+        {
+            return flightVector - _controller.transform.position;
+        }
+        else
+        {
+            return currentTarget.transform.position - _controller.transform.position;
+        }
     }
 
     public float GetDistanceBeforeTurning()

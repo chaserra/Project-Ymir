@@ -12,15 +12,20 @@ public class AI_Seek : AI_BaseState
 
     public override Vector3 Process(AI_Brain brain)
     {
+        //if (brain.Target == null)
+        //{
+        //    return brain.RandomFrontPosition;
+        //}
+
+        // Catch null target
         if (brain.Target == null)
         {
-            return brain.RandomFrontPosition;
+            brain.TransitionState(brain.Wander);
+            return brain.Wander.Process(brain);
         }
-        Vector3 flyToPos;
 
-        flyToPos = brain.Target.transform.position;
-
-        return flyToPos;
+        // Return target Vector
+        return brain.Target.transform.position;
     }
 
     public override void ExitState(AI_Brain brain)
