@@ -93,17 +93,17 @@ public class AI_Controller : MonoBehaviour
         targetFlightVector = ai.CalculateFlightTargetVector();
         Move(targetFlightVector);
 
-        //if (debugMode)
-        //{
-        //    if (Input.GetMouseButtonDown(0))
-        //    {
-        //        Time.timeScale = .25f;
-        //    }
-        //    if (Input.GetMouseButtonDown(1))
-        //    {
-        //        Time.timeScale = 1f;
-        //    }
-        //}
+        if (debugMode)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Time.timeScale = .25f;
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                Time.timeScale = 1f;
+            }
+        }
     }
 
     private void Move(Vector3 vectorToSteerTowards)
@@ -141,12 +141,12 @@ public class AI_Controller : MonoBehaviour
                 // Roll Left
                 if (upDot > 0f)
                 {
-                    transform.Rotate(Vector3.back * rollAngle * shipStats.RollSpeed * Time.deltaTime);
+                    transform.Rotate(Vector3.back * shipStats.RollSpeed * Time.deltaTime);
                 }
                 // Roll Right
                 else
                 {
-                    transform.Rotate(Vector3.forward * rollAngle * shipStats.RollSpeed * Time.deltaTime);
+                    transform.Rotate(Vector3.forward * shipStats.RollSpeed * Time.deltaTime);
                 }
                 rolling = true;
             }
@@ -158,9 +158,8 @@ public class AI_Controller : MonoBehaviour
 
         /* ***PITCH*** */
         // Pitch up or down to align agent z axis to target
-        //float pitchAmount = Vector3.SignedAngle(transform.forward, cross, Vector3.forward);
-        float pitchAmount = Vector3.Angle(transform.forward, cross);
-        pitchAngleDebug = pitchAmount; // Debug only
+        float pitchAngle = Vector3.Angle(transform.forward, cross);
+        pitchAngleDebug = pitchAngle; // Debug only
         if (pitch)
         {
             // Rotate if target is behind or if target pitch angle is not yet near target angle
@@ -173,12 +172,12 @@ public class AI_Controller : MonoBehaviour
                     // Pitch Up
                     if (upToDirDot > 0f)
                     {
-                        transform.Rotate(Vector3.left * pitchAmount * shipStats.PitchSpeed * Time.deltaTime);
+                        transform.Rotate(Vector3.left * shipStats.PitchSpeed * Time.deltaTime);
                     }
                     // Pitch Down
                     else
                     {
-                        transform.Rotate(Vector3.right * pitchAmount * shipStats.PitchSpeed * Time.deltaTime);
+                        transform.Rotate(Vector3.right * shipStats.PitchSpeed * Time.deltaTime);
                     }
                     pitching = true;
                 }
@@ -191,9 +190,8 @@ public class AI_Controller : MonoBehaviour
 
         /* ***YAW*** */
         // Rotate agent towards target
-        //float yawAmount = Vector3.SignedAngle(transform.forward, dirToTarget, Vector3.forward);
-        float yawAmount = Vector3.Angle(transform.forward, dirToTarget);
-        yawAngleDebug = yawAmount; // Debug only
+        float yawAngle = Vector3.Angle(transform.forward, dirToTarget);
+        yawAngleDebug = yawAngle; // Debug only
         if (yaw)
         {
             // Rotate if target yaw angle is not yet near target angle
@@ -206,12 +204,12 @@ public class AI_Controller : MonoBehaviour
                     // Yaw Left
                     if (rightToDirDot > 0f)
                     {
-                        transform.Rotate(Vector3.up * yawAmount * shipStats.YawSpeed * Time.deltaTime);
+                        transform.Rotate(Vector3.up * shipStats.YawSpeed * Time.deltaTime);
                     }
                     // Yaw Right
                     else
                     {
-                        transform.Rotate(Vector3.down * yawAmount * shipStats.YawSpeed * Time.deltaTime);
+                        transform.Rotate(Vector3.down * shipStats.YawSpeed * Time.deltaTime);
                     }
                     yawing = true;
                 }

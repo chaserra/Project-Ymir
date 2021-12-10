@@ -12,12 +12,13 @@ public class AI_Seek : AI_BaseState
 
     public override Vector3 Process(AI_Brain brain)
     {
+        /* Keeping this in case code below this doesn't work */
         //if (brain.Target == null)
         //{
         //    return brain.RandomFrontPosition;
         //}
 
-        // Catch null target
+        // Null target catch
         if (brain.Target == null)
         {
             brain.TransitionState(brain.Wander);

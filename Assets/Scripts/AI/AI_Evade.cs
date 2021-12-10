@@ -17,8 +17,8 @@ public class AI_Evade : AI_BaseState
 
     public override Vector3 Process(AI_Brain brain)
     {
-        // Catch null target
-        if (brain.Target == null)
+        // Null target catch
+        if (brain.Target == null || targetAI == null)
         {
             brain.TransitionState(brain.Wander);
             return brain.Wander.Process(brain);
@@ -31,13 +31,14 @@ public class AI_Evade : AI_BaseState
         // If target is moving, calculate lookahead
         if (targetSpeed > 0f)
         {
-            float lookAhead = dirToTarget.magnitude / (thisSpeed + targetSpeed);
+            float lookAhead = dirToTarget.magnitude / (thisSpeed / targetSpeed);
             // Get predicted vector position
             Vector3 predictedPos = brain.Target.transform.position + brain.Target.transform.forward * lookAhead;
 
+            // TODO: FIX Evade vector output
             // Reverse the predicted vector position
-            Vector3 fleeVector = predictedPos - brain.GetControllerPosition();
-            // Then reverse the direction
+            Vector3 fleeVector =  predictedPos - brain.GetControllerPosition();
+            // Then flee from the reversed predicted position
             flyToPos = brain.GetControllerPosition() - fleeVector;
         }
         // If target is not moving, simply return the flee position (Flee)

@@ -95,9 +95,9 @@ MonoBehaviour:
   maxDistanceBeforeTurning: 150
   randomizeFactor: 0.35
   targetScannerRadius: 200
-  forwardTargetSelection: 70
-  forwardDisplacementRadius: 50
-  currentForwardSpeed: 35
+  forwardTargetSelection: 100
+  forwardDisplacementRadius: 65
+  currentForwardSpeed: 50
   currentTarget: {fileID: 0}
   debugMode: 1
   rightDotText: {fileID: 0}

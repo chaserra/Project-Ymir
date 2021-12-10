@@ -13,7 +13,7 @@ public class AI_Flee : AI_BaseState
 
     public override Vector3 Process(AI_Brain brain)
     {
-        // Catch null target
+        // Null target catch
         if (brain.Target == null)
         {
             brain.TransitionState(brain.Wander);
@@ -21,8 +21,8 @@ public class AI_Flee : AI_BaseState
         }
 
         // Get flee vector then reverse to get the flee position
-        Vector3 fleeVector = brain.Target.transform.position - brain.GetControllerPosition();
-        return brain.GetControllerPosition() - fleeVector;
+        Vector3 fleeVector = brain.GetControllerPosition() - brain.Target.transform.position;
+        return fleeVector - brain.GetControllerPosition();
     }
 
     public override void ExitState(AI_Brain brain)

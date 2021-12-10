@@ -73,6 +73,7 @@ public class AI_Brain
     public void Think()
     {
         // This is where the AI decides which state it should be in
+        // TODO: FIX condition checks. Make sure behavior does not shift back and forth per frame. Example: if hp < 50 and target is not a MovingTarget, the AI shifts to Wander and Evade every frame
         // TODO: Make this class abstract? So we can implement different personalities per AI.
 
         // Flee
@@ -171,6 +172,11 @@ public class AI_Brain
         return _controller.transform.position;
     }
 
+    public Vector3 GetControllerForwardVelocity()
+    {
+        return _controller.transform.position + _controller.transform.forward * GetCurrentForwardSpeed();
+    }
+
     public float GetCurrentForwardSpeed()
     {
         if (_thisTargettableObject is MovingTarget)
@@ -193,6 +199,7 @@ public class AI_Brain
     public Vector3 GetVelocityVector()
     {
         if (currentTarget == null || 
+            behaviorState == AI_State.PURSUING ||
             behaviorState == AI_State.FLEEING || 
             behaviorState == AI_State.EVADING)
         {
@@ -217,6 +224,19 @@ public class AI_Brain
     public Vector3 GetFlightTargetVector()
     {
         return flightVector;
+    }
+
+    public bool TargetObjectIsBehind(Target targetObject)
+    {
+        Vector3 dirToObject = targetObject.transform.position - _controller.transform.position;
+        if (Vector3.Dot(_controller.transform.forward, dirToObject) < 0.5f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     //TODO: Create the following Base AI Methods

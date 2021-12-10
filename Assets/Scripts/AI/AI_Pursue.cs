@@ -16,7 +16,7 @@ public class AI_Pursue : AI_BaseState
 
     public override Vector3 Process(AI_Brain brain)
     {
-        // Catch null target
+        // Null target catch
         if (brain.Target == null)
         {
             brain.TransitionState(brain.Wander);
@@ -30,7 +30,7 @@ public class AI_Pursue : AI_BaseState
         // If target is moving, calculate lookahead
         if (targetSpeed > 0f)
         {
-            float lookAhead = dirToTarget.magnitude / (thisSpeed + targetSpeed);
+            float lookAhead = dirToTarget.magnitude / (thisSpeed / targetSpeed);
             // Get predicted vector position
             flyToPos = brain.Target.transform.position + brain.Target.transform.forward * lookAhead;
         }
