@@ -86,6 +86,11 @@ public class AI_Controller : MonoBehaviour
     private void Start()
     {
         StartCoroutine(RandomizeDistance());
+
+        if (debugMode)
+        {
+            StartCoroutine(RandomizeSpeed());
+        }
     }
 
     private void Update()
@@ -223,14 +228,6 @@ public class AI_Controller : MonoBehaviour
         /* ***THRUST*** */
         ship.SetForwardSpeed = currentForwardSpeed;
 
-        /* ***UNSTUCK*** */
-        // Instant look to target to prevent death spiral bug
-        //if (distanceFromTarget > 1000f && targetIsBehind && currentTarget != null)
-        //{
-        //    Debug.Log(gameObject.name + " prevented death spiral!");
-        //    transform.LookAt(currentTarget.transform, transform.up);
-        //}
-
         /** !DEBUG UI TEXT! **/
         if (debugMode)
         {
@@ -255,7 +252,11 @@ public class AI_Controller : MonoBehaviour
         // Local Forward
         Debug.DrawLine(transform.position, transform.position + transform.forward * 15f, Color.blue);
         // Dir to target
-        Debug.DrawLine(transform.position, transform.position + (dirToTarget * 15f), Color.yellow);
+        if (currentTarget != null)
+        {
+            Vector3 dir = (currentTarget.transform.position - transform.position).normalized;
+            Debug.DrawLine(transform.position, transform.position + (dir * 15f), Color.yellow);
+        }
         // Cross (of this object to target)
         Debug.DrawLine(transform.position, transform.position + (cross.normalized * 15f), Color.cyan);
         // Line to target flight vector
@@ -300,6 +301,31 @@ public class AI_Controller : MonoBehaviour
     public void ToggleDistanceBeforeTurning(bool arg)
     {
         enableDistanceBeforeTurning = arg;
+    }
+
+    private IEnumerator RandomizeSpeed()
+    {
+        float current = 0f;
+
+        while (true)
+        {
+            if (current < 5f)
+            {;
+                current += Time.deltaTime;
+            }
+            else
+            {
+                float r = Random.Range(-1f, 1f);
+
+                if (r > 0) { Debug.Log("+"); }
+                else { Debug.Log("-"); }
+
+                currentForwardSpeed += r;
+                currentForwardSpeed = Mathf.Clamp(currentForwardSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
+                current = 0f;
+            }
+            yield return null;
+        }
     }
 
 }

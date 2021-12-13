@@ -22,7 +22,7 @@ public class AI_Flee : AI_BaseState
 
         // Get flee vector then reverse to get the flee position
         Vector3 fleeVector = brain.GetControllerPosition() - brain.Target.transform.position;
-        return fleeVector - brain.GetControllerPosition();
+        return brain.GetControllerForward() - fleeVector;
     }
 
     public override void ExitState(AI_Brain brain)

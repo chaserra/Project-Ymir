@@ -15,7 +15,7 @@ MonoBehaviour:
   health: 100
   minSpeed: 20
   maxSpeed: 50
-  yawSpeed: 55
-  pitchSpeed: 70
-  rollSpeed: 100
+  yawSpeed: 25
+  pitchSpeed: 55
+  rollSpeed: 80
   thrusterSpeed: 10

@@ -172,9 +172,9 @@ public class AI_Brain
         return _controller.transform.position;
     }
 
-    public Vector3 GetControllerForwardVelocity()
+    public Vector3 GetControllerForward()
     {
-        return _controller.transform.position + _controller.transform.forward * GetCurrentForwardSpeed();
+        return _controller.transform.position + _controller.transform.forward;
     }
 
     public float GetCurrentForwardSpeed()
@@ -230,6 +230,20 @@ public class AI_Brain
     {
         Vector3 dirToObject = targetObject.transform.position - _controller.transform.position;
         if (Vector3.Dot(_controller.transform.forward, dirToObject) < 0.5f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // Overload method
+    public bool TargetObjectIsBehind(Target targetObject, float dotValue)
+    {
+        Vector3 dirToObject = targetObject.transform.position - _controller.transform.position;
+        if (Vector3.Dot(_controller.transform.forward, dirToObject) < dotValue)
         {
             return true;
         }

@@ -28,7 +28,7 @@ public class AI_Pursue : AI_BaseState
         float targetSpeed = targetAI.CurrentForwardSpeed;
 
         // If target is moving, calculate lookahead
-        if (targetSpeed > 0f)
+        if (targetSpeed > 0f && thisSpeed > 0f)
         {
             float lookAhead = dirToTarget.magnitude / (thisSpeed / targetSpeed);
             // Get predicted vector position

@@ -29,17 +29,26 @@ public class AI_Evade : AI_BaseState
         float targetSpeed = targetAI.CurrentForwardSpeed;
 
         // If target is moving, calculate lookahead
-        if (targetSpeed > 0f)
+        if (targetSpeed > 0f && thisSpeed > 0f)
         {
             float lookAhead = dirToTarget.magnitude / (thisSpeed / targetSpeed);
             // Get predicted vector position
             Vector3 predictedPos = brain.Target.transform.position + brain.Target.transform.forward * lookAhead;
 
-            // TODO: FIX Evade vector output
-            // Reverse the predicted vector position
-            Vector3 fleeVector =  predictedPos - brain.GetControllerPosition();
-            // Then flee from the reversed predicted position
-            flyToPos = brain.GetControllerPosition() - fleeVector;
+            // TODO: Clean up jitter!
+            if (brain.TargetObjectIsBehind(brain.Target))
+            {
+                // Reverse the predicted vector position
+                Vector3 fleeVector = predictedPos - brain.Target.transform.position;
+                // Then flee from the reversed predicted position
+                flyToPos = brain.GetControllerForward() - fleeVector;
+            }
+            else
+            {
+                // If pursuer is in front, change direction towards the predicted position
+                flyToPos = brain.GetControllerForward() + predictedPos;
+            }
+
         }
         // If target is not moving, simply return the flee position (Flee)
         else
