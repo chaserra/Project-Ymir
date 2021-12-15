@@ -96,7 +96,7 @@ MonoBehaviour:
   randomizeFactor: 0.35
   targetScannerRadius: 200
   forwardTargetSelection: 100
-  forwardDisplacementRadius: 75
+  forwardDisplacementRadius: 80
   currentForwardSpeed: 50
   currentTarget: {fileID: 0}
   debugMode: 1

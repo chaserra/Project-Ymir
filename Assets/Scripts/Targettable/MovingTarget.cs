@@ -8,6 +8,6 @@ public class MovingTarget : Target
     // Setter
     public float SetForwardSpeed { set { currentForwardSpeed = value; } }
     // Getter
-    public float CurrentForwardSpeed { get { return currentForwardSpeed * Time.deltaTime; } }
+    public float CurrentForwardSpeed { get { return currentForwardSpeed * Time.fixedDeltaTime; } }
 
 }

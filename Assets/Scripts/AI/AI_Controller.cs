@@ -87,10 +87,10 @@ public class AI_Controller : MonoBehaviour
     {
         StartCoroutine(RandomizeDistance());
 
-        if (debugMode)
-        {
-            StartCoroutine(RandomizeSpeed());
-        }
+        //if (debugMode)
+        //{
+        //    StartCoroutine(RandomizeSpeed());
+        //}
     }
 
     private void Update()
@@ -113,9 +113,6 @@ public class AI_Controller : MonoBehaviour
 
     private void Move(Vector3 vectorToSteerTowards)
     {
-        /* THRUST */
-        transform.Translate(Vector3.forward * currentForwardSpeed * Time.deltaTime);
-
         // Compute for Distance and Direction to target
         Vector3 distToTarget = ai.GetVelocityVector();
         Vector3 dirToTarget = distToTarget.normalized;
@@ -134,10 +131,10 @@ public class AI_Controller : MonoBehaviour
         targetIsBehind = forwardDot < 0.25f ? true : false;
 
         /* ***ROLL*** */
+        // Roll ship towards target
         // Get amount of angle to rotate
         float rollAngle = Vector3.Angle(transform.right, cross);
         rollAngleDebug = rollAngle; // Debug only
-        // Roll ship towards target
         if (roll)
         {
             // Stop rotating when near target angle to prevent stutter
@@ -226,6 +223,7 @@ public class AI_Controller : MonoBehaviour
         }
 
         /* ***THRUST*** */
+        transform.Translate(Vector3.forward * currentForwardSpeed * Time.deltaTime);
         ship.SetForwardSpeed = currentForwardSpeed;
 
         /** !DEBUG UI TEXT! **/

@@ -190,12 +190,6 @@ public class AI_Brain
         }
     }
 
-    //public float GetDistanceToTargetObject()
-    //{
-    //    if (currentTarget == null) { return 0f; }
-    //    return (currentTarget.transform.position - _controller.transform.position).magnitude;
-    //}
-
     public Vector3 GetVelocityVector()
     {
         if (currentTarget == null || 
@@ -203,10 +197,12 @@ public class AI_Brain
             behaviorState == AI_State.FLEEING || 
             behaviorState == AI_State.EVADING)
         {
+            // Return flight vector
             return flightVector - _controller.transform.position;
         }
         else
         {
+            // Return Target object vector
             return currentTarget.transform.position - _controller.transform.position;
         }
     }

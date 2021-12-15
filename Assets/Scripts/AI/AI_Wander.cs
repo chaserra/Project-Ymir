@@ -16,7 +16,7 @@ public class AI_Wander : AI_BaseState
     public override Vector3 Process(AI_Brain brain)
     {
         float distFromRandomPoint = (randomFlightVector - brain.GetControllerPosition()).magnitude;
-        if (distFromRandomPoint < 20f)
+        if (distFromRandomPoint < 15f)
         {
             // Get new position if agent reaches previous flight vector
             randomFlightVector = brain.RandomFrontPosition;

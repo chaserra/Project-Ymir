@@ -10544,7 +10544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9085731054092752016, guid: 9f804d9a103c64446a79ac11e160ee6a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9085731054092752108, guid: 9f804d9a103c64446a79ac11e160ee6a, type: 3}
       propertyPath: m_RootOrder
@@ -16005,10 +16005,6 @@ PrefabInstance:
       propertyPath: targetBehind
       value: 
       objectReference: {fileID: 1728867345}
-    - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-      propertyPath: currentTarget
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: forwardDotText
       value: 

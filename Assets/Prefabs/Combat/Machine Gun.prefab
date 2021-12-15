@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  projectileSpeed: 500
+  projectileSpeed: 250
   projectileRange: 750
   projectileBody: {fileID: 4347375917267447043}
   hitVFX: {fileID: 5813288297666463485, guid: 79289ed7e01acaf4898f224fa0852e2d, type: 3}
