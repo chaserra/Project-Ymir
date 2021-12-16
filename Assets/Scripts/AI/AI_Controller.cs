@@ -15,9 +15,10 @@ public class AI_Controller : MonoBehaviour
     [Header("AI Behavior")]
     [SerializeField] float maxDistanceBeforeTurning = 150f;
     [SerializeField] float randomizeFactor = 0.35f;
-    [SerializeField] float targetScannerRadius = 50f;
-    [SerializeField] float forwardTargetSelection = 30f;
-    [SerializeField] float forwardDisplacementRadius = 10f;
+    [SerializeField] float targetScannerRadius = 200f;
+    [SerializeField] float forwardTargetSelection = 100f;
+    [SerializeField] float forwardDisplacementRadius = 80f;
+    [SerializeField] float slowingRadius = 50f;
 
     // Attributes
     public Target CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
@@ -78,7 +79,8 @@ public class AI_Controller : MonoBehaviour
     {
         ship = GetComponent<MovingTarget>();
         shipStats = (ShipStats)ship.TargetStats;
-        ai = new AI_Brain(this, ship, targetScannerRadius, forwardTargetSelection, forwardDisplacementRadius);
+        ai = new AI_Brain(this, ship, targetScannerRadius, forwardTargetSelection, 
+            forwardDisplacementRadius, slowingRadius);
         maxDistanceBeforeTurning = shipStats.MaxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }
@@ -86,11 +88,6 @@ public class AI_Controller : MonoBehaviour
     private void Start()
     {
         StartCoroutine(RandomizeDistance());
-
-        //if (debugMode)
-        //{
-        //    StartCoroutine(RandomizeSpeed());
-        //}
     }
 
     private void Update()
@@ -301,29 +298,12 @@ public class AI_Controller : MonoBehaviour
         enableDistanceBeforeTurning = arg;
     }
 
-    private IEnumerator RandomizeSpeed()
+    // TODO: Doublecheck and see if code can be optimized
+    public void AdjustSpeed(float distanceMultiplier)
     {
-        float current = 0f;
-
-        while (true)
-        {
-            if (current < 5f)
-            {;
-                current += Time.deltaTime;
-            }
-            else
-            {
-                float r = Random.Range(-1f, 1f);
-
-                if (r > 0) { Debug.Log("+"); }
-                else { Debug.Log("-"); }
-
-                currentForwardSpeed += r;
-                currentForwardSpeed = Mathf.Clamp(currentForwardSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
-                current = 0f;
-            }
-            yield return null;
-        }
+        // Multiply max possible speed to ratio (0~1) between ship position and target position
+        float newSpeed = shipStats.MaxSpeed * distanceMultiplier;
+        currentForwardSpeed = Mathf.Clamp(newSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
     }
 
 }

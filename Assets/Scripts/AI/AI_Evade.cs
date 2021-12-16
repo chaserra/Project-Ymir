@@ -31,6 +31,7 @@ public class AI_Evade : AI_BaseState
         // If target is moving, calculate lookahead
         if (targetSpeed > 0f && thisSpeed > 0f)
         {
+            // Calculate lookahead value || d = ((Vf + Vi)/2) * t ||
             float lookAhead = dirToTarget.magnitude / ((thisSpeed + targetSpeed) / 2);
             // Get predicted vector position
             Vector3 predictedPos = brain.Target.transform.position + brain.Target.transform.forward * lookAhead;

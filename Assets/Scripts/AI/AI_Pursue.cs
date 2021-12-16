@@ -30,6 +30,7 @@ public class AI_Pursue : AI_BaseState
         // If target is moving, calculate lookahead
         if (targetSpeed > 0f && thisSpeed > 0f)
         {
+            // Calculate lookahead value
             float lookAhead = dirToTarget.magnitude / ((thisSpeed + targetSpeed) / 2);
             // Get predicted vector position
             flyToPos = brain.Target.transform.position + brain.Target.transform.forward * lookAhead;

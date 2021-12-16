@@ -7,8 +7,8 @@ public class AI_Brain
     public enum AI_State { SEEKING, PURSUING, FLEEING, EVADING, WANDERING, }
 
     // Cache
-    private AI_Controller _controller;
-    private Target _thisTargettableObject;
+    private AI_Controller controller;
+    private Target targettable;
 
     // AI Behaviours
     public readonly AI_Seek Seek = new AI_Seek();
@@ -19,9 +19,10 @@ public class AI_Brain
     //....More AI stuff here
 
     // Parameters
-    private float _targetScannerRadius = 50f;
-    private float _forwardTargetSelection = 85f;
-    private float _forwardDisplacementRadius = 50f;
+    private float targetScannerRadius = 200f;
+    private float forwardTargetSelection = 100f;
+    private float forwardDisplacementRadius = 80f;
+    private float slowingRadius = 50f;
 
     // Attributes
     public Target Target { get { return currentTarget; } }
@@ -29,8 +30,8 @@ public class AI_Brain
     {
         get
         {
-            Vector3 forward = _controller.transform.position + _controller.transform.forward * _forwardTargetSelection;
-            Vector3 randomPointInSphere = Random.insideUnitSphere * _forwardDisplacementRadius + forward;
+            Vector3 forward = controller.transform.position + controller.transform.forward * forwardTargetSelection;
+            Vector3 randomPointInSphere = Random.insideUnitSphere * forwardDisplacementRadius + forward;
 
             return randomPointInSphere;
         }
@@ -43,13 +44,15 @@ public class AI_Brain
     private Target currentTarget;
 
     // Constructor
-    public AI_Brain (AI_Controller controller, Target targettable, float scanRadius, float forwardDist, float forwardRadius)
+    public AI_Brain (AI_Controller controller, Target targettable, float scanRadius, 
+        float forwardDist, float forwardRadius, float slowingRadius)
     {
-        _controller = controller;
-        _thisTargettableObject = targettable;
-        _targetScannerRadius = scanRadius;
-        _forwardTargetSelection = forwardDist;
-        _forwardDisplacementRadius = forwardRadius;
+        this.controller = controller;
+        this.targettable = targettable;
+        targetScannerRadius = scanRadius;
+        forwardTargetSelection = forwardDist;
+        forwardDisplacementRadius = forwardRadius;
+        this.slowingRadius = slowingRadius;
 
         TransitionState(Wander);
     }
@@ -59,12 +62,13 @@ public class AI_Brain
     public Vector3 CalculateFlightTargetVector()
     {
         // Sanity check for current target
-        if (currentTarget != _controller.CurrentTarget)
+        if (currentTarget != controller.CurrentTarget)
         {
-            currentTarget = _controller.CurrentTarget;
+            currentTarget = controller.CurrentTarget;
         }
 
         Think();    // Sets desired behavior of AI
+        AdjustSpeed();
         flightVector = currentState.Process(this);
 
         return flightVector;
@@ -77,12 +81,12 @@ public class AI_Brain
         // TODO: Make this class abstract? So we can implement different personalities per AI.
 
         // Flee
-        if (_thisTargettableObject.GetHealth() < 50)
+        if (targettable.GetHealth() < 50)
         {
             if (currentTarget == null)  // If nothing to get away from
             {
-                _controller.CurrentTarget = GetClosestTarget();     // Attempt to get closest
-                currentTarget = _controller.CurrentTarget;
+                controller.CurrentTarget = AcquireClosestTarget();     // Attempt to get closest
+                currentTarget = controller.CurrentTarget;
                 if (currentTarget == null)      // If still no targets around, just wander
                 {
                     TransitionState(Wander);
@@ -97,8 +101,8 @@ public class AI_Brain
         // Like flee but with wander randomness
 
         // Wander
-        else if (currentTarget == null || 
-                ((behaviorState == AI_State.FLEEING || behaviorState == AI_State.EVADING) && 
+        else if (currentTarget == null ||
+                ((behaviorState == AI_State.FLEEING || behaviorState == AI_State.EVADING) &&
                 GetVelocityVector().magnitude > GetDistanceBeforeTurning() * 1.5f))
         {
             TransitionState(Wander);
@@ -107,7 +111,7 @@ public class AI_Brain
 
         // Pursue / Attack
         // Like seek but with lookAhead
-        else if (!_controller.TargetIsBehind && currentTarget is MovingTarget)
+        else if (!controller.TargetIsBehind && currentTarget is MovingTarget)
         {
             TransitionState(Pursue);
             return;
@@ -130,24 +134,24 @@ public class AI_Brain
             }
             currentState = state;
             currentState.EnterState(this);
-            Debug.Log(_controller.gameObject.name + " state: " + currentState);
+            Debug.Log(controller.gameObject.name + " state: " + currentState);
         }
     }
 
-    private Target GetClosestTarget()
+    private Target AcquireClosestTarget()
     {
         Target newTarget = null;
         float closestDist = Mathf.Infinity;
 
-        Collider[] targets = Physics.OverlapSphere(_controller.transform.position, _targetScannerRadius);
+        Collider[] targets = Physics.OverlapSphere(controller.transform.position, targetScannerRadius);
         for (int i = targets.Length - 1; i >= 0; i--)
         {
-            if (targets[i].gameObject == _controller.gameObject) { continue; }   // Ignore self
+            if (targets[i].gameObject == controller.gameObject) { continue; }   // Ignore self
 
             Target t;
             if (!targets[i].TryGetComponent(out t)) { continue; }   // Ignore non-Targets
 
-            float dist = (targets[i].transform.position - _controller.transform.position).magnitude;
+            float dist = (targets[i].transform.position - controller.transform.position).magnitude;
 
             if (dist < closestDist)
             {
@@ -156,6 +160,30 @@ public class AI_Brain
             }
         }
         return newTarget;
+    }
+
+    private void AdjustSpeed()
+    {
+        // Apply arrival behavior if Seeking or Pursuing a target
+        if (behaviorState == AI_State.SEEKING || behaviorState == AI_State.PURSUING)
+        {
+            Vector3 velocity = currentTarget.transform.position - controller.transform.position;
+            float distance = velocity.magnitude;
+            if (distance < slowingRadius)
+            {
+                // Use distance ratio as multiplier
+                controller.AdjustSpeed(distance / slowingRadius);
+            }
+            else
+            {
+                controller.AdjustSpeed(1f);
+            }
+        }
+        // Use max speed for anything other behavior state
+        else
+        {
+            controller.AdjustSpeed(1f);
+        }
     }
 
     /* Getters and Setters */
@@ -169,19 +197,19 @@ public class AI_Brain
 
     public Vector3 GetControllerPosition()
     {
-        return _controller.transform.position;
+        return controller.transform.position;
     }
 
     public Vector3 GetControllerForward()
     {
-        return _controller.transform.position + _controller.transform.forward;
+        return controller.transform.position + controller.transform.forward;
     }
 
     public float GetCurrentForwardSpeed()
     {
-        if (_thisTargettableObject is MovingTarget)
+        if (targettable is MovingTarget)
         {
-            MovingTarget mt = (MovingTarget)_thisTargettableObject;
+            MovingTarget mt = (MovingTarget)targettable;
             return mt.CurrentForwardSpeed;
         }
         else
@@ -198,23 +226,23 @@ public class AI_Brain
             behaviorState == AI_State.EVADING)
         {
             // Return flight vector
-            return flightVector - _controller.transform.position;
+            return flightVector - controller.transform.position;
         }
         else
         {
             // Return Target object vector
-            return currentTarget.transform.position - _controller.transform.position;
+            return currentTarget.transform.position - controller.transform.position;
         }
     }
 
     public float GetDistanceBeforeTurning()
     {
-        return _controller.DistanceToEnableTurning;
+        return controller.DistanceToEnableTurning;
     }
 
     public void ToggleDistanceBeforeTurning(bool arg)
     {
-        _controller.ToggleDistanceBeforeTurning(arg);
+        controller.ToggleDistanceBeforeTurning(arg);
     }
 
     public Vector3 GetFlightTargetVector()
@@ -224,8 +252,8 @@ public class AI_Brain
 
     public bool TargetObjectIsBehind(Target targetObject)
     {
-        Vector3 dirToObject = targetObject.transform.position - _controller.transform.position;
-        if (Vector3.Dot(_controller.transform.forward, dirToObject) < 0.5f)
+        Vector3 dirToObject = targetObject.transform.position - controller.transform.position;
+        if (Vector3.Dot(controller.transform.forward, dirToObject) < 0.5f)
         {
             return true;
         }
@@ -238,8 +266,8 @@ public class AI_Brain
     // Overload method
     public bool TargetObjectIsBehind(Target targetObject, float dotValue)
     {
-        Vector3 dirToObject = targetObject.transform.position - _controller.transform.position;
-        if (Vector3.Dot(_controller.transform.forward, dirToObject) < dotValue)
+        Vector3 dirToObject = targetObject.transform.position - controller.transform.position;
+        if (Vector3.Dot(controller.transform.forward, dirToObject) < dotValue)
         {
             return true;
         }
