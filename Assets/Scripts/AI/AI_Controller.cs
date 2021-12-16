@@ -41,7 +41,7 @@ public class AI_Controller : MonoBehaviour
 
     // DEBUG
     [Header("DEBUG")]
-    [SerializeField] bool debugMode = false;
+    public bool debugMode = false;
     [SerializeField] TextMeshProUGUI rightDotText;
     [SerializeField] TextMeshProUGUI upDotText;
     [SerializeField] TextMeshProUGUI upToDirDotText;
@@ -127,7 +127,7 @@ public class AI_Controller : MonoBehaviour
         // Check if target is behind the agent.
         targetIsBehind = forwardDot < 0.25f ? true : false;
 
-        /* ***ROLL*** */
+        #region ROLL
         // Roll ship towards target
         // Get amount of angle to rotate
         float rollAngle = Vector3.Angle(transform.right, cross);
@@ -154,8 +154,9 @@ public class AI_Controller : MonoBehaviour
                 rolling = false;
             }
         }
+        #endregion
 
-        /* ***PITCH*** */
+        #region PITCH
         // Pitch up or down to align agent z axis to target
         float pitchAngle = Vector3.Angle(transform.forward, cross);
         pitchAngleDebug = pitchAngle; // Debug only
@@ -186,8 +187,9 @@ public class AI_Controller : MonoBehaviour
                 pitching = false;
             }
         }
+        #endregion
 
-        /* ***YAW*** */
+        #region YAW
         // Rotate agent towards target
         float yawAngle = Vector3.Angle(transform.forward, dirToTarget);
         yawAngleDebug = yawAngle; // Debug only
@@ -218,11 +220,14 @@ public class AI_Controller : MonoBehaviour
                 yawing = false;
             }
         }
+        #endregion
 
-        /* ***THRUST*** */
+        #region THRUST
         transform.Translate(Vector3.forward * currentForwardSpeed * Time.deltaTime);
         ship.SetForwardSpeed = currentForwardSpeed;
+        #endregion
 
+        #region DEBUG
         /** !DEBUG UI TEXT! **/
         if (debugMode)
         {
@@ -256,6 +261,7 @@ public class AI_Controller : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + (cross.normalized * 15f), Color.cyan);
         // Line to target flight vector
         Debug.DrawLine(transform.position, ai.GetFlightTargetVector(), Color.magenta);
+        #endregion
     }
 
     private IEnumerator RandomizeDistance()
@@ -298,11 +304,19 @@ public class AI_Controller : MonoBehaviour
         enableDistanceBeforeTurning = arg;
     }
 
-    // TODO: Doublecheck and see if code can be optimized
-    public void AdjustSpeed(float distanceMultiplier)
+    public void AdjustSpeedByDistance(float distanceMultiplier)
     {
         // Multiply max possible speed to ratio (0~1) between ship position and target position
         float newSpeed = shipStats.MaxSpeed * distanceMultiplier;
+        currentForwardSpeed = Mathf.Clamp(newSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
+    }
+
+    public void AdjustSpeedByThrusterSpeed(bool sign)
+    {
+        float multiplier;
+        if (sign) { multiplier = 1f; } else { multiplier = -1f; }
+
+        float newSpeed = currentForwardSpeed + shipStats.ThrusterSpeed * multiplier * Time.deltaTime;
         currentForwardSpeed = Mathf.Clamp(newSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
     }
 

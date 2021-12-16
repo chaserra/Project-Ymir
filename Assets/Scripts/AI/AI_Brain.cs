@@ -134,7 +134,10 @@ public class AI_Brain
             }
             currentState = state;
             currentState.EnterState(this);
-            Debug.Log(controller.gameObject.name + " state: " + currentState);
+            if (controller.debugMode)
+            {
+                Debug.Log(controller.gameObject.name + " state: " + currentState);
+            }
         }
     }
 
@@ -171,18 +174,27 @@ public class AI_Brain
             float distance = velocity.magnitude;
             if (distance < slowingRadius)
             {
-                // Use distance ratio as multiplier
-                controller.AdjustSpeed(distance / slowingRadius);
+                bool isBehind = TargetObjectIsBehind(currentTarget);
+                if (isBehind)
+                {
+                    // Adjust speed faster if target is behind
+                    controller.AdjustSpeedByDistance(distance / slowingRadius + 0.25f);
+                }
+                else
+                {
+                    // Use distance ratio as multiplier
+                    controller.AdjustSpeedByDistance(distance / slowingRadius);
+                }
             }
             else
             {
-                controller.AdjustSpeed(1f);
+                controller.AdjustSpeedByDistance(1f);
             }
         }
-        // Use max speed for anything other behavior state
+        // Use max speed for any other behavior state
         else
         {
-            controller.AdjustSpeed(1f);
+            controller.AdjustSpeedByDistance(1f);
         }
     }
 

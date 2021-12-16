@@ -18,4 +18,4 @@ MonoBehaviour:
   yawSpeed: 20
   pitchSpeed: 42
   rollSpeed: 80
-  thrusterSpeed: 1.5
+  thrusterSpeed: 15

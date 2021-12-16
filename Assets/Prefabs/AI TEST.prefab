@@ -97,6 +97,7 @@ MonoBehaviour:
   targetScannerRadius: 200
   forwardTargetSelection: 100
   forwardDisplacementRadius: 80
+  slowingRadius: 75
   currentForwardSpeed: 50
   currentTarget: {fileID: 0}
   debugMode: 1

@@ -51,11 +51,6 @@ public class ShipController : MonoBehaviour
         Move();
     }
 
-    private void LateUpdate()
-    {
-        
-    }
-
     private void GetInput()
     {
         // Mouse Controls
