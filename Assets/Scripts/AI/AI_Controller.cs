@@ -15,10 +15,13 @@ public class AI_Controller : MonoBehaviour
     [Header("AI Behavior")]
     [SerializeField] float maxDistanceBeforeTurning = 150f;
     [SerializeField] float randomizeFactor = 0.35f;
+    /* Brain constructor stuff */
+    // TODO: Probably make this a ScriptableObject if number of parameters start to bloat
     [SerializeField] float targetScannerRadius = 200f;
     [SerializeField] float forwardTargetSelection = 100f;
     [SerializeField] float forwardDisplacementRadius = 80f;
-    [SerializeField] float slowingRadius = 50f;
+    [SerializeField] float slowingRadius = 75f;
+    [SerializeField] float wanderMaxDistance = 1000f;
 
     // Attributes
     public Target CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
@@ -80,7 +83,7 @@ public class AI_Controller : MonoBehaviour
         ship = GetComponent<MovingTarget>();
         shipStats = (ShipStats)ship.TargetStats;
         ai = new AI_Brain(this, ship, targetScannerRadius, forwardTargetSelection, 
-            forwardDisplacementRadius, slowingRadius);
+            forwardDisplacementRadius, slowingRadius, wanderMaxDistance);
         maxDistanceBeforeTurning = shipStats.MaxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }
@@ -167,10 +170,12 @@ public class AI_Controller : MonoBehaviour
             {
                 // Rotate if max distance reached. Makes flight look more convincing
                 // Also rotate while target is in front and target pitch angle is not yet reached
-                if (distanceFromTarget > distanceToEnableTurning || !targetIsBehind)
+                if (!enableDistanceBeforeTurning || 
+                    distanceFromTarget > distanceToEnableTurning || 
+                    !targetIsBehind)
                 {
                     // Pitch Up
-                    if (upToDirDot > 0f)
+                    if (upToDirDot > -0.1f) // -0.1f prioritizes pitching up (more realistic)
                     {
                         transform.Rotate(Vector3.left * shipStats.PitchSpeed * Time.deltaTime);
                     }
@@ -200,7 +205,9 @@ public class AI_Controller : MonoBehaviour
             {
                 // Rotate if max distance reached. Makes flight look more convincing
                 // Also rotate while target is in front and target yaw angle is not yet reached
-                if (distanceFromTarget > distanceToEnableTurning || !targetIsBehind)
+                if (!enableDistanceBeforeTurning || 
+                    distanceFromTarget > distanceToEnableTurning || 
+                    !targetIsBehind)
                 {
                     // Yaw Left
                     if (rightToDirDot > 0f)
@@ -268,12 +275,13 @@ public class AI_Controller : MonoBehaviour
     {
         while (true)
         {
-            if (!enableDistanceBeforeTurning)
-            {
-                distanceToEnableTurning = 0f;
-                yield return null;
-                continue;
-            }
+            // If momentum turning is disabled, allow to turn immediately
+            //if (!enableDistanceBeforeTurning)
+            //{
+            //    distanceToEnableTurning = 0f;
+            //    yield return null;
+            //    continue;
+            //}
             if (!hasRandomized && !targetIsBehind)
             {
                 float randomFactor = maxDistanceBeforeTurning - (maxDistanceBeforeTurning * randomizeFactor);

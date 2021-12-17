@@ -4792,7 +4792,7 @@ PrefabInstance:
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: currentTarget
       value: 
-      objectReference: {fileID: 843266136}
+      objectReference: {fileID: 588187418}
     - target: {fileID: 4584791377519009622, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
       propertyPath: forwardDotText
       value: 
@@ -5195,17 +5195,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826191188}
   m_CullTransparentMesh: 1
---- !u!114 &843266136 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7428945321274809131, guid: c11361eadd6ab6441971a8aa6861b3bb, type: 3}
-  m_PrefabInstance: {fileID: 2031564846}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f3eca7d2e8ec2f4489c0d221e33ed5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &848376174
 PrefabInstance:
   m_ObjectHideFlags: 0

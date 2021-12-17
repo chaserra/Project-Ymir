@@ -19,10 +19,12 @@ public class AI_Brain
     //....More AI stuff here
 
     // Parameters
+    private Vector3 initialPos;
     private float targetScannerRadius = 200f;
     private float forwardTargetSelection = 100f;
     private float forwardDisplacementRadius = 80f;
     private float slowingRadius = 50f;
+    private float wanderMaxDistance = 1000f;
 
     // Attributes
     public Target Target { get { return currentTarget; } }
@@ -32,6 +34,14 @@ public class AI_Brain
         {
             Vector3 forward = controller.transform.position + controller.transform.forward * forwardTargetSelection;
             Vector3 randomPointInSphere = Random.insideUnitSphere * forwardDisplacementRadius + forward;
+            float distanceFromInitialPos = (initialPos - randomPointInSphere).magnitude;
+
+            // If outside wander boundaries
+            if (distanceFromInitialPos > wanderMaxDistance)
+            {
+                // Callback this getter
+                return RandomFrontPosition;
+            }
 
             return randomPointInSphere;
         }
@@ -45,7 +55,7 @@ public class AI_Brain
 
     // Constructor
     public AI_Brain (AI_Controller controller, Target targettable, float scanRadius, 
-        float forwardDist, float forwardRadius, float slowingRadius)
+        float forwardDist, float forwardRadius, float slowingRadius, float wanderMaxDistance)
     {
         this.controller = controller;
         this.targettable = targettable;
@@ -53,6 +63,15 @@ public class AI_Brain
         forwardTargetSelection = forwardDist;
         forwardDisplacementRadius = forwardRadius;
         this.slowingRadius = slowingRadius;
+        this.wanderMaxDistance = wanderMaxDistance;
+        // wanderMaxDistance should not be lower than randomize position finder
+        if (this.wanderMaxDistance < forwardTargetSelection + forwardDisplacementRadius * 2f)
+        {
+            Debug.LogWarning("wanderMaxDistance is lower than position finder! Adjust values.");
+            this.wanderMaxDistance = forwardTargetSelection + forwardDisplacementRadius * 2.5f;
+        }
+
+        initialPos = controller.transform.position;
 
         TransitionState(Wander);
     }
@@ -113,6 +132,7 @@ public class AI_Brain
         // Like seek but with lookAhead
         else if (!controller.TargetIsBehind && currentTarget is MovingTarget)
         {
+            // TODO: Create timeout for pursue if stuck without any progress (idea: pick random forward position)
             TransitionState(Pursue);
             return;
         }
