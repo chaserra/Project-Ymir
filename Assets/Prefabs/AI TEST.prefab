@@ -98,6 +98,7 @@ MonoBehaviour:
   forwardTargetSelection: 100
   forwardDisplacementRadius: 80
   slowingRadius: 75
+  wanderMaxDistance: 750
   currentForwardSpeed: 50
   currentTarget: {fileID: 0}
   debugMode: 1

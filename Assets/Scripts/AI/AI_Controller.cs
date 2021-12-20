@@ -175,7 +175,7 @@ public class AI_Controller : MonoBehaviour
                     !targetIsBehind)
                 {
                     // Pitch Up
-                    if (upToDirDot > -0.1f) // -0.1f prioritizes pitching up (more realistic)
+                    if (upToDirDot > 0f)
                     {
                         transform.Rotate(Vector3.left * shipStats.PitchSpeed * Time.deltaTime);
                     }

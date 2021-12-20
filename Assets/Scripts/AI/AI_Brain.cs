@@ -39,8 +39,9 @@ public class AI_Brain
             // If outside wander boundaries
             if (distanceFromInitialPos > wanderMaxDistance)
             {
-                // Callback this getter
-                return RandomFrontPosition;
+                Vector3 dirToNew = controller.transform.position - initialPos;
+                Vector3 centerPoint = initialPos + dirToNew / 2f;
+                randomPointInSphere = Random.insideUnitSphere * forwardDisplacementRadius + centerPoint;
             }
 
             return randomPointInSphere;
