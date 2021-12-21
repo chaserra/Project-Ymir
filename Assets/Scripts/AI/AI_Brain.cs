@@ -20,6 +20,7 @@ public class AI_Brain
 
     // Parameters
     private Vector3 initialPos;
+    private float agentReactionTime = 275f;
     private float targetScannerRadius = 200f;
     private float forwardTargetSelection = 100f;
     private float forwardDisplacementRadius = 80f;
@@ -28,6 +29,7 @@ public class AI_Brain
 
     // Attributes
     public Target Target { get { return currentTarget; } }
+    public float AgentReactionTime { get { return agentReactionTime; } }
     public Vector3 RandomFrontPosition
     {
         get
@@ -55,21 +57,22 @@ public class AI_Brain
     private Target currentTarget;
 
     // Constructor
-    public AI_Brain (AI_Controller controller, Target targettable, float scanRadius, 
-        float forwardDist, float forwardRadius, float slowingRadius, float wanderMaxDistance)
+    public AI_Brain (AI_Controller controller, Target targettable, AI_Moving_Attributes_SO agentAttributes)
     {
         this.controller = controller;
         this.targettable = targettable;
-        targetScannerRadius = scanRadius;
-        forwardTargetSelection = forwardDist;
-        forwardDisplacementRadius = forwardRadius;
-        this.slowingRadius = slowingRadius;
-        this.wanderMaxDistance = wanderMaxDistance;
+        agentReactionTime = agentAttributes.agentReactionTime;
+        targetScannerRadius = agentAttributes.targetScannerRadius;
+        forwardTargetSelection = agentAttributes.forwardTargetSelection;
+        forwardDisplacementRadius = agentAttributes.forwardDisplacementRadius;
+        slowingRadius = agentAttributes.slowingRadius;
+        wanderMaxDistance = agentAttributes.wanderMaxDistance;
+
         // wanderMaxDistance should not be lower than randomize position finder
-        if (this.wanderMaxDistance < forwardTargetSelection + forwardDisplacementRadius * 2f)
+        if (wanderMaxDistance < forwardTargetSelection + forwardDisplacementRadius * 2f)
         {
             Debug.LogWarning("wanderMaxDistance is lower than position finder! Adjust values.");
-            this.wanderMaxDistance = forwardTargetSelection + forwardDisplacementRadius * 2.5f;
+            wanderMaxDistance = forwardTargetSelection + forwardDisplacementRadius * 2.5f;
         }
 
         initialPos = controller.transform.position;
@@ -88,7 +91,7 @@ public class AI_Brain
         }
 
         Think();    // Sets desired behavior of AI
-        AdjustSpeed();
+        SpeedManagement();  // Sets speed of agent
         flightVector = currentState.Process(this);
 
         return flightVector;
@@ -96,6 +99,7 @@ public class AI_Brain
 
     public void Think()
     {
+
         // This is where the AI decides which state it should be in
         // TODO: FIX condition checks. Make sure behavior does not shift back and forth per frame. Example: if hp < 50 and target is not a MovingTarget, the AI shifts to Wander and Evade every frame
         // TODO: Make this class abstract? So we can implement different personalities per AI.
@@ -186,7 +190,7 @@ public class AI_Brain
         return newTarget;
     }
 
-    private void AdjustSpeed()
+    private void SpeedManagement()
     {
         // Apply arrival behavior if Seeking or Pursuing a target
         if (behaviorState == AI_State.SEEKING || behaviorState == AI_State.PURSUING)

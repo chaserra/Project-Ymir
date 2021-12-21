@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51f02ae50270aac4ba394a131ee7914e, type: 3}
-  m_Name: Enemy Ship Stat
+  m_Script: {fileID: 11500000, guid: cc4354a7b57ad83419fc10da64a8c070, type: 3}
+  m_Name: Moving AI_Test
   m_EditorClassIdentifier: 
-  health: 100
-  minSpeed: 20
-  maxSpeed: 50
-  yawSpeed: 21
-  pitchSpeed: 43
-  rollSpeed: 80
-  thrusterSpeed: 15
+  agentReactionTime: 0.275
+  targetScannerRadius: 200
+  forwardTargetSelection: 100
+  forwardDisplacementRadius: 80
+  slowingRadius: 75
+  wanderMaxDistance: 750

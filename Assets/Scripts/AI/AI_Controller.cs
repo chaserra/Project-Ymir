@@ -16,12 +16,7 @@ public class AI_Controller : MonoBehaviour
     [SerializeField] float maxDistanceBeforeTurning = 150f;
     [SerializeField] float randomizeFactor = 0.35f;
     /* Brain constructor stuff */
-    // TODO: Probably make this a ScriptableObject if number of parameters start to bloat
-    [SerializeField] float targetScannerRadius = 200f;
-    [SerializeField] float forwardTargetSelection = 100f;
-    [SerializeField] float forwardDisplacementRadius = 80f;
-    [SerializeField] float slowingRadius = 75f;
-    [SerializeField] float wanderMaxDistance = 1000f;
+    [SerializeField] AI_Moving_Attributes_SO agentAttributes;
 
     // Attributes
     public Target CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
@@ -71,8 +66,8 @@ public class AI_Controller : MonoBehaviour
     {
         // Wander
         Gizmos.color = Color.white;
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward * forwardTargetSelection);
-        Gizmos.DrawWireSphere(transform.position + transform.forward * forwardTargetSelection, forwardDisplacementRadius);
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * agentAttributes.forwardTargetSelection);
+        Gizmos.DrawWireSphere(transform.position + transform.forward * agentAttributes.forwardTargetSelection, agentAttributes.forwardDisplacementRadius);
 
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(targetFlightVector, 2f);
@@ -82,8 +77,7 @@ public class AI_Controller : MonoBehaviour
     {
         ship = GetComponent<MovingTarget>();
         shipStats = (ShipStats)ship.TargetStats;
-        ai = new AI_Brain(this, ship, targetScannerRadius, forwardTargetSelection, 
-            forwardDisplacementRadius, slowingRadius, wanderMaxDistance);
+        ai = new AI_Brain(this, ship, agentAttributes);
         maxDistanceBeforeTurning = shipStats.MaxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }

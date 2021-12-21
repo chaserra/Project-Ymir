@@ -94,11 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistanceBeforeTurning: 150
   randomizeFactor: 0.35
-  targetScannerRadius: 200
-  forwardTargetSelection: 100
-  forwardDisplacementRadius: 80
-  slowingRadius: 75
-  wanderMaxDistance: 750
+  agentAttributes: {fileID: 11400000, guid: 4696f15f15eab0441ae4c432b41879cc, type: 2}
   currentForwardSpeed: 50
   currentTarget: {fileID: 0}
   debugMode: 1
