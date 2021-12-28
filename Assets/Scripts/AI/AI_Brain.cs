@@ -92,14 +92,20 @@ public class AI_Brain
 
         Think();    // Sets desired behavior of AI
         SpeedManagement();  // Sets speed of agent
-        flightVector = currentState.Process(this);
+        flightVector = currentState.Process(this);  // Sets target destination
+
+        // Null catch. Makes the agent keep moving forward
+        if (flightVector == null || flightVector == Vector3.zero)
+        {
+            Debug.LogWarning("Flight vector empty. Returning location 10 units in front of agent.");
+            flightVector = controller.transform.position + controller.transform.forward * 10f;
+        }
 
         return flightVector;
     }
 
     public void Think()
     {
-
         // This is where the AI decides which state it should be in
         // TODO: FIX condition checks. Make sure behavior does not shift back and forth per frame. Example: if hp < 50 and target is not a MovingTarget, the AI shifts to Wander and Evade every frame
         // TODO: Make this class abstract? So we can implement different personalities per AI.
