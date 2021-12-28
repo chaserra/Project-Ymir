@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy Ship Stat
   m_EditorClassIdentifier: 
   health: 100
-  minSpeed: 20
+  minSpeed: 35
   maxSpeed: 50
   yawSpeed: 21
   pitchSpeed: 43

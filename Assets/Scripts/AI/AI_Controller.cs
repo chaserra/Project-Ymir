@@ -22,10 +22,11 @@ public class AI_Controller : MonoBehaviour
     public Target CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
     public float DistanceToEnableTurning { get { return distanceToEnableTurning; } }
     public bool TargetIsBehind { get { return targetIsBehind; } }
+    public float CurrentThrusterSpeed { get { return currentThrusterSpeed; } }
 
     // State
     [Header("Ship Status")]
-    [SerializeField] private float currentForwardSpeed = 50f;
+    [SerializeField] private float currentThrusterSpeed = 50f;
     [SerializeField] private Target currentTarget;
     private Vector3 targetFlightVector;
     private float distanceFromTarget;
@@ -224,8 +225,7 @@ public class AI_Controller : MonoBehaviour
         #endregion
 
         #region THRUST
-        transform.Translate(Vector3.forward * currentForwardSpeed * Time.deltaTime);
-        ship.SetForwardSpeed = currentForwardSpeed;
+        transform.Translate(Vector3.forward * currentThrusterSpeed * Time.deltaTime);
         #endregion
 
         #region DEBUG
@@ -310,7 +310,7 @@ public class AI_Controller : MonoBehaviour
     {
         // Multiply max possible speed to ratio (0~1) between ship position and target position
         float newSpeed = shipStats.MaxSpeed * distanceMultiplier;
-        currentForwardSpeed = Mathf.Clamp(newSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
+        currentThrusterSpeed = Mathf.Clamp(newSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
     }
 
     public void AdjustSpeedByThrusterSpeed(bool sign)
@@ -318,8 +318,8 @@ public class AI_Controller : MonoBehaviour
         float multiplier;
         if (sign) { multiplier = 1f; } else { multiplier = -1f; }
 
-        float newSpeed = currentForwardSpeed + shipStats.ThrusterSpeed * multiplier * Time.deltaTime;
-        currentForwardSpeed = Mathf.Clamp(newSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
+        float newSpeed = currentThrusterSpeed + shipStats.ThrusterSpeed * multiplier * Time.deltaTime;
+        currentThrusterSpeed = Mathf.Clamp(newSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
     }
 
 }

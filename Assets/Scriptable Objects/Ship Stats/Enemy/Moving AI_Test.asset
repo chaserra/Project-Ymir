@@ -16,5 +16,5 @@ MonoBehaviour:
   targetScannerRadius: 200
   forwardTargetSelection: 100
   forwardDisplacementRadius: 80
-  slowingRadius: 75
+  slowingRadius: 70
   wanderMaxDistance: 750

@@ -7,7 +7,7 @@ public class AI_Brain
     public enum AI_State { SEEKING, PURSUING, FLEEING, EVADING, WANDERING, }
 
     // Cache
-    private AI_Controller controller;
+    public AI_Controller controller;
     private Target targettable;
 
     // AI Behaviours
@@ -20,7 +20,7 @@ public class AI_Brain
 
     // Parameters
     private Vector3 initialPos;
-    private float agentReactionTime = 275f;
+    private float agentReactionTime = 0.275f;
     private float targetScannerRadius = 200f;
     private float forwardTargetSelection = 100f;
     private float forwardDisplacementRadius = 80f;
@@ -93,6 +93,13 @@ public class AI_Brain
         Think();    // Sets desired behavior of AI
         SpeedManagement();  // Sets speed of agent
         flightVector = currentState.Process(this);
+
+        // Null catch. Makes the agent keep moving forward
+        if (flightVector == null || flightVector == Vector3.zero)
+        {
+            Debug.LogWarning("Flight vector empty. Returning location 10 units in front of agent.");
+            flightVector = controller.transform.position + controller.transform.forward * 10f;
+        }
 
         return flightVector;
     }
@@ -242,12 +249,11 @@ public class AI_Brain
         return controller.transform.position + controller.transform.forward;
     }
 
-    public float GetCurrentForwardSpeed()
+    public float GetCurrentSpeed()
     {
         if (targettable is MovingTarget)
         {
-            MovingTarget mt = (MovingTarget)targettable;
-            return mt.CurrentForwardSpeed;
+            return controller.CurrentThrusterSpeed * Time.fixedDeltaTime;
         }
         else
         {

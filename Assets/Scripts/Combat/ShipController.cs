@@ -93,7 +93,6 @@ public class ShipController : MonoBehaviour
         currentForwardSpeed += thrust * shipStats.ThrusterSpeed * Time.deltaTime;   // Add thrust
         currentForwardSpeed = Mathf.Clamp(currentForwardSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);   // Clamp current speed
         transform.Translate(Vector3.forward * currentForwardSpeed * Time.deltaTime); // Thrust
-        ship.SetForwardSpeed = currentForwardSpeed;     // Update interface
     }
 
 }

@@ -17,7 +17,7 @@ public abstract class Target : MonoBehaviour, ITarget
     // Attributes
     public StatSheet TargetStats { get { return targetStats; } }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         //health = GetComponent<Ship>().shipStats.Health;
         targetBounds = new TargetBounds(GetComponentInChildren<Renderer>().bounds);

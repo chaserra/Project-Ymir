@@ -24,8 +24,13 @@ public class AI_Pursue : AI_BaseState
         }
 
         Vector3 dirToTarget = brain.Target.transform.position - brain.GetControllerPosition();
-        float thisSpeed = brain.GetCurrentForwardSpeed();
-        float targetSpeed = targetAI.CurrentForwardSpeed;
+        float thisSpeed = brain.GetCurrentSpeed();
+        float targetSpeed = targetAI.GetSpeed();
+
+        if (brain.controller.debugMode)
+        {
+            Debug.Log(brain.controller.name + ": This speed: " + thisSpeed + " TargetSpeed: " + targetSpeed);
+        }
 
         // If target is moving, calculate lookahead
         if (targetSpeed > 0f && thisSpeed > 0f)

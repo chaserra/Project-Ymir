@@ -4,10 +4,29 @@ using UnityEngine;
 
 public class MovingTarget : Target
 {
-    private float currentForwardSpeed = 0f;
-    // Setter
-    public float SetForwardSpeed { set { currentForwardSpeed = value; } }
-    // Getter
-    public float CurrentForwardSpeed { get { return currentForwardSpeed * Time.fixedDeltaTime; } }
+    private Vector3 lastPos;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        lastPos = transform.position;
+    }
+
+    private void LateUpdate()
+    {
+        lastPos = transform.position;
+    }
+
+    public Vector3 GetVelocity()
+    {
+        Vector3 newPos = (transform.position - lastPos) / Time.deltaTime;
+        return newPos;
+    }
+
+    public float GetSpeed()
+    {
+        float speed = GetVelocity().magnitude * Time.deltaTime;
+        return speed;
+    }
 
 }
