@@ -37,7 +37,7 @@ public class AI_Evade : AI_BaseState
             Vector3 predictedPos = brain.Target.transform.position + brain.Target.transform.forward * lookAhead;
 
             // TODO: Clean up jitter!
-            if (brain.TargetObjectIsBehind(brain.Target))
+            if (brain.TargetObjectIsBehind(brain.Target, 0f))
             {
                 // Reverse the predicted vector position
                 Vector3 fleeVector = predictedPos - brain.Target.transform.position;

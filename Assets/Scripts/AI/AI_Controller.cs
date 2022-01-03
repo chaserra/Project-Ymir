@@ -90,7 +90,7 @@ public class AI_Controller : MonoBehaviour
     private void Update()
     {
         // TODO: Future Stuff: Add all vectors here (brain vector, flock, avoid, etc..) here. Create a method to sum all vectors then return this as the final position
-        targetFlightVector = ai.CalculateFlightTargetVector();
+        targetFlightVector = ai.CalculateFlightTargetVector();  // Trigger State's Update method per frame
         Move(targetFlightVector);
 
         if (debugMode)

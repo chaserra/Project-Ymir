@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Make this class abstract? So we can implement different personalities per AI.
 public class AI_Brain
 {
     public enum AI_State { SEEKING, PURSUING, FLEEING, EVADING, WANDERING, }
@@ -108,7 +109,9 @@ public class AI_Brain
     {
         // This is where the AI decides which state it should be in
         // TODO: FIX condition checks. Make sure behavior does not shift back and forth per frame. Example: if hp < 50 and target is not a MovingTarget, the AI shifts to Wander and Evade every frame
-        // TODO: Make this class abstract? So we can implement different personalities per AI.
+
+        // TODO: (HIGH) RE-DO THIS. Try for a hierarchichal FSM approach where states are maintained within themselves
+        // Do a superstate approach. Superstates = Dying => evade, wander; Active => Wander, Seek; Aggressive => Seek, Pursue
 
         // Flee
         if (targettable.GetHealth() < 50)
@@ -141,7 +144,8 @@ public class AI_Brain
 
         // Pursue / Attack
         // Like seek but with lookAhead
-        else if (!controller.TargetIsBehind && currentTarget is MovingTarget)
+        //else if (!controller.TargetIsBehind && currentTarget is MovingTarget)
+        else if (!TargetObjectIsBehind(currentTarget) && currentTarget is MovingTarget)
         {
             // TODO: Create timeout for pursue if stuck without any progress (idea: pick random forward position)
             TransitionState(Pursue);
@@ -219,6 +223,7 @@ public class AI_Brain
             }
             else
             {
+                // Use max speed if outside slow distance
                 controller.AdjustSpeedByDistance(1f);
             }
         }
