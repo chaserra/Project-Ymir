@@ -314,6 +314,7 @@ public class AI_Controller : MonoBehaviour
         currentForwardSpeed = Mathf.Clamp(newSpeed, shipStats.MinSpeed, shipStats.MaxSpeed);
     }
 
+    // TODO: Implement this when failing to turn towards target vector
     public void AdjustSpeedByThrusterSpeed(bool sign)
     {
         float multiplier;

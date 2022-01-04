@@ -56,6 +56,9 @@ public class AI_Brain
     private AI_State behaviorState;
     private Vector3 flightVector;
     private Target currentTarget;
+    private float stateDelayTimer = 0f;
+    public float StateDelayTimer { get { return stateDelayTimer; } set { stateDelayTimer = value; } }
+    // TODO: Think of when to properly use this state timer
 
     // Constructor
     public AI_Brain (AI_Controller controller, Target targettable, AI_Moving_Attributes_SO agentAttributes)
