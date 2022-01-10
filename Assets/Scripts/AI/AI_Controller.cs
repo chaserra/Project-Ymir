@@ -9,7 +9,8 @@ public class AI_Controller : MonoBehaviour
     // Cache
     private MovingTarget ship;
     private ShipStats shipStats;
-    private AI_Brain ai;
+    //TODO: [HIGH] Change to BT
+    //private AI_Brain ai;
 
     // Parameters
     [Header("AI Behavior")]
@@ -77,7 +78,8 @@ public class AI_Controller : MonoBehaviour
     {
         ship = GetComponent<MovingTarget>();
         shipStats = (ShipStats)ship.TargetStats;
-        ai = new AI_Brain(this, ship, agentAttributes);
+        //TODO: [HIGH] Change to BT
+        //ai = new AI_Brain(this, ship, agentAttributes);
         maxDistanceBeforeTurning = shipStats.MaxSpeed * 3.5f;
         distanceToEnableTurning = maxDistanceBeforeTurning;
     }
@@ -90,7 +92,9 @@ public class AI_Controller : MonoBehaviour
     private void Update()
     {
         // TODO: Future Stuff: Add all vectors here (brain vector, flock, avoid, etc..) here. Create a method to sum all vectors then return this as the final position
-        targetFlightVector = ai.CalculateFlightTargetVector();  // Trigger State's Update method per frame
+        //TODO: [HIGH] Change to BT
+        //targetFlightVector = ai.CalculateFlightTargetVector();  // Trigger State's Update method per frame
+        targetFlightVector = transform.position + transform.forward * 10f;  // TODO: [HIGH] REMOVE THIS
         Move(targetFlightVector);
 
         if (debugMode)
@@ -109,7 +113,8 @@ public class AI_Controller : MonoBehaviour
     private void Move(Vector3 vectorToSteerTowards)
     {
         // Compute for Distance and Direction to target
-        Vector3 distToTarget = ai.GetVelocityVector();
+        //Vector3 distToTarget = ai.GetVelocityVector();    //TODO: [HIGH] Change to BT
+        Vector3 distToTarget = targetFlightVector - transform.position;
         Vector3 dirToTarget = distToTarget.normalized;
         distanceFromTarget = distToTarget.magnitude;
 
@@ -262,7 +267,8 @@ public class AI_Controller : MonoBehaviour
         // Cross (of this object to target)
         Debug.DrawLine(transform.position, transform.position + (cross.normalized * 15f), Color.cyan);
         // Line to target flight vector
-        Debug.DrawLine(transform.position, ai.GetFlightTargetVector(), Color.magenta);
+        //TODO: [HIGH] Change to BT
+        //Debug.DrawLine(transform.position, ai.GetFlightTargetVector(), Color.magenta);
         #endregion
     }
 
