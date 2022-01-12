@@ -7,11 +7,11 @@ namespace Ymir.BT
     {
         public Selector()
         {
-            name = "Sequence Node";
+            _name = "Selector Node";
         }
         public Selector(string n)
         {
-            name = n;
+            _name = n;
         }
 
         protected override void OnInitialize()
@@ -21,14 +21,14 @@ namespace Ymir.BT
 
         public override Status Process()
         {
-            Status childStatus = children[currentChild].Update();
+            Status childStatus = _children[_currentChild].Update();
 
             if (childStatus == Status.RUNNING) { return childStatus; }
             if (childStatus == Status.SUCCESS) { return Status.SUCCESS; }
 
-            currentChild++;
+            _currentChild++;
 
-            if (currentChild > children.Count)
+            if (_currentChild > _children.Count)
             {
                 return Status.FAILURE;
             }
@@ -40,7 +40,8 @@ namespace Ymir.BT
         {
             // Terminate
             // Maybe add here if the selector resets, then reset to 0
-            currentChild = 0;
+            _currentChild = 0;
         }
+
     }
 }

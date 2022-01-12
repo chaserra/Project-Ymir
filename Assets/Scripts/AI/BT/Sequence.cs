@@ -7,11 +7,11 @@ namespace Ymir.BT
     {
         public Sequence()
         {
-            name = "Sequence Node";
+            _name = "Sequence Node";
         }
         public Sequence(string n)
         {
-            name = n;
+            _name = n;
         }
 
         protected override void OnInitialize()
@@ -21,14 +21,14 @@ namespace Ymir.BT
 
         public override Status Process()
         {
-            Status childStatus = children[currentChild].Update();
+            Status childStatus = _children[_currentChild].Update();
 
             if (childStatus == Status.RUNNING) { return childStatus; }
             if (childStatus == Status.FAILURE) { return Status.FAILURE; }
 
-            currentChild++;
+            _currentChild++;
 
-            if (currentChild > children.Count)
+            if (_currentChild > _children.Count)
             {
                 return Status.SUCCESS;
             }
@@ -41,8 +41,9 @@ namespace Ymir.BT
             // Terminate
             if (s == Status.SUCCESS)
             {
-                currentChild = 0;
+                _currentChild = 0;
             }
         }
+
     }
 }

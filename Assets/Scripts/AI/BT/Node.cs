@@ -6,39 +6,41 @@ namespace Ymir.BT
     {
         public enum Status { SUCCESS, FAILURE, RUNNING };
 
-        public Status status;
-        public List<Node> children = new List<Node>();
-        public int currentChild = 0;
-        public string name;
+        protected Status _status;
+        protected List<Node> _children = new List<Node>();
+        protected int _currentChild = 0;
+        protected string _name;
 
         /* Constructor */
         public Node() { }
         public Node(string n)
         {
-            name = n;
+            _name = n;
         }
 
         /* Interface */
         protected abstract void OnInitialize();
-        public Status Update()
-        {
-            if (status != Status.RUNNING) { OnInitialize(); }
-            status = Process();
-            if (status != Status.RUNNING) { OnTerminate(status); }
-            return status;
-        }
         protected abstract void OnTerminate(Status s);
 
         /* Main Process */
         public virtual Status Process()
         {
-            return children[currentChild].Update();
+            return _children[_currentChild].Update();
+        }
+
+        // Tick method. Ensures that OnInitialize and OnTerminate are checked during Process method
+        public Status Update()
+        {
+            if (_status != Status.RUNNING) { OnInitialize(); }
+            _status = Process();
+            if (_status != Status.RUNNING) { OnTerminate(_status); }
+            return _status;
         }
 
         /* Class Method */
         public void AddChild(Node n)
         {
-            children.Add(n);
+            _children.Add(n);
         }
 
     }
