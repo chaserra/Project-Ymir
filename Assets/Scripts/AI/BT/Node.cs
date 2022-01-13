@@ -7,26 +7,15 @@ namespace Ymir.BT
         public enum Status { SUCCESS, FAILURE, RUNNING };
 
         protected Status _status;
-        protected List<Node> _children = new List<Node>();
-        protected int _currentChild = 0;
         protected string _name;
 
-        /* Constructor */
-        public Node() { }
-        public Node(string n)
-        {
-            _name = n;
-        }
-
-        /* Interface */
         protected abstract void OnInitialize();
+        public abstract Status Process();
         protected abstract void OnTerminate(Status s);
 
-        /* Main Process */
-        public virtual Status Process()
-        {
-            return _children[_currentChild].Update();
-        }
+        // TODO [BT]: Create a delegated task for doing stuff on OnInitialize and OnTerminate
+        // [Cont] assign these Init and Terminate tasks on Node instantiation via constructors
+        // [Cont] make this as simple as possible (ie. tasks like getting a reference to the blackboard, etc)
 
         // Tick method. Ensures that OnInitialize and OnTerminate are checked during Process method
         public Status Update()
@@ -35,12 +24,6 @@ namespace Ymir.BT
             _status = Process();
             if (_status != Status.RUNNING) { OnTerminate(_status); }
             return _status;
-        }
-
-        /* Class Method */
-        public void AddChild(Node n)
-        {
-            _children.Add(n);
         }
 
     }

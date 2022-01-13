@@ -5,6 +5,9 @@ namespace Ymir.BT
 {
     public class BehaviourTree : Node
     {
+        protected List<Node> _children = new List<Node>();
+        protected int _currentChild = 0;
+
         public BehaviourTree () 
         {
             _name = "Behaviour Tree";
@@ -28,6 +31,12 @@ namespace Ymir.BT
         protected override void OnTerminate(Status s)
         {
             // Terminate
+        }
+
+        /* Class Method */
+        public void AddChild(Node n)
+        {
+            _children.Add(n);
         }
 
     }

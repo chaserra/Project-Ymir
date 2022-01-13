@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ymir.BT
 {
-    public class Sequence : Node
+    public class Sequence : Composite
     {
         public Sequence()
         {
@@ -28,8 +28,9 @@ namespace Ymir.BT
 
             _currentChild++;
 
-            if (_currentChild > _children.Count)
+            if (_currentChild >= _children.Count)
             {
+                //_currentChild = 0;
                 return Status.SUCCESS;
             }
 
