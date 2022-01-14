@@ -14,5 +14,14 @@ namespace Ymir.BT
             _children.Add(n);
         }
 
+        public void ResetChildren()
+        {
+            foreach (Composite n in _children)
+            {
+                n.ResetChildren();
+                _currentChild = 0;
+            }
+        }
+
     }
 }

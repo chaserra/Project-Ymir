@@ -24,13 +24,19 @@ namespace Ymir.BT
             Status childStatus = _children[_currentChild].Update();
 
             if (childStatus == Status.RUNNING) { return childStatus; }
-            if (childStatus == Status.FAILURE) { return Status.FAILURE; }
+
+            if (childStatus == Status.FAILURE) 
+            {
+                _currentChild = 0;
+                ResetChildren();
+                return Status.FAILURE; 
+            }
 
             _currentChild++;
 
             if (_currentChild >= _children.Count)
             {
-                //_currentChild = 0;
+                _currentChild = 0;
                 return Status.SUCCESS;
             }
 

@@ -26,5 +26,9 @@ namespace Ymir.BT
             return _status;
         }
 
+        // TODO [BT MED]: Add a Parallel composite node (new script).
+        // [Cont] Checks children status, tallies up all success and failures, then acts according to
+        // [Cont] it's own policy (RequireOne or RequireAll)
+
     }
 }

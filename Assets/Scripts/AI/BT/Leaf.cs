@@ -8,6 +8,11 @@ namespace Ymir.BT
         public delegate Status Tick();
         public Tick Task;
 
+        public Leaf(Tick t)
+        {
+            _name = "Leaf Node";
+            Task = t;
+        }
         public Leaf(string n, Tick t)
         {
             _name = n;
