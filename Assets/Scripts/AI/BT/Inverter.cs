@@ -7,11 +7,11 @@ namespace Ymir.BT
     {
         public Inverter()
         {
-            _name = "Inverter Node";
+            nodeName = "Inverter Node";
         }
         public Inverter(string n)
         {
-            _name = n;
+            nodeName = n;
         }
 
         protected override void OnInitialize()
@@ -19,7 +19,7 @@ namespace Ymir.BT
             // Initialize
         }
 
-        public override Status Process()
+        protected override Status OnUpdate()
         {
             Status childStatus = _child.Update();
 

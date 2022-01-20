@@ -7,11 +7,11 @@ namespace Ymir.BT
     {
         public Selector()
         {
-            _name = "Selector Node";
+            nodeName = "Selector Node";
         }
         public Selector(string n)
         {
-            _name = n;
+            nodeName = n;
         }
 
         protected override void OnInitialize()
@@ -19,7 +19,7 @@ namespace Ymir.BT
             // Initialize
         }
 
-        public override Status Process()
+        protected override Status OnUpdate()
         {
             Status childStatus = _children[_currentChild].Update();
 

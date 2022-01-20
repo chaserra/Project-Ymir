@@ -10,16 +10,16 @@ namespace Ymir.BT
 
         public DepSequence(BehaviourTree d)
         {
-            _name = "Dependency Sequence";
+            nodeName = "Dependency Sequence";
             _dependency = d;
         }
         public DepSequence(string n, BehaviourTree d)
         {
-            _name = n;
+            nodeName = n;
             _dependency = d;
         }
 
-        public override Status Process()
+        protected override Status OnUpdate()
         {
             // Check dependencies
             Status dependencyStatus = _dependency.Update();
@@ -35,7 +35,7 @@ namespace Ymir.BT
             if (dependencyStatus == Status.RUNNING) { return Status.RUNNING; }
 
             // Only proceed with main Process sequence if all dependencies return SUCCESS
-            return base.Process();
+            return base.OnUpdate();
         }
 
     }
