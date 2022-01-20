@@ -10,18 +10,18 @@ namespace Ymir.BT
 
         protected override void OnInitialize()
         {
-            Debug.Log($"OnInitialize{message}");
+            Debug.Log($"OnInitialize: {message}");
         }
 
         protected override Status OnUpdate()
         {
-            Debug.Log($"OnUpdate{message}");
+            Debug.Log($"OnUpdate: {message}");
             return Status.SUCCESS;
         }
 
         protected override void OnTerminate(Status s)
         {
-            Debug.Log($"OnStart{message}");
+            Debug.Log($"OnTerminate: {message}");
         }
     }
 }

@@ -5,15 +5,6 @@ namespace Ymir.BT
 {
     public class Inverter : Decorator
     {
-        public Inverter()
-        {
-            nodeName = "Inverter Node";
-        }
-        public Inverter(string n)
-        {
-            nodeName = n;
-        }
-
         protected override void OnInitialize()
         {
             // Initialize
@@ -21,11 +12,19 @@ namespace Ymir.BT
 
         protected override Status OnUpdate()
         {
-            Status childStatus = _child.Update();
+            Status childStatus = child.Update();
 
-            if (childStatus == Status.RUNNING) { return Status.RUNNING; }
-            else if (childStatus == Status.FAILURE) { return Status.SUCCESS; }
-            else { return Status.FAILURE; }
+            switch(childStatus)
+            {
+                case Status.RUNNING:
+                    return Status.RUNNING;
+                case Status.SUCCESS:
+                    return Status.FAILURE;
+                case Status.FAILURE:
+                    return Status.SUCCESS;
+                default:
+                    return Status.RUNNING;
+            }
         }
 
         protected override void OnTerminate(Status s)

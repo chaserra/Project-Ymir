@@ -7,25 +7,22 @@ namespace Ymir.BT
     {
         public enum Status { SUCCESS, FAILURE, RUNNING };
 
-        public Status status = Status.RUNNING;
         public string nodeName;
-        public bool started = false;
+        public Status status = Status.RUNNING;
+
+        private bool _started = false;
 
         protected abstract void OnInitialize();
         protected abstract Status OnUpdate();
         protected abstract void OnTerminate(Status s);
 
-        // TODO [BT]: Create a delegated task for doing stuff on OnInitialize and OnTerminate
-        // [Cont] assign these Init and Terminate tasks on Node instantiation via constructors
-        // [Cont] make this as simple as possible (ie. tasks like getting a reference to the blackboard, etc)
-
-        // Tick method. Ensures that OnInitialize and OnTerminate are checked during Process method
+        // Tick method. Ensures that OnInitialize and OnTerminate are checked during Update
         public Status Update()
         {
-            if (!started) 
+            if (!_started) 
             { 
                 OnInitialize();
-                started = true;
+                _started = true;
             }
 
             status = OnUpdate();
@@ -33,15 +30,11 @@ namespace Ymir.BT
             if (status != Status.RUNNING) 
             { 
                 OnTerminate(status);
-                started = false;
+                _started = false;
             }
 
             return status;
         }
-
-        // TODO [BT MED]: Add a Parallel composite node (new script).
-        // [Cont] Checks children status, tallies up all success and failures, then acts according to
-        // [Cont] it's own policy (RequireOne or RequireAll)
 
     }
 }

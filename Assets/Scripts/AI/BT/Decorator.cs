@@ -5,13 +5,11 @@ namespace Ymir.BT
 {
     public abstract class Decorator : Node
     {
-        protected Node _child;
+        public Node child;
 
-        /* Class Method */
-        public void AddChild(Node n)
+        public void SetChild(Node n)
         {
-            _child = n;
+            child = n;
         }
-
     }
 }

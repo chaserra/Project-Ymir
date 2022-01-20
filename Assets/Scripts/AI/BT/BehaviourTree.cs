@@ -8,11 +8,16 @@ namespace Ymir.BT
     public class BehaviourTree : ScriptableObject
     {
         public Node rootNode;
-        public Node.Status treeState = Node.Status.RUNNING;
+        public Node.Status treeStatus = Node.Status.RUNNING;
 
         public Node.Status Update()
         {
-            return rootNode.Update();
+            if (rootNode.status == Node.Status.RUNNING)
+            {
+                treeStatus = rootNode.Update();
+            }
+            //Debug.Log($"Root Node Status: {rootNode.status}");
+            return treeStatus;
         }
 
     }

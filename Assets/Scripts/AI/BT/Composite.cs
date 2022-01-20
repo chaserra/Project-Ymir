@@ -5,21 +5,21 @@ namespace Ymir.BT
 {
     public abstract class Composite : Node
     {
-        protected List<Node> _children = new List<Node>();
-        protected int _currentChild = 0;
+        public List<Node> children = new List<Node>();
+        protected int currentChild = 0;
 
         /* Class Method */
         public void AddChild(Node n)
         {
-            _children.Add(n);
+            children.Add(n);
         }
 
         public void ResetChildren()
         {
-            foreach (Composite n in _children)
+            foreach (Composite n in children)
             {
                 n.ResetChildren();
-                _currentChild = 0;
+                currentChild = 0;
             }
         }
 
