@@ -7,8 +7,8 @@ namespace QuaternionGames.BT
     {
         public enum Status { SUCCESS, FAILURE, RUNNING };
 
-        public string nodeName;
         public Status status = Status.RUNNING;
+        public string guid;
 
         private bool _started = false;
 
