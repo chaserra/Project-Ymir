@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Ymir.BT
+namespace QuaternionGames.BT
 {
     public abstract class Node : ScriptableObject
     {

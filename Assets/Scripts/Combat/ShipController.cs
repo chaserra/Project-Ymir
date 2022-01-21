@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using Ymir.ScreenHelper;
+using QuaternionGames.ScreenHelper;
 
 [RequireComponent(typeof(MovingTarget))]
 public class ShipController : MonoBehaviour

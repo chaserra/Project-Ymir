@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Ymir.BT
+namespace QuaternionGames.BT
 {
     public class Sequence : Composite
     {

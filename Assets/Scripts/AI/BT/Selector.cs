@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Ymir.BT
+namespace QuaternionGames.BT
 {
     public class Selector : Composite
     {
@@ -17,8 +17,7 @@ namespace Ymir.BT
             if (childStatus == Status.RUNNING) { return childStatus; }
 
             if (childStatus == Status.SUCCESS) 
-            { 
-                currentChild = 0;
+            {
                 return Status.SUCCESS; 
             }
 
@@ -26,7 +25,6 @@ namespace Ymir.BT
 
             if (currentChild >= children.Count)
             {
-                currentChild = 0;
                 return Status.FAILURE;
             }
 

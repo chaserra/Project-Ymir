@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Ymir.BT
+namespace QuaternionGames.BT
 {
     public class WaitNode : Leaf
     {

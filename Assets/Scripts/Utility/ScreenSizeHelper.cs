@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Ymir.ScreenHelper
+namespace QuaternionGames.ScreenHelper
 {
     public class ScreenSizeHelper
     {

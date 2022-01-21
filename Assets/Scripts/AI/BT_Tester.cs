@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Ymir.BT;
+using QuaternionGames.BT;
 
 public class BT_Tester : MonoBehaviour
 {
