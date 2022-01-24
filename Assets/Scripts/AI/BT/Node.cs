@@ -9,6 +9,7 @@ namespace QuaternionGames.BT
 
         public Status status = Status.RUNNING;
         public string guid;
+        public Vector2 position;
 
         private bool _started = false;
 

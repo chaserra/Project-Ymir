@@ -42,5 +42,54 @@ namespace QuaternionGames.BT
             AssetDatabase.SaveAssets();
         }
 
+        public void AddChild(Node parent, Node child)
+        {
+            Decorator decorator = parent as Decorator;
+            if (decorator)
+            {
+                decorator.child = child;
+            }
+
+            Composite composite = parent as Composite;
+            if (composite)
+            {
+                composite.children.Add(child);
+            }
+        }
+
+        public void RemoveChild(Node parent, Node child)
+        {
+            Decorator decorator = parent as Decorator;
+            if (decorator)
+            {
+                decorator.child = null;
+            }
+
+            Composite composite = parent as Composite;
+            if (composite)
+            {
+                composite.children.Remove(child);
+            }
+        }
+
+        public List<Node> GetChildren(Node parent)
+        {
+            List<Node> children = new List<Node>();
+
+            Decorator decorator = parent as Decorator;
+            if (decorator && decorator.child != null)
+            {
+                children.Add(decorator.child);
+            }
+
+            Composite composite = parent as Composite;
+            if (composite)
+            {
+                return composite.children;
+            }
+
+            return children;
+        }
+
     }
 }
