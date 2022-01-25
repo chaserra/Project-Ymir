@@ -7,9 +7,9 @@ namespace QuaternionGames.BT
     {
         public enum Status { SUCCESS, FAILURE, RUNNING };
 
-        public Status status = Status.RUNNING;
-        public string guid;
-        public Vector2 position;
+        [HideInInspector] public Status status = Status.RUNNING;
+        [HideInInspector] public string guid;
+        [HideInInspector] public Vector2 position;
 
         private bool _started = false;
 
@@ -35,6 +35,11 @@ namespace QuaternionGames.BT
             }
 
             return status;
+        }
+
+        public virtual Node Clone()
+        {
+            return Instantiate(this);
         }
 
     }

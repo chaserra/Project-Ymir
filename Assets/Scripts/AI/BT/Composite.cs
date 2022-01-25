@@ -23,5 +23,12 @@ namespace QuaternionGames.BT
             }
         }
 
+        public override Node Clone()
+        {
+            Composite node = Instantiate(this);
+            node.children = children.ConvertAll(c => c.Clone());
+            return node;
+        }
+
     }
 }

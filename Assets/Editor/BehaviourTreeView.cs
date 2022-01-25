@@ -9,6 +9,7 @@ using QuaternionGames.BT;
 
 public class BehaviourTreeView : GraphView
 {
+    public Action<NodeView> OnNodeSelected;
     public new class UxmlFactory : UxmlFactory<BehaviourTreeView, GraphView.UxmlTraits> { }
     BehaviourTree tree;
 
@@ -38,7 +39,12 @@ public class BehaviourTreeView : GraphView
         DeleteElements(graphElements.ToList());
         graphViewChanged += OnGraphViewChanged;
 
-        tree.nodes.ForEach(n => CreateNodeView(n));
+        if (tree.rootNode == null)
+        {
+            tree.rootNode = tree.CreateNode<Root>(typeof(Root));
+            EditorUtility.SetDirty(tree);
+            AssetDatabase.SaveAssets();
+        }
 
         // Creates node view
         tree.nodes.ForEach(n => CreateNodeView(n));
@@ -95,7 +101,7 @@ public class BehaviourTreeView : GraphView
             });
         }
 
-            return graphViewChange;
+        return graphViewChange;
     }
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -135,6 +141,7 @@ public class BehaviourTreeView : GraphView
     void CreateNodeView(QuaternionGames.BT.Node node)
     {
         NodeView nodeView = new NodeView(node);
+        nodeView.OnNodeSelected = OnNodeSelected;
         AddElement(nodeView);
     }
 }

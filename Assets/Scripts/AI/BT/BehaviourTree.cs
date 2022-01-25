@@ -44,6 +44,12 @@ namespace QuaternionGames.BT
 
         public void AddChild(Node parent, Node child)
         {
+            Root root = parent as Root;
+            if (root)
+            {
+                root.child = child;
+            }
+
             Decorator decorator = parent as Decorator;
             if (decorator)
             {
@@ -59,6 +65,12 @@ namespace QuaternionGames.BT
 
         public void RemoveChild(Node parent, Node child)
         {
+            Root root = parent as Root;
+            if (root)
+            {
+                root.child = null;
+            }
+
             Decorator decorator = parent as Decorator;
             if (decorator)
             {
@@ -76,6 +88,12 @@ namespace QuaternionGames.BT
         {
             List<Node> children = new List<Node>();
 
+            Root root = parent as Root;
+            if (root && root.child != null)
+            {
+                children.Add(root.child);
+            }
+
             Decorator decorator = parent as Decorator;
             if (decorator && decorator.child != null)
             {
@@ -89,6 +107,13 @@ namespace QuaternionGames.BT
             }
 
             return children;
+        }
+
+        public BehaviourTree Clone()
+        {
+            BehaviourTree tree = Instantiate(this);
+            tree.rootNode = tree.rootNode.Clone();
+            return tree;
         }
 
     }

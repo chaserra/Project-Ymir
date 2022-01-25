@@ -11,5 +11,12 @@ namespace QuaternionGames.BT
         {
             child = n;
         }
+
+        public override Node Clone()
+        {
+            Decorator node = Instantiate(this);
+            node.child = child.Clone();
+            return node;
+        }
     }
 }

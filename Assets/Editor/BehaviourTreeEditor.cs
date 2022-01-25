@@ -32,7 +32,7 @@ public class BehaviourTreeEditor : EditorWindow
 
         treeView = root.Q<BehaviourTreeView>();
         inspectorView = root.Q<InspectorView>();
-
+        treeView.OnNodeSelected = OnNodeSelectionChanged;
         OnSelectionChange();
     }
 
@@ -40,10 +40,17 @@ public class BehaviourTreeEditor : EditorWindow
     {
         BehaviourTree tree = Selection.activeObject as BehaviourTree;
 
+        // Expected to return a bug. CanOpenAssetInEditor is not available on Unity 2020.3f
+        // Just delete Element 0 to proceed
         if (tree)
         {
             treeView.PopulateView(tree);
         }
+    }
+
+    void OnNodeSelectionChanged(NodeView node)
+    {
+        inspectorView.UpdateSelection(node);
     }
 
 }
