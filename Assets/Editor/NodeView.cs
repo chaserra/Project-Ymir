@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 using QuaternionGames.BT;
 using System;
@@ -12,7 +13,7 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     public Port input;
     public Port output;
 
-    public NodeView(QuaternionGames.BT.Node node)
+    public NodeView(QuaternionGames.BT.Node node) : base("Assets/Editor/NodeView.uxml")
     {
         this.node = node;
         this.title = node.name;
@@ -23,21 +24,42 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
 
         CreateInputPorts();
         CreateOutputPorts();
+        SetupClasses();
+    }
+
+    private void SetupClasses()
+    {
+        if (node is Leaf)
+        {
+            AddToClassList("action");
+        }
+        else if (node is Composite)
+        {
+            AddToClassList("composite");
+        }
+        else if (node is Decorator)
+        {
+            AddToClassList("decorator");
+        }
+        else if (node is Root)
+        {
+            AddToClassList("root");
+        }
     }
 
     private void CreateInputPorts()
     {
         if (node is Leaf)
         {
-            input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+            input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
         }
         else if (node is Composite)
         {
-            input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+            input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
         }
         else if (node is Decorator)
         {
-            input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+            input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
         }
         else if (node is Root)
         {
@@ -47,6 +69,7 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
         if (input != null)
         {
             input.portName = "";
+            input.style.flexDirection = FlexDirection.Column;
             inputContainer.Add(input);
         }
     }
@@ -59,20 +82,21 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
         }
         else if (node is Composite)
         {
-            output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
+            output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Multi, typeof(bool));
         }
         else if (node is Decorator)
         {
-            output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+            output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
         }
         else if (node is Root)
         {
-            output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+            output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
         }
 
         if (output != null)
         {
             output.portName = "";
+            output.style.flexDirection = FlexDirection.ColumnReverse;
             outputContainer.Add(output);
         }
     }

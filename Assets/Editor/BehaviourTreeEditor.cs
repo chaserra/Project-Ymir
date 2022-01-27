@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEditor.Callbacks;
 using QuaternionGames.BT;
 
 public class BehaviourTreeEditor : EditorWindow
@@ -14,6 +15,17 @@ public class BehaviourTreeEditor : EditorWindow
     {
         BehaviourTreeEditor wnd = GetWindow<BehaviourTreeEditor>();
         wnd.titleContent = new GUIContent("BehaviourTreeEditor");
+    }
+
+    [OnOpenAsset]
+    public static bool OnOpenAsset(int instanceId, int line)
+    {
+        if (Selection.activeObject is BehaviourTree)
+        {
+            OpenWindow();
+            return true;
+        }
+        return false;
     }
 
     public void CreateGUI()
