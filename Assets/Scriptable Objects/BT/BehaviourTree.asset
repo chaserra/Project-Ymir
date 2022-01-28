@@ -30,7 +30,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 2
   guid: c8760f3bee5156242b8da82271d3df9a
-  position: {x: 24, y: 326.8}
+  position: {x: 23, y: 329}
   children:
   - {fileID: -2958854625645856698}
   - {fileID: 7799054288384484536}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 2
   guid: 830bd948c2b21c14a98953aee59a4d4d
-  position: {x: 39.39743, y: 38.499992}
+  position: {x: 24, y: 24.199982}
   child: {fileID: 3999851063277588294}
 --- !u!114 &1093645496135642428
 MonoBehaviour:
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 2
   guid: 4cf1e149c45cb254981eb24fd1690b25
-  position: {x: 30, y: 171}
+  position: {x: 23, y: 186}
   child: {fileID: -2137255718233785959}
   numLoop: 2
 --- !u!114 &4050313262055531170

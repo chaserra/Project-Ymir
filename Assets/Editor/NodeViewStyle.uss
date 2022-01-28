@@ -1,9 +1,9 @@
 #node-border {
-    background-color: rgba(56, 56, 56, 255);
-    border-left-color: rgba(25, 25, 25, 255);
-    border-right-color: rgba(25, 25, 25, 255);
-    border-top-color: rgba(25, 25, 25, 255);
-    border-bottom-color: rgba(25, 25, 25, 255);
+    background-color: rgb(56, 56, 56);
+    border-left-color: rgb(25, 25, 25);
+    border-right-color: rgb(25, 25, 25);
+    border-top-color: rgb(25, 25, 25);
+    border-bottom-color: rgb(25, 25, 25);
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
@@ -28,7 +28,7 @@
 
 #divider {
     min-height: 1px;
-    background-color: rgba(101, 101, 101, 255);
+    background-color: rgb(101, 101, 101);
 }
 
 #input {
@@ -41,7 +41,7 @@
 }
 
 #input > .port {
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 #output {
@@ -50,14 +50,14 @@
 
 #output > .port {
     margin-top: 0;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 #selection-border {
-    border-left-color: rgba(35, 158, 212, 255);
-    border-right-color: rgba(35, 158, 212, 255);
-    border-top-color: rgba(35, 158, 212, 255);
-    border-bottom-color: rgba(35, 158, 212, 255);
+    border-left-color: rgb(35, 158, 212);
+    border-right-color: rgb(35, 158, 212);
+    border-top-color: rgb(35, 158, 212);
+    border-bottom-color: rgb(35, 158, 212);
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
@@ -85,10 +85,10 @@
     border-right-width: 1px;
     border-top-width: 1px;
     border-bottom-width: 1px;
-    border-left-color: rgba(50, 176, 42, 255);
-    border-right-color: rgba(50, 176, 42, 255);
-    border-top-color: rgba(50, 176, 42, 255);
-    border-bottom-color: rgba(50, 176, 42, 255);
+    border-left-color: rgb(50, 176, 42);
+    border-right-color: rgb(50, 176, 42);
+    border-top-color: rgb(50, 176, 42);
+    border-bottom-color: rgb(50, 176, 42);
 }
 
 :hover:selected > #selection-border {
@@ -107,18 +107,18 @@
 }
 
 .action #input {
-    background-color: rgba(255, 89, 94, 255);
+    background-color: rgb(255, 89, 94);
 }
 
 .composite #input {
-    background-color: rgba(25, 130, 196, 255);
+    background-color: rgb(25, 130, 196);
 }
 
 .decorator #input {
-    background-color: rgba(138, 201, 38, 255);
+    background-color: rgb(138, 201, 38);
 }
 
 .root #input {
-    background-color: rgba(255, 202, 58, 255);
+    background-color: rgb(255, 202, 58);
     min-height: 20px;
 }
