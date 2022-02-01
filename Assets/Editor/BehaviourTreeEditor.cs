@@ -48,9 +48,50 @@ public class BehaviourTreeEditor : EditorWindow
         OnSelectionChange();
     }
 
+    /** Uncomment below if on Unity v.2021 **/
+    //private void OnEnable()
+    //{
+    //    EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+    //    EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+    //}
+
+    //private void OnDisable()
+    //{
+    //    EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+    //}
+
+    //private void OnPlayModeStateChanged(PlayModeStateChange obj)
+    //{
+    //    switch (obj)
+    //    {
+    //        case PlayModeStateChange.EnteredEditMode:
+    //            OnSelectionChange();
+    //            break;
+    //        case PlayModeStateChange.ExitingEditMode:
+    //            break;
+    //        case PlayModeStateChange.EnteredPlayMode:
+    //            OnSelectionChange();
+    //            break;
+    //        case PlayModeStateChange.ExitingPlayMode:
+    //            break;
+    //    }
+    //}
+
     private void OnSelectionChange()
     {
         BehaviourTree tree = Selection.activeObject as BehaviourTree;
+        if (!tree)
+        {
+            if (Selection.activeObject)
+            {
+                var o = Selection.activeObject as GameObject;
+                BT_Tester tester = o.GetComponent<BT_Tester>();
+                if (tester)
+                {
+                    tree = tester.Tree;
+                }
+            }
+        }
 
         // Expected to return a bug. CanOpenAssetInEditor is not available on Unity 2020.3f
         // Just delete Element 0 to proceed
@@ -58,6 +99,22 @@ public class BehaviourTreeEditor : EditorWindow
         {
             treeView.PopulateView(tree);
         }
+
+        /** Below code is for Unity version 2021 up **/
+        //if (Application.isPlaying)
+        //{
+        //    if (tree)
+        //    {
+        //        treeView.PopulateView(tree);
+        //    }
+        //}
+        //else
+        //{
+        //    if (tree && AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
+        //    {
+        //        treeView.PopulateView(tree);
+        //    }
+        //}
     }
 
     void OnNodeSelectionChanged(NodeView node)

@@ -6,10 +6,10 @@ using QuaternionGames.BT;
 public class BT_Tester : MonoBehaviour
 {
     [SerializeField] BehaviourTree tree;
+    public BehaviourTree Tree { get { return tree; } }
 
     private void Awake()
     {
-        tree = tree.Clone();
         //tree = ScriptableObject.CreateInstance<BehaviourTree>();
 
         //var log1 = ScriptableObject.CreateInstance<DebugNode>();
@@ -39,7 +39,7 @@ public class BT_Tester : MonoBehaviour
 
     private void Start()
     {
-
+        tree = tree.Clone();
     }
 
     private void Update()

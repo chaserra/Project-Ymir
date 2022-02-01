@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 2
   guid: 2730d2f441b79414bb1c644d9885f72e
-  position: {x: -356.99997, y: 492.2311}
+  position: {x: -351.00003, y: 491}
   message: Heya! 1111
 --- !u!114 &-2137255718233785959
 MonoBehaviour:
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 2
   guid: 3b413f472d9817547a1b8e431dde4cf3
-  position: {x: 459.99994, y: 492.2311}
+  position: {x: 398.99988, y: 492}
   duration: 1
 --- !u!114 &-555397386819562341
 MonoBehaviour:
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 2
   guid: 1b79e800792719443b889df9fed18d0c
-  position: {x: -51.999928, y: 492.2311}
+  position: {x: -51.00006, y: 492}
   message: Heya! 2222
 --- !u!114 &11400000
 MonoBehaviour:
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 2
   guid: d8b1a37abb4aacb44bbb539eeb12e809
-  position: {x: 112.00004, y: 492.2311}
+  position: {x: 98.99996, y: 492}
   duration: 1
 --- !u!114 &3999851063277588294
 MonoBehaviour:
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 2
   guid: d733535099557714daa17a55243b5125
-  position: {x: 285.00006, y: 492.2311}
+  position: {x: 248.99986, y: 492}
   message: Heya! 3333
 --- !u!114 &7799054288384484536
 MonoBehaviour:
@@ -173,5 +173,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 2
   guid: 187341a5f7e0ec644b9d2f5c6ee531d6
-  position: {x: -204.99995, y: 492}
+  position: {x: -201.00012, y: 492}
   duration: 1

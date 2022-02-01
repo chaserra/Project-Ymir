@@ -117,4 +117,17 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
         OnNodeSelected?.Invoke(this);
     }
 
+    public void SortChildren()
+    {
+        Composite composite = node as Composite;
+        if (composite)
+        {
+            composite.children.Sort(SortByHorizontalPosition);
+        }
+    }
+
+    private int SortByHorizontalPosition(QuaternionGames.BT.Node left, QuaternionGames.BT.Node right)
+    {
+        return left.position.x < right.position.x ? -1 : 1;
+    }
 }

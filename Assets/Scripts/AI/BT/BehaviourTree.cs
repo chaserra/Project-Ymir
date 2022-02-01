@@ -31,7 +31,10 @@ namespace QuaternionGames.BT
             Undo.RecordObject(this, "Behaviour Tree (CreateNode)");
             nodes.Add(node);
 
-            AssetDatabase.AddObjectToAsset(node, this);
+            if (!Application.isPlaying)
+            {
+                AssetDatabase.AddObjectToAsset(node, this);
+            }
             Undo.RegisterCreatedObjectUndo(node, "Behaviour Tree (CreateNode)");
             AssetDatabase.SaveAssets();
 
@@ -127,10 +130,25 @@ namespace QuaternionGames.BT
             return children;
         }
 
+        public void Traverse(Node node, System.Action<Node> visitor)
+        {
+            if (node)
+            {
+                visitor.Invoke(node);
+                var children = GetChildren(node);
+                children.ForEach((n) => Traverse(n, visitor));
+            }
+        }
+
         public BehaviourTree Clone()
         {
             BehaviourTree tree = Instantiate(this);
             tree.rootNode = tree.rootNode.Clone();
+            tree.nodes = new List<Node>();
+            Traverse(tree.rootNode, (n) =>
+            {
+                tree.nodes.Add(n);
+            });
             return tree;
         }
 
