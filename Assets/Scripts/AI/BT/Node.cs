@@ -12,6 +12,7 @@ namespace QuaternionGames.BT
         [HideInInspector] public Vector2 position;
 
         private bool _started = false;
+        public bool Started { get { return _started; } }
 
         protected abstract void OnInitialize();
         protected abstract Status OnUpdate();

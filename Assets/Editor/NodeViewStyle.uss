@@ -122,3 +122,27 @@
     background-color: rgb(255, 202, 58);
     min-height: 20px;
 }
+
+#node-state {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.running #node-state {
+    background-color: rgba(255, 226, 0, 255);
+}
+
+.success #node-state {
+    background-color: rgba(48, 255, 0, 0.43);
+}
+
+.failure #node-state {
+    background-color: rgba(255, 0, 0, 0.67);
+}

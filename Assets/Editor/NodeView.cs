@@ -130,4 +130,31 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     {
         return left.position.x < right.position.x ? -1 : 1;
     }
+
+    public void UpdateState()
+    {
+        RemoveFromClassList("running");
+        RemoveFromClassList("success");
+        RemoveFromClassList("failure");
+
+        if (Application.isPlaying)
+        {
+            switch (node.status)
+            {
+                case QuaternionGames.BT.Node.Status.RUNNING:
+                    if (node.Started)
+                    {
+                        AddToClassList("running");
+                    }
+                    break;
+                case QuaternionGames.BT.Node.Status.SUCCESS:
+                    AddToClassList("success");
+                    break;
+                case QuaternionGames.BT.Node.Status.FAILURE:
+                    AddToClassList("failure");
+                    break;
+            }
+        }
+    }
+
 }
