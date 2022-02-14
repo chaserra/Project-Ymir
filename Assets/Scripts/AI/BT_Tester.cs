@@ -40,6 +40,7 @@ public class BT_Tester : MonoBehaviour
     private void Start()
     {
         tree = tree.Clone();
+        tree.Bind(GetComponent<AI_Controller>());
     }
 
     private void Update()

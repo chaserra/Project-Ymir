@@ -11,6 +11,7 @@ namespace QuaternionGames.BT
         public Node rootNode;
         public Node.Status treeStatus = Node.Status.RUNNING;
         public List<Node> nodes = new List<Node>();
+        public Blackboard blackboard = new Blackboard();
 
         public Node.Status Update()
         {
@@ -150,6 +151,15 @@ namespace QuaternionGames.BT
                 tree.nodes.Add(n);
             });
             return tree;
+        }
+
+        public void Bind(AI_Controller agent)
+        {
+            Traverse(rootNode, node =>
+            {
+                node.agent = agent;
+                node.blackboard = blackboard;
+            });
         }
 
     }

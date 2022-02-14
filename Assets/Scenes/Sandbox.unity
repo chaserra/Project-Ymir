@@ -3712,6 +3712,8 @@ GameObject:
   - component: {fileID: 646100839}
   - component: {fileID: 646100838}
   - component: {fileID: 646100837}
+  - component: {fileID: 646100843}
+  - component: {fileID: 646100842}
   m_Layer: 0
   m_Name: BT TESTER (1)
   m_TagString: Untagged
@@ -3808,6 +3810,56 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &646100842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646100836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557d9223a2dec6740bb9b863967d60da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistanceBeforeTurning: 150
+  randomizeFactor: 0.35
+  agentAttributes: {fileID: 11400000, guid: 4696f15f15eab0441ae4c432b41879cc, type: 2}
+  currentForwardSpeed: 0
+  currentTarget: {fileID: 0}
+  debugMode: 1
+  rightDotText: {fileID: 1523947999}
+  upDotText: {fileID: 1633900601}
+  upToDirDotText: {fileID: 1176682629}
+  rightToDirDotText: {fileID: 134288875}
+  targetAngle: {fileID: 826191190}
+  targetBehindText: {fileID: 1728867345}
+  crossText: {fileID: 1782387339}
+  roll: 1
+  pitch: 1
+  yaw: 1
+  rollAngleDebug: 0
+  pitchAngleDebug: 0
+  yawAngleDebug: 0
+  rollingText: {fileID: 1491185589}
+  pitchingText: {fileID: 1260953392}
+  yawingText: {fileID: 1588926887}
+  forwardDotText: {fileID: 864737168}
+--- !u!114 &646100843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646100836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3eca7d2e8ec2f4489c0d221e33ed5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetStats: {fileID: 11400000, guid: f4330c0cc3e702e4b8b00bfb1ae1b1dd, type: 2}
+  health: 0
+  explosionVFX: {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
 --- !u!1 &653187754
 GameObject:
   m_ObjectHideFlags: 0
@@ -15469,6 +15521,8 @@ GameObject:
   - component: {fileID: 2088952669}
   - component: {fileID: 2088952668}
   - component: {fileID: 2088952667}
+  - component: {fileID: 2088952673}
+  - component: {fileID: 2088952672}
   m_Layer: 0
   m_Name: BT TESTER
   m_TagString: Untagged
@@ -15565,6 +15619,56 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2088952672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088952666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557d9223a2dec6740bb9b863967d60da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistanceBeforeTurning: 150
+  randomizeFactor: 0.35
+  agentAttributes: {fileID: 11400000, guid: 4696f15f15eab0441ae4c432b41879cc, type: 2}
+  currentForwardSpeed: 0
+  currentTarget: {fileID: 0}
+  debugMode: 1
+  rightDotText: {fileID: 1523947999}
+  upDotText: {fileID: 1633900601}
+  upToDirDotText: {fileID: 1176682629}
+  rightToDirDotText: {fileID: 134288875}
+  targetAngle: {fileID: 826191190}
+  targetBehindText: {fileID: 1728867345}
+  crossText: {fileID: 1782387339}
+  roll: 1
+  pitch: 1
+  yaw: 1
+  rollAngleDebug: 0
+  pitchAngleDebug: 0
+  yawAngleDebug: 0
+  rollingText: {fileID: 1491185589}
+  pitchingText: {fileID: 1260953392}
+  yawingText: {fileID: 1588926887}
+  forwardDotText: {fileID: 864737168}
+--- !u!114 &2088952673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088952666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3eca7d2e8ec2f4489c0d221e33ed5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetStats: {fileID: 11400000, guid: f4330c0cc3e702e4b8b00bfb1ae1b1dd, type: 2}
+  health: 0
+  explosionVFX: {fileID: 8953862377448849720, guid: 62c6937952272a54e9ca9a3d26c1301d, type: 3}
 --- !u!1001 &2093706989
 PrefabInstance:
   m_ObjectHideFlags: 0

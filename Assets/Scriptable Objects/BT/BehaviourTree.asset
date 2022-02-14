@@ -15,6 +15,11 @@ MonoBehaviour:
   status: 2
   guid: 2730d2f441b79414bb1c644d9885f72e
   position: {x: -351.00003, y: 491}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
+  agent: {fileID: 0}
+  description: Debug
   message: Heya! 1111
 --- !u!114 &-2137255718233785959
 MonoBehaviour:
@@ -31,6 +36,11 @@ MonoBehaviour:
   status: 2
   guid: c8760f3bee5156242b8da82271d3df9a
   position: {x: 23, y: 329}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
+  agent: {fileID: 0}
+  description: 
   children:
   - {fileID: -2958854625645856698}
   - {fileID: 7799054288384484536}
@@ -53,6 +63,11 @@ MonoBehaviour:
   status: 2
   guid: 3b413f472d9817547a1b8e431dde4cf3
   position: {x: 398.99988, y: 492}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
+  agent: {fileID: 0}
+  description: 
   duration: 1
 --- !u!114 &-555397386819562341
 MonoBehaviour:
@@ -69,6 +84,11 @@ MonoBehaviour:
   status: 2
   guid: 1b79e800792719443b889df9fed18d0c
   position: {x: -51.00006, y: 492}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
+  agent: {fileID: 0}
+  description: 
   message: Heya! 2222
 --- !u!114 &11400000
 MonoBehaviour:
@@ -94,6 +114,9 @@ MonoBehaviour:
   - {fileID: 1093645496135642428}
   - {fileID: 4050313262055531170}
   - {fileID: -1595892264931081439}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
 --- !u!114 &255519617566737183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +132,11 @@ MonoBehaviour:
   status: 2
   guid: 830bd948c2b21c14a98953aee59a4d4d
   position: {x: 24, y: 24.199982}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
+  agent: {fileID: 0}
+  description: This is the root node
   child: {fileID: 3999851063277588294}
 --- !u!114 &1093645496135642428
 MonoBehaviour:
@@ -125,6 +153,11 @@ MonoBehaviour:
   status: 2
   guid: d8b1a37abb4aacb44bbb539eeb12e809
   position: {x: 98.99996, y: 492}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
+  agent: {fileID: 0}
+  description: 
   duration: 1
 --- !u!114 &3999851063277588294
 MonoBehaviour:
@@ -141,6 +174,11 @@ MonoBehaviour:
   status: 2
   guid: 4cf1e149c45cb254981eb24fd1690b25
   position: {x: 23, y: 186}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
+  agent: {fileID: 0}
+  description: 
   child: {fileID: -2137255718233785959}
   numLoop: 2
 --- !u!114 &4050313262055531170
@@ -158,6 +196,11 @@ MonoBehaviour:
   status: 2
   guid: d733535099557714daa17a55243b5125
   position: {x: 248.99986, y: 492}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
+  agent: {fileID: 0}
+  description: 
   message: Heya! 3333
 --- !u!114 &7799054288384484536
 MonoBehaviour:
@@ -174,4 +217,9 @@ MonoBehaviour:
   status: 2
   guid: 187341a5f7e0ec644b9d2f5c6ee531d6
   position: {x: -201.00012, y: 492}
+  blackboard:
+    flightVector: {x: 0, y: 0, z: 0}
+    target: {fileID: 0}
+  agent: {fileID: 0}
+  description: Wait Node!
   duration: 1

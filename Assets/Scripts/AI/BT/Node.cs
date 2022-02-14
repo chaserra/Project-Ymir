@@ -10,6 +10,9 @@ namespace QuaternionGames.BT
         [HideInInspector] public Status status = Status.RUNNING;
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
+        [HideInInspector] public Blackboard blackboard;
+        [HideInInspector] public AI_Controller agent;
+        [TextArea] public string description;
 
         private bool _started = false;
         public bool Started { get { return _started; } }
